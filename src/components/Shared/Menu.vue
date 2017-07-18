@@ -1,14 +1,14 @@
 <template>
-  <div class="hello">
-    <h1>Hello!</h1>
+  <div class="menu">
+    
   </div>
 </template>
 
 <script>
 export default {
-  name: 'hello'
+  name: 'app-menu'
 }
 </script>
 
-<style scoped>
+<style lang="css" scoped>
 </style>
