@@ -6,3 +6,11 @@
 
 // Bootstrap
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+html {
+  height: 100%;
+}
+
+.container {
+  min-width: 970px !important;
+}
