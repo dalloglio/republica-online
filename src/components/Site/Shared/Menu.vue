@@ -17,9 +17,9 @@ export default {
   data () {
     return {
       items: [
-        { route: { name: 'home' }, title: 'Sobre' },
-        { route: { name: 'home' }, title: 'Central de Ajuda' },
-        { route: { name: 'home' }, title: 'Contato' },
+        { route: { name: 'sobre' }, title: 'Sobre' },
+        { route: { name: 'faq' }, title: 'Central de Ajuda' },
+        { route: { name: 'contato' }, title: 'Contato' },
         { route: { name: 'home' }, title: 'Login' }
       ]
     }
