@@ -14,8 +14,8 @@
 </template>
 
 <script>
-import appLogo from '@/components/Shared/Logo.vue'
-import appMenu from '@/components/Shared/Menu.vue'
+import appLogo from '@/components/Site/Shared/Logo.vue'
+import appMenu from '@/components/Site/Shared/Menu.vue'
 export default {
   name: 'app-header',
   components: {
