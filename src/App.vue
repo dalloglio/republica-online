@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import '@/assets/sass/app.scss'
+
 import appHeader from '@/components/Shared/Header.vue'
 import appFooter from '@/components/Shared/Footer.vue'
 export default {
@@ -19,9 +21,3 @@ export default {
   }
 }
 </script>
-
-<style>
-body {
-
-}
-</style>
