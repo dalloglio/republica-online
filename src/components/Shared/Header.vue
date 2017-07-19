@@ -1,8 +1,14 @@
-<template>
+<template lang="html">
   <header>
     <div class="container">
-      <app-logo></app-logo>
-      <app-menu></app-menu>
+      <div class="row">
+        <div class="col-xs-5">
+          <app-logo></app-logo>
+        </div>
+        <div class="col-xs-7">
+          <app-menu></app-menu>
+        </div>
+      </div>
     </div>
   </header>
 </template>
@@ -22,7 +28,7 @@ export default {
 <style lang="css" scoped>
 header {
   width: 100%;
-  height: 150px;
-  background-color: #333;
+  background-color: #fff;
+  box-shadow: 0px 0px 6px 4px rgba(0,0,0,.1);
 }
 </style>

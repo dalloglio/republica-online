@@ -1,6 +1,8 @@
 <template>
   <div class="logo">
-
+    <router-link :to="{ name: 'home' }" title="Logo">
+      <img src="http://via.placeholder.com/400x100?text=Logo" alt="Logo">
+    </router-link>
   </div>
 </template>
 
@@ -11,10 +13,8 @@ export default {
 </script>
 
 <style lang="css" scoped>
-.logo {
-  width: 100%;
-  height: 100px;
-  margin: 25px 0;
-  background-color: #666;
+.logo a {
+  display: inline-block;
+  margin: 20px 0;
 }
 </style>
