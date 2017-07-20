@@ -8,23 +8,8 @@
             <p>Primeiro selecione o estado<br>e depois a cidade</p>
             <p><small>* depois nós iremos filtrar em mais detalhes a sua nova república ok?</small></p>
           </div>
-
-          <div class="col-xs-5 search">
-            <form>
-              <div class="form-group">
-                <select class="form-control input-lg" v-model="estado">
-                  <option value="">Selecione o estado</option>
-                  <option v-for="estado in estados" :value="estado.abbr">{{ estado.name }}</option>
-                </select>
-              </div>
-              <div class="form-group">
-                <select class="form-control input-lg" v-model="cidade">
-                  <option value="">Selecione o cidade</option>
-                  <option v-for="cidade in cidades" :value="cidade.name">{{ cidade.name }}</option>
-                </select>
-              </div>
-              <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Buscar!</button>
-            </form>
+          <div class="col-xs-5">
+            <search></search>
           </div>
         </div>
       </div>
@@ -95,66 +80,27 @@
       <carousel></carousel>
     </section>
 
-    <section id="newsletter">
-      <div class="container">
-        <div class="row">
-          <div class="col-xs-11 col-xs-offset-1">
-            <h3>Receba <strong>ofertas, promoções</strong> e fique sabendo das <strong>novidades</strong> de sua cidade e faculdade!</h3>
-          </div>
-        </div>
-        <form class="row">
-          <div class="col-xs-2"></div>
-          <div class="form-group col-xs-3">
-            <input v-model.trim="newsletter.nome" type="text" class="form-control input-lg" maxlength="100" placeholder="Digite seu nome:">
-          </div>
-          <div class="form-group col-xs-3">
-            <input v-model.trim="newsletter.email" type="email" class="form-control input-lg" maxlength="100" placeholder="Digite seu e-mail:">
-          </div>
-          <div class="col-xs-3">
-            <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Assinar</button>
-          </div>
-        </form>
-      </div>
-    </section>
+    <newsletter></newsletter>
   </div>
 </template>
 
 <script>
 import Carousel from '@/components/Shared/Carousel'
+import Newsletter from '@/components/Shared/Newsletter'
+import Search from '@/components/Shared/Search'
 import Thumbnail from '@/components/Shared/Thumbnail'
 export default {
   name: 'home',
   components: {
     Carousel,
+    Newsletter,
+    Search,
     Thumbnail
-  },
-  data () {
-    return {
-      estado: '',
-      cidade: '',
-      newsletter: {}
-    }
-  },
-  computed: {
-    estados () {
-      return [
-        { abbr: 'PR', name: 'Paraná' },
-        { abbr: 'SC', name: 'Santa Catarina' },
-        { abbr: 'RS', name: 'Rio Grande do Sul' }
-      ]
-    },
-    cidades () {
-      return [
-        { name: 'Curitiba' },
-        { name: 'Florianópolis' },
-        { name: 'Porto Alegre' }
-      ]
-    }
   }
 }
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 #intro {
   height: 538px;
   background-color: #fff;
@@ -175,17 +121,6 @@ export default {
 }
 #intro .info p small {
   color: blue;
-}
-#intro .search {
-  margin-top: 160px;
-  margin-bottom: 180px;
-}
-#intro .search form {
-  padding-left: 60px;
-  padding-right: 60px;
-}
-#intro .search form .form-group {
-  margin-bottom: 30px;
 }
 
 #overview {
@@ -248,9 +183,5 @@ export default {
   display: block;
   margin: 20px auto;
   background-color: blue;
-}
-
-#newsletter {
-  padding: 20px 0;
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <div class="thumbnail">
     <router-link :to="{ name: 'home' }" title="Anúncio">
-      <img src="http://via.placeholder.com/720x405" alt="Anúncio">
+      <img src="http://via.placeholder.com/300x200" alt="Anúncio">
       <span class="price">R$ 550,00</span>
     </router-link>
     <div class="caption">
