@@ -12,7 +12,7 @@ export default {
 }
 </script>
 
-<style lang="css" scoped>
+<style scoped>
 .logo a {
   display: inline-block;
   margin: 20px 0;

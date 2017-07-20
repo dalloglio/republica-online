@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import ThumbnailSimple from '@/components/Site/Shared/ThumbnailSimple'
+import ThumbnailSimple from '@/components/Shared/ThumbnailSimple'
 export default {
   name: 'carousel',
   components: {

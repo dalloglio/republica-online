@@ -10,9 +10,8 @@
 
 <script>
 import '@/assets/sass/app.scss'
-
-import appHeader from '@/components/Site/Shared/Header.vue'
-import appFooter from '@/components/Site/Shared/Footer.vue'
+import appHeader from '@/components/Shared/Header.vue'
+import appFooter from '@/components/Shared/Footer.vue'
 export default {
   name: 'app',
   components: {

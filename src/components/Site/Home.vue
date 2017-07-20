@@ -120,8 +120,8 @@
 </template>
 
 <script>
-import Carousel from '@/components/Site/Shared/Carousel'
-import Thumbnail from '@/components/Site/Shared/Thumbnail'
+import Carousel from '@/components/Shared/Carousel'
+import Thumbnail from '@/components/Shared/Thumbnail'
 export default {
   name: 'home',
   components: {
