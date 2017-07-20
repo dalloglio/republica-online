@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="page home">
     <section id="intro">
       <div class="container">
         <div class="row">
@@ -54,16 +54,85 @@
         </div>
       </div>
     </section>
+
+    <section id="latest">
+      <div class="container">
+        <h2>Estes aqui são os últimos anúncios!</h2>
+        <p>Veja a lista de opções próximas ao local de sua escolha.</p>
+      </div>
+      <div class="line"></div>
+      <div class="container">
+        <div class="row">
+          <div v-for="i in 4" class="col-xs-3">
+            <thumbnail></thumbnail>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="cta">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-7 call">
+            <h1>Vamos anunciar para quem<br>realmente quer comprar!</h1>
+            <p>Anuncie em nosso portal!</p>
+            <p>Conheça todos os planos e fale diretamente com o seu mercado consumidor!</p>
+            <p><small>Solicite a um de nossos parceiros maiores detalhes, ficaremos satisfeitos em ajudar =D</small></p>
+          </div>
+          <div class="col-xs-5 action">
+            <router-link :to="{ name: 'home' }" class="btn btn-lg btn-success text-uppercase">Quero anunciar já!</router-link>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="partners">
+      <div class="container">
+        <h2>Conheça nossos parceiros!</h2>
+        <p>Estas são algumas das empresas e entidades que acreditam na República Online.</p>
+      </div>
+      <div class="line"></div>
+      <carousel></carousel>
+    </section>
+
+    <section id="newsletter">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-11 col-xs-offset-1">
+            <h3>Receba <strong>ofertas, promoções</strong> e fique sabendo das <strong>novidades</strong> de sua cidade e faculdade!</h3>
+          </div>
+        </div>
+        <form class="row">
+          <div class="col-xs-2"></div>
+          <div class="form-group col-xs-3">
+            <input v-model.trim="newsletter.nome" type="text" class="form-control input-lg" maxlength="100" placeholder="Digite seu nome:">
+          </div>
+          <div class="form-group col-xs-3">
+            <input v-model.trim="newsletter.email" type="email" class="form-control input-lg" maxlength="100" placeholder="Digite seu e-mail:">
+          </div>
+          <div class="col-xs-3">
+            <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Assinar</button>
+          </div>
+        </form>
+      </div>
+    </section>
   </div>
 </template>
 
 <script>
+import Carousel from '@/components/Site/Shared/Carousel'
+import Thumbnail from '@/components/Site/Shared/Thumbnail'
 export default {
   name: 'home',
+  components: {
+    Carousel,
+    Thumbnail
+  },
   data () {
     return {
       estado: '',
-      cidade: ''
+      cidade: '',
+      newsletter: {}
     }
   },
   computed: {
@@ -88,7 +157,7 @@ export default {
 <style lang="css" scoped>
 #intro {
   height: 538px;
-  background-color: rgba(0,0,0,.1);
+  background-color: #fff;
 }
 #intro .info {
   margin-top: 120px;
@@ -117,5 +186,71 @@ export default {
 }
 #intro .search form .form-group {
   margin-bottom: 30px;
+}
+
+#overview {
+  padding: 20px 0;
+  background-color: rgba(0,0,0,.1);
+}
+
+#latest {
+  padding: 60px 0;
+}
+#latest h2 {
+  margin: 20px auto;
+}
+#latest .line {
+  width: 200px;
+  height: 5px;
+  display: block;
+  margin: 20px auto;
+  background-color: blue;
+}
+
+#cta {
+  height: 500px;
+  background-color: #eee;
+}
+#cta .call {
+  margin-top: 100px;
+  margin-bottom: 100px;
+}
+#cta .call h1 {
+  font-weight: bold;
+  font-size: 50px;
+  line-height: 1.45
+}
+#cta .call p {
+  font-size: 16px;
+  line-height: 2.45;
+  margin-bottom: 0;
+}
+#cta .call p small {
+  color: blue;
+}
+#cta .action {
+  margin-top: 350px;
+}
+#cta .action a {
+  padding-left: 80px;
+  padding-right: 80px;
+}
+
+#partners {
+  padding: 60px 0;
+}
+#partners h2 {
+  margin: 20px auto;
+}
+#partners .line {
+  width: 200px;
+  height: 5px;
+  display: block;
+  margin: 20px auto;
+  background-color: blue;
+}
+
+#newsletter {
+  padding: 20px 0;
 }
 </style>

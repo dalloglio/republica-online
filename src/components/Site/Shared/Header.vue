@@ -27,8 +27,10 @@ export default {
 
 <style lang="css" scoped>
 header {
+  position: relative;
   width: 100%;
   background-color: #fff;
   box-shadow: 0px 0px 6px 4px rgba(0,0,0,.1);
+  z-index: 2;
 }
 </style>
