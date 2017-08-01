@@ -14,6 +14,8 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-3">
+            <filtros-aplicados></filtros-aplicados>
+            <filtros></filtros>
             <banner-meia-pagina></banner-meia-pagina>
             <banner-meia-pagina></banner-meia-pagina>
             <banner-meia-pagina></banner-meia-pagina>
@@ -46,6 +48,8 @@
 <script>
 import BannerOutdoor from '@/components/Shared/BannerOutdoor'
 import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
+import Filtros from '@/components/Shared/Filtros'
+import FiltrosAplicados from '@/components/Shared/FiltrosAplicados'
 import Newsletter from '@/components/Shared/Newsletter'
 import Pagination from '@/components/Shared/Pagination'
 import Thumbnail from '@/components/Shared/Thumbnail'
@@ -54,6 +58,8 @@ export default {
   components: {
     BannerOutdoor,
     BannerMeiaPagina,
+    Filtros,
+    FiltrosAplicados,
     Newsletter,
     Pagination,
     Thumbnail
