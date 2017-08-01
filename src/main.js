@@ -3,12 +3,28 @@
 window.$ = window.jQuery = require('jquery')
 require('bootstrap-sass')
 
-window.axios = require('axios')
-window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest'
-
 import Vue from 'vue'
+import VueResource from 'vue-resource'
 import App from './App'
 import router from './router'
+import { store } from './store'
+import UtilsAuth from './utils/auth'
+import UtilsCep from './utils/cep'
+import UtilsDate from './utils/date'
+import UtilsUrl from './utils/url'
+
+Vue.use(VueResource)
+Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
+Vue.use(UtilsCep)
+Vue.use(UtilsDate)
+Vue.use(UtilsUrl)
+
+Vue.http.options.root = process.env.API_URL
+
+Vue.http.interceptors.push(function (request, next) {
+  request.headers.set('Authorization', 'Bearer ' + Vue.auth.getAccessToken())
+  next()
+})
 
 Vue.config.productionTip = false
 
@@ -16,6 +32,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   router,
+  store,
   template: '<App/>',
   components: { App }
 })
