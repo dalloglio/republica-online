@@ -21,18 +21,18 @@ const router = new Router({
   mode: 'history',
   routes: [
     // Site
-    { path: '/', name: 'home', component: Home, meta: { requiresAuth: false } },
-    { path: '/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
-    { path: '/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
-    { path: '/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
-    { path: '/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'home', component: Home, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'faq', component: Faq, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'contato', component: Contato, meta: { requiresAuth: false } },
 
     // Auth
-    { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
-    { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+    { path: '/v1/', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
+    { path: '/v1/', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
-    { path: '/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
+    { path: '/v1/', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
   ]
 })
 
