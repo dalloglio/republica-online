@@ -1,7 +1,7 @@
 <template>
   <div class="logo">
-    <router-link :to="{ name: 'home' }" title="Logo">
-      <img src="http://via.placeholder.com/400x100?text=Logo" alt="Logo">
+    <router-link :to="{ name: 'home' }" title="República Online">
+      <img src="../../assets/img/logo.png" alt="República Online">
     </router-link>
   </div>
 </template>
@@ -15,6 +15,6 @@ export default {
 <style scoped>
 .logo a {
   display: inline-block;
-  margin: 20px 0;
+  margin: 24px 0;
 }
 </style>

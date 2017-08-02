@@ -33,8 +33,19 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #newsletter {
-  padding: 20px 0;
+  padding: 10px 0;
+  background-color: #fff;
+  background-image: url('../../assets/img/bg-newsletter.jpg');
+  background-position: bottom center;
+  background-repeat: no-repeat;
+}
+#newsletter h3 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+#newsletter h3 strong {
+  font-weight: 800;
 }
 </style>

@@ -1,5 +1,5 @@
 // Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700,800');
 
 // Variables
 @import "variables";
@@ -8,14 +8,63 @@
 @import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
 
 html {
-  height: 100%;
+    height: 100%;
 }
 
 .container {
-  position: relative;
-  min-width: 970px !important;
+    position: relative;
+    min-width: 970px !important;
 }
 
 a:hover {
-  cursor: pointer;
+    cursor: pointer;
+}
+
+// BTNS
+.btn-lg {
+    font-weight: 600;
+}
+
+// INPUTS
+.input-lg {
+    font-weight: 600;
+    font-size: 14px;
+}
+
+// ICONS
+.icon {
+    position: relative;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+}
+.icon:before {
+    position: absolute;
+    content: "";
+    width: 40px;
+    height: 40px;
+    background-color: transparent;
+    background-image:  url('../img/icones.png');
+    background-repeat: no-repeat;
+    background-position: 0 0;
+}
+.icon-buscar {
+}
+.icon-buscar:before {
+    background-position: 0 0;
+}
+.icon-encontrar:before {
+    background-position:  -40px 0;
+}
+.icon-mensagens:before {
+    background-position: -80px 0;
+}
+.icon-sexo:before {
+    background-position: -120px 0;
+}
+.icon-cama:before {
+    background-position: -160px 0;
+}
+.icon-dinheiro:before {
+    background-position: 0 -40px;
 }

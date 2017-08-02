@@ -32,7 +32,7 @@ const router = new Router({
     { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
-    { path: '/dashboard', name: 'home', component: Dashboard, meta: { requiresAuth: true } }
+    { path: '/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
   ]
 })
 

@@ -1,9 +1,10 @@
 <template>
   <div class="menu">
     <nav class="pull-right">
-      <ul class="nav nav-pills">
+      <ul class="nav nav-pills pull-right">
         <li v-for="item in items"><router-link :to="item.route" :title="item.title">{{ item.title }}</router-link></li>
       </ul>
+      <div class="clearfix"></div>
       <router-link :to="{ name: 'home' }" class="btn btn-lg btn-warning pull-right" title="Anuncie sua vaga!">
         Anuncie sua vaga!
       </router-link>
@@ -18,7 +19,7 @@ export default {
     return {
       items: [
         { route: { name: 'sobre' }, title: 'Sobre' },
-        { route: { name: 'faq' }, title: 'Central de Ajuda' },
+        // { route: { name: 'faq' }, title: 'Central de Ajuda' },
         { route: { name: 'contato' }, title: 'Contato' },
         { route: { name: 'home' }, title: 'Login' }
       ]
@@ -32,12 +33,12 @@ nav > ul {
   margin: 7.5px 0;
 }
 nav > a {
-  font-weight: bold;
   padding-left: 40px;
   padding-right: 40px;
   margin: 20px 15px;
 }
 nav ul>li>a {
-  font-weight: bold;
+  font-weight: 800;
+  color: #091e42;
 }
 </style>

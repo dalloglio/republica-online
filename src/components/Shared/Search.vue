@@ -52,8 +52,8 @@ export default {
   margin-bottom: 180px;
 }
 .search form {
-  padding-left: 60px;
-  padding-right: 60px;
+  padding-left: 40px;
+  padding-right: 40px;
 }
 .search form .form-group {
   margin-bottom: 30px;

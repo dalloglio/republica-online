@@ -93,12 +93,10 @@
         <div class="row">
           <div class="col-xs-6 col-xs-offset-3">
             <hr>
-            <p class="text-center text-muted">
-              <small>
+            <p class="text-center">
                 República Online é uma empresa do <a href="http://inove.online" target="_blank" title="Grupo Inove.online">Grupo Inove.online</a><br>
                 CLASSIFICADOS E ANÚNCIOS ESTUDANTIS ONLINE LTDA<br>
                 CNPJ: 23.458.507/0001-46
-              </small>
             </p>
           </div>
         </div>
@@ -115,17 +113,21 @@ export default {
 
 <style scoped>
 footer {
-  background-color: rgba(0,0,0,.1);
+  background-color: #f4f7f9;
   padding: 20px 0 0;
 }
 h4 {
-  font-weight: bold;
+  font-weight: 800;
+  font-size: 18px;
 }
 ul {
   margin-bottom: 20px;
 }
 ul > li  {
   margin-bottom: 10px;
+}
+ul > li > a {
+  color: #091e42;
 }
 
 #payment {
@@ -135,12 +137,14 @@ ul > li  {
 
 #copyright {
   background-color: #fff;
+  font-size: 12px;
+  color: #757575;
 }
 #copyright hr {
   margin-top: 0;
 }
 #copyright a {
-  color: inherit;
-  font-weight: bold;
+  color: #757575;
+  font-weight: 600;
 }
 </style>

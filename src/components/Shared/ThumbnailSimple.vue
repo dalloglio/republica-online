@@ -1,7 +1,7 @@
 <template>
   <div class="thumbnail-simple">
     <router-link :to="{ name: 'home' }" title="Title" class="thumbnail">
-      <img src="http://via.placeholder.com/200x130" alt="Title">
+      <img src="../../assets/img/parceiro.png" alt="Title">
     </router-link>
   </div>
 </template>
