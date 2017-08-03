@@ -31,6 +31,15 @@ a:hover {
     font-size: 14px;
 }
 
+// HELPERS
+.line {
+    width: 200px;
+    height: 5px;
+    display: block;
+    margin: 30px auto;
+    background-color: #0052cc;
+}
+
 // ICONS
 .icon {
     position: relative;
