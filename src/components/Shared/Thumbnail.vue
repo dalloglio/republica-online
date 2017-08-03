@@ -1,7 +1,7 @@
 <template>
   <div class="thumbnail">
-    <router-link :to="{ name: 'home' }" title="Anúncio">
-      <img src="../../assets/img/anuncio-1.jpg" alt="Anúncio">
+    <router-link :to="{ name: 'home' }" title="República Dom Almir">
+      <img src="../../assets/img/anuncio-1.jpg" alt="República Dom Almir">
       <span class="label label-success price">R$ 550,00</span>
     </router-link>
     <div class="caption">

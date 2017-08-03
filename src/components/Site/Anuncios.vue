@@ -72,6 +72,8 @@ export default {
   padding: 60px 0;
 }
 #anuncios h2 {
+  font-size: 30px;
+  font-weight: 800;
   margin: 20px auto;
 }
 #anuncios .line {
@@ -87,5 +89,6 @@ export default {
   width: 180px;
   right: 15px;
   top: 50px;
+  font-weight: 600;
 }
 </style>

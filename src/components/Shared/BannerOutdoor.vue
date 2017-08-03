@@ -1,7 +1,7 @@
 <template>
   <div class="banner-outdoor">
     <a href="" title="Banner" target="_blank">
-      <img src="http://via.placeholder.com/970x250" alt="Banner" class="img-responsive">
+      <img src="../../assets/img/banner-870x250.jpg" alt="Banner" class="img-responsive">
     </a>
   </div>
 </template>

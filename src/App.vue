@@ -17,6 +17,14 @@ export default {
   components: {
     'app-header': appHeader,
     'app-footer': appFooter
+  },
+  watch: {
+    '$route' (to, from) {
+      this.$store.dispatch('setPage', to.name)
+    }
+  },
+  created () {
+    this.$store.dispatch('setPage', this.$route.name)
   }
 }
 </script>

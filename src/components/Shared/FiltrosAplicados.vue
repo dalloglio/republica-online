@@ -2,7 +2,7 @@
   <div class="filtros-aplicados">
     <div class="panel panel-default panel-filtro">
       <div class="panel-heading">
-        <h3 class="panel-title">Panel title</h3>
+        <h3 class="panel-title">Filtros Aplicados</h3>
       </div>
 
       <ul class="list-group">
@@ -29,13 +29,16 @@ a {
   padding: 10px 20px;
 }
 .panel-default {
-  background-color: rgba(0,0,0,.1);
+  background-color: #f4f7f9;
+  border-color: #f4f7f9;
 }
 .panel-heading {
-  font-weight: bold;
-  font-size: 18px;
   padding-top: 10px;
   padding-bottom: 10px;
+}
+.panel-heading .panel-title {
+  font-weight: 800;
+  font-size: 18px;
 }
 .list-group-item{
   padding-top: 15px;

@@ -5,22 +5,25 @@
         <h3 class="panel-title">Refina sua busca</h3>
       </div>
 
-      <filtro-item :open="true" :border="true" :id="0" title="Tipo de quarto"></filtro-item>
-      <filtro-item :open="true" :border="true" :id="1" title="Tipo de quarto"></filtro-item>
+      <filtro-item :open="false" :border="true" :id="0" title="Tipo de quarto"></filtro-item>
+      <filtro-item :open="false" :border="true" :id="1" title="Tipo de quarto"></filtro-item>
       <filtro-item :open="false" :border="true" :id="2" title="Tipo de quarto"></filtro-item>
       <filtro-item :open="false" :border="true" :id="3" title="Tipo de quarto"></filtro-item>
       <filtro-item :open="false" :border="true" :id="4" title="Tipo de quarto"></filtro-item>
-      <filtro-item :open="false" :border="false" :id="5" title="Tipo de quarto"></filtro-item>
+      <filtro-item :open="false" :border="true" :id="5" title="Tipo de quarto"></filtro-item>
+      <filtro-item-price :open="true" :border="false" :id="6" title="Valor"></filtro-item-price>
     </div>
   </div>
 </template>
 
 <script>
 import FiltroItem from '@/components/Shared/FiltroItem'
+import FiltroItemPrice from '@/components/Shared/FiltroItemPrice'
 export default {
   name: 'filtros',
   components: {
-    FiltroItem
+    FiltroItem,
+    FiltroItemPrice
   }
 }
 </script>
@@ -33,10 +36,15 @@ a {
   padding: 10px 20px;
 }
 .panel-default {
-  background-color: rgba(0,0,0,.1);
+  background-color: #f4f7f9;
+  border-color: #f4f7f9;
 }
 .panel-heading {
   font-weight: bold;
+  font-size: 18px;
+}
+.panel-heading .panel-title {
+  font-weight: 800;
   font-size: 18px;
 }
 .list-group-item {

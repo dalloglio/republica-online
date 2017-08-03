@@ -22,17 +22,17 @@ const router = new Router({
   routes: [
     // Site
     { path: '/v1/', name: 'home', component: Home, meta: { requiresAuth: false } },
-    { path: '/v1/', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
-    { path: '/v1/', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
-    { path: '/v1/', name: 'faq', component: Faq, meta: { requiresAuth: false } },
-    { path: '/v1/', name: 'contato', component: Contato, meta: { requiresAuth: false } },
+    { path: '/v1/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
+    { path: '/v1/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
+    { path: '/v1/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
+    { path: '/v1/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
 
     // Auth
-    { path: '/v1/', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
-    { path: '/v1/', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+    { path: '/v1/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
+    { path: '/v1/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
-    { path: '/v1/', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
+    { path: '/v1/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
   ]
 })
 

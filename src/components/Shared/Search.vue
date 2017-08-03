@@ -1,6 +1,6 @@
 <template>
   <div class="search">
-    <form>
+    <form autocomplete="off" @submit.prevent="onSubmit">
         <div class="form-group">
           <select class="form-control input-lg" v-model="estado">
             <option value="">Selecione o estado</option>
@@ -25,6 +25,11 @@ export default {
     return {
       estado: '',
       cidade: ''
+    }
+  },
+  methods: {
+    onSubmit () {
+      this.$router.push({ name: 'anuncios' })
     }
   },
   computed: {

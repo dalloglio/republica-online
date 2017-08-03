@@ -1,7 +1,7 @@
 <template>
   <div class="banner-meia-pagina">
     <a href="" title="Banner Meia Página" target="_blank">
-      <img src="http://via.placeholder.com/300x600" alt="Banner Meia Página" class="img-responsive">
+      <img src="../../assets/img/banner-270x400-a.jpg" alt="Banner Meia Página" class="img-responsive">
     </a>
   </div>
 </template>
