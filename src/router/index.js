@@ -15,6 +15,9 @@ import AuthLogout from '@/components/Auth/Logout'
 // Dashboard
 import Dashboard from '@/components/Dashboard/Home'
 
+// Page not found
+import PageNotFound from '@/components/Shared/PageNotFound'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -32,7 +35,10 @@ const router = new Router({
     { path: '/v1/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
-    { path: '/v1/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } }
+    { path: '/v1/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } },
+
+    // Page not found
+    { path: '*', component: PageNotFound }
   ]
 })
 

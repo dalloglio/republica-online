@@ -75,15 +75,4 @@ export default {
 .page .content p {
   line-height: 30px;
 }
-.page .content  ul {
-  margin-bottom: 30px;
-}
-.page .content  ul > li {
-  line-height: 30px;
-}
-.page .content  ul > li h4 {
-  font-size: 14px;
-  font-weight: 600;
-  display: inline-block;
-}
 </style>
