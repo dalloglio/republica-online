@@ -52,11 +52,11 @@
           <div class="col-xs-3">
             <p>Seu pagamento será processado pela:</p>
             <p>
-              <a href="" title="Cielo">
-                <img src="http://via.placeholder.com/120x60?text=Cielo" alt="Cielo">
+              <a href="https://www.cielo.com.br/" title="Cielo" target="_blank">
+                <img src="../../assets/img/payments/cielo.png" alt="Cielo">
               </a>
-              <a href="" title="Iugu">
-                <img src="http://via.placeholder.com/120x60?text=Iugu" alt="Iugu">
+              <a href="https://iugu.com/" title="Iugu" target="_blank">
+                <img src="../../assets/img/payments/iugu.png" alt="Iugu">
               </a>
             </p>
           </div>
@@ -64,23 +64,23 @@
           <div class="col-xs-9">
             <p>Bandeiras aceitas:</p>
             <p>
-              <a href="" title="MasterCard">
-                <img src="http://via.placeholder.com/90x50?text=MasterCard" alt="MasterCard">
+              <a href="" title="MasterCard" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/mastercard.png" alt="MasterCard">
               </a>
-              <a href="" title="Visa">
-                <img src="http://via.placeholder.com/90x50?text=Visa" alt="Visa">
+              <a href="" title="Visa" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/visa.png" alt="Visa">
               </a>
-              <a href="" title="American Express">
-                <img src="http://via.placeholder.com/90x50?text=American Express" alt="American Express">
+              <a href="" title="American Express" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/amex.png" alt="American Express">
               </a>
-              <a href="" title="Diners Club">
-                <img src="http://via.placeholder.com/90x50?text=Diners Club" alt="Diners Club">
+              <a href="" title="Diners Club" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/diners-club.png" alt="Diners Club">
               </a>
-              <a href="" title="Elo">
-                <img src="http://via.placeholder.com/90x50?text=Elo" alt="Elo">
+              <a href="" title="Elo" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/elo.png" alt="Elo">
               </a>
-              <a href="" title="Boleto">
-                <img src="http://via.placeholder.com/90x50?text=Boleto" alt="Boleto">
+              <a href="" title="Boleto" class="bandeira">
+                <img src="../../assets/img/payments/bandeiras/boleto.png" alt="Boleto">
               </a>
             </p>
           </div>
@@ -114,14 +114,14 @@ export default {
 <style scoped>
 footer {
   background-color: #f4f7f9;
-  padding: 20px 0 0;
+  padding: 30px 0 0px;
 }
 h4 {
   font-weight: 800;
   font-size: 18px;
 }
 ul {
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 ul > li  {
   margin-bottom: 10px;
@@ -133,6 +133,9 @@ ul > li > a {
 #payment {
   padding: 20px 0;
   background-color: #fff;
+}
+#payment .bandeira {
+  margin-right: 20px;
 }
 
 #copyright {
