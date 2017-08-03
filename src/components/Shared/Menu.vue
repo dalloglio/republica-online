@@ -1,6 +1,6 @@
 <template>
   <div class="menu">
-    <nav :class="{ 'pull-right': true, home: isHome }">
+    <nav :class="{ 'pull-right': true }">
       <ul class="nav nav-pills pull-right">
         <li v-for="item in items"><router-link :to="item.route" :title="item.title">{{ item.title }}</router-link></li>
       </ul>
@@ -21,13 +21,8 @@ export default {
         { route: { name: 'sobre' }, title: 'Sobre' },
         // { route: { name: 'faq' }, title: 'Central de Ajuda' },
         { route: { name: 'contato' }, title: 'Contato' },
-        { route: { name: 'home' }, title: 'Login' }
+        { route: { name: 'auth.login' }, title: 'Login' }
       ]
-    }
-  },
-  computed: {
-    isHome () {
-      return this.$store.getters.appPageIs('home')
     }
   }
 }
@@ -44,11 +39,7 @@ nav > a {
 }
 nav ul > li > a {
   font-weight: 800;
-  color: #fff;
-}
-nav.home ul > li > a {
-  font-weight: 800;
-  color: #091e42;
+  color: inherit;
 }
 .nav > li > a:hover,
 .nav > li > a:focus,
