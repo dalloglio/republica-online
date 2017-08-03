@@ -4,6 +4,7 @@ import Router from 'vue-router'
 // Site
 import Home from '@/components/Site/Home'
 import Anuncios from '@/components/Site/Anuncios'
+import Anuncio from '@/components/Site/Anuncio'
 import Sobre from '@/components/Site/Sobre'
 import Faq from '@/components/Site/Faq'
 import Contato from '@/components/Site/Contato'
@@ -16,7 +17,7 @@ import AuthLogout from '@/components/Auth/Logout'
 import Dashboard from '@/components/Dashboard/Home'
 
 // Page not found
-import PageNotFound from '@/components/Shared/PageNotFound'
+import PageNotFound from '@/components/Site/PageNotFound'
 
 Vue.use(Router)
 
@@ -26,6 +27,7 @@ const router = new Router({
     // Site
     { path: '/v1/', name: 'home', component: Home, meta: { requiresAuth: false } },
     { path: '/v1/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
+    { path: '/v1/anuncio/:slug', name: 'anuncio', component: Anuncio, meta: { requiresAuth: false } },
     { path: '/v1/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
     { path: '/v1/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
     { path: '/v1/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },

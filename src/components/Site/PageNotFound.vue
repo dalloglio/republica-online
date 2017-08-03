@@ -1,5 +1,5 @@
 <template>
-    <div class="page contato">
+    <div class="page page-not-found">
         <section class="container">
             <div class="row">
                 <div class="col-xs-6">
@@ -33,7 +33,7 @@
 <script>
 import Search from '@/components/Shared/Search'
 export default {
-  name: 'contato',
+  name: 'page-not-found',
   components: {
     Search
   }
