@@ -1,4 +1,4 @@
-<template>
+  <template>
     <div class="page sobre">
         <section class="container">
             <div class="row">
