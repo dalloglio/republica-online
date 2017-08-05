@@ -1,6 +1,6 @@
 <template>
     <div class="mapa" id="map">
-      <gmap-map :center="center" :zoom="zoom" style="width: 100%; height: 280px">
+      <gmap-map :center="center" :zoom="zoom" style="width: 100%; height: 250px;">
         <gmap-marker :position="marker.position" :clickable="true" :draggable="true"></gmap-marker>
       </gmap-map>
     </div>

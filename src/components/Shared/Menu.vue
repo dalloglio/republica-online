@@ -5,7 +5,7 @@
         <li v-for="item in items"><router-link :to="item.route" :title="item.title">{{ item.title }}</router-link></li>
       </ul>
       <div class="clearfix"></div>
-      <router-link :to="{ name: 'home' }" class="btn btn-lg btn-warning pull-right" title="Anuncie sua vaga!">
+      <router-link :to="{ name: 'criar-anuncio' }" class="btn btn-lg btn-warning pull-right" title="Anuncie sua vaga!">
         Anuncie sua vaga!
       </router-link>
     </nav>

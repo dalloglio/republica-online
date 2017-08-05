@@ -65,7 +65,7 @@
             <p><small>Solicite a um de nossos parceiros maiores detalhes, ficaremos satisfeitos em ajudar =D</small></p>
           </div>
           <div class="col-xs-4 action">
-            <router-link :to="{ name: 'home' }" class="btn btn-lg btn-success text-uppercase">Quero anunciar já!</router-link>
+            <router-link :to="{ name: 'criar-anuncio' }" class="btn btn-lg btn-success text-uppercase">Quero anunciar já!</router-link>
           </div>
         </div>
       </div>

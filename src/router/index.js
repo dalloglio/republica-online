@@ -8,6 +8,8 @@ import Anuncio from '@/components/Site/Anuncio'
 import Sobre from '@/components/Site/Sobre'
 import Faq from '@/components/Site/Faq'
 import Contato from '@/components/Site/Contato'
+import CriarAnuncio from '@/components/Site/CriarAnuncio'
+import CompartilharAnuncio from '@/components/Site/CompartilharAnuncio'
 
 // Auth
 import AuthLogin from '@/components/Auth/Login'
@@ -31,6 +33,10 @@ const router = new Router({
     { path: '/v1/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
     { path: '/v1/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
     { path: '/v1/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
+
+    // Site - Anúncio
+    { path: '/v1/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: false } },
+    { path: '/v1/compartilhar-anuncio', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false } },
 
     // Auth
     { path: '/v1/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },

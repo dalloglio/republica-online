@@ -30,6 +30,40 @@ a:hover {
     font-weight: 600;
     font-size: 14px;
 }
+.radio input[type="radio"] {
+    display: none;
+}
+.radio label {
+    position: relative;
+    padding-left: 25px;
+}
+.radio label:before {
+    position: absolute;
+    content: "";
+    top: 2px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border: 1px solid #0052cc;
+    border-radius: 50%;
+}
+.radio label:after {
+    position: absolute;
+    content: "";
+    top: 2px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #0052cc;
+    border: 1px solid #0052cc;
+    border-radius: 50%;
+    opacity: 0;
+}
+.radio input[type="radio"]:checked + label:after {
+    opacity: 1;
+}
+
 .checkbox input[type="checkbox"] {
     display: none;
 }
