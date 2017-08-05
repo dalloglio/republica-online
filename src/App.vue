@@ -1,5 +1,7 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{
+    login: isLogin
+    }">
     <app-header></app-header>
     <main>
       <transition name="fade">
@@ -25,8 +27,19 @@ export default {
       this.$store.dispatch('setPage', to.name)
     }
   },
+  computed: {
+    isLogin () {
+      return this.$store.getters.appPageIs('auth.login')
+    }
+  },
   created () {
     this.$store.dispatch('setPage', this.$route.name)
   }
 }
 </script>
+
+<style>
+#app.login {
+  background: transparent url('./assets/img/bg-login.jpg') no-repeat top center;
+}
+</style>

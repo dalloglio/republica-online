@@ -49,4 +49,7 @@ nav ul > li > a {
   background-color: transparent;
   text-decoration: underline;
 }
+#app.login nav ul > li > a {
+  color: #fff;
+}
 </style>

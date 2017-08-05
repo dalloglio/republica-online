@@ -33,4 +33,8 @@ header {
   background: #fff;
   z-index: 2;
 }
+#app.login header {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
 </style>

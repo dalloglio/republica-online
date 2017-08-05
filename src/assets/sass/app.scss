@@ -25,10 +25,40 @@ a:hover {
     font-weight: 600;
 }
 
-// INPUTS
+// FORM
 .input-lg {
     font-weight: 600;
     font-size: 14px;
+}
+.checkbox input[type="checkbox"] {
+    display: none;
+}
+.checkbox label {
+    position: relative;
+}
+.checkbox label:before {
+    position: absolute;
+    content: "";
+    top: 2px;
+    left: 0;
+    width: 16px;
+    height: 16px;
+    background-color: #fff;
+    border: 1px solid #0052cc;
+    border-radius: 3px;
+}
+.checkbox label:after {
+    position: absolute;
+    content: "";
+    top: 6px;
+    left: 4px;
+    width: 8px;
+    height: 8px;
+    background-color: #0052cc;
+    opacity: 0;
+}
+.checkbox input[type="checkbox"]:checked + label:after {
+    opacity: 1;
 }
 
 // HELPERS
