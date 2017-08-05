@@ -2,7 +2,7 @@ import router from '@/router'
 
 const TOKEN_NAME = 'token'
 const OAUTH_TOKEN_URI = process.env.API_URL + '/oauth/token'
-const LOGIN_REDIRECT = 'home'
+const LOGIN_REDIRECT = 'dashboard.home'
 const LOGOUT_REDIRECT = 'auth.login'
 
 export default {

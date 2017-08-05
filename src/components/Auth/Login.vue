@@ -4,7 +4,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1">
-          <form autocomplete="off" id="login">
+          <form autocomplete="off" id="login" @submit.prevent="onLogin">
             <h3 class="text-center">Login</h3>
             <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook">
               <i class="icon-facebook"></i>
@@ -14,7 +14,7 @@
             <fieldset>
               <div class="form-group">
                 <label for="login_email" class="sr-only">E-mail</label>
-                <input v-model="login.email" type="email" id="login_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required autofocus>
+                <input v-model="login.username" type="email" id="login_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required autofocus>
               </div>
               <div class="form-group">
                 <label for="login_password" class="sr-only">Senha</label>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="col-xs-4">
-          <form autocomplete="off" id="register">
+          <form autocomplete="off" id="register" @submit.prevent="onRegister">
             <h3 class="text-center">Cadastre-se</h3>
             <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook">
               <i class="icon-facebook"></i>
@@ -51,7 +51,7 @@
               </div>
               <div class="form-group">
                 <label for="register_email" class="sr-only">E-mail</label>
-                <input v-model="register.email" type="email" id="register_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required>
+                <input v-model="register.username" type="email" id="register_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required>
               </div>
               <div class="form-group">
                 <label for="register_password" class="sr-only">Senha</label>
@@ -80,21 +80,21 @@ export default {
   data () {
     return {
       login: {
-        email: null,
-        password: null,
+        username: 'ricardo.tech@live.com',
+        password: '123456',
         remember_me: false
       },
       register: {
-        name: null,
-        email: null,
-        password: null,
+        name: '',
+        username: '',
+        password: '',
         remember_me: false
       }
     }
   },
   methods: {
-    onSubmit: function () {
-      this.$auth.login(this.user).then((response) => {
+    onLogin () {
+      this.$auth.login(this.login).then((response) => {
         if (response.status === true) {
           this.$router.push({ name: response.redirect })
         } else {
@@ -103,6 +103,9 @@ export default {
       }, (error) => {
         this.message('Oops, não foi possível fazer login! ' + error.message)
       })
+    },
+    onRegister () {
+
     },
     message: function (msg) {
       console.log(msg)
