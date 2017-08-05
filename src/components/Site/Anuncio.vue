@@ -12,7 +12,8 @@
             <p>É um fato conhecido de todos que um leitor se distrairá com o conteúdo de texto legível de uma página quando estiver examinando sua diagramação. A vantagem de usar Lorem Ipsum é que ele tem uma distribuição normal de letras, ao contrário de "Conteúdo aqui, conteúdo aqui", fazendo com que ele tenha uma aparência similar a de um texto legível. Muitos softwares de publicação e editores de páginas na internet agora usam Lorem Ipsum como texto-modelo padrão, e uma rápida busca por 'lorem ipsum' mostra vários websites ainda em sua fase de construção. Várias versões novas surgiram ao longo dos anos, eventualmente por acidente...</p>
           </div>
           <div class="col-xs-3">
-            
+            <anuncio-details></anuncio-details>
+            <anuncio-contacts ></anuncio-contacts>
           </div>
         </div>
 
@@ -29,11 +30,11 @@
             </div>
 
             <div class="row">
-              <div class="col-xs-5 col-xs-offset-1">
-                <banner-quadrado></banner-quadrado>
+              <div class="banner-336x280 col-xs-5 col-xs-offset-1">
+                <banner-retangulo-grande></banner-retangulo-grande>
               </div>
-              <div class="col-xs-5">
-                <banner-quadrado></banner-quadrado>
+              <div class="banner-336x280 col-xs-5">
+                <banner-retangulo-grande></banner-retangulo-grande>
               </div>
             </div>
           </div>
@@ -47,23 +48,38 @@
 
       </div>
     </section>
+
+    <modal ref="modalRef">
+      <h3 slot="title">República Dom Almir de Almeida Sales</h3>
+    </modal>
   </div>
 </template>
 
 <script>
+import AnuncioContacts from '@/components/Shared/AnuncioContacts'
+import AnuncioDetails from '@/components/Shared/AnuncioDetails'
 import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
-import BannerQuadrado from '@/components/Shared/BannerQuadrado'
+import BannerRetanguloGrande from '@/components/Shared/BannerRetanguloGrande'
 import Galeria from '@/components/Shared/Galeria'
 import Mapa from '@/components/Shared/Mapa'
+import Modal from '@/components/Shared/Modal'
 import Thumbnail from '@/components/Shared/Thumbnail'
 export default {
   name: 'anuncio',
   components: {
+    AnuncioContacts,
+    AnuncioDetails,
     BannerMeiaPagina,
-    BannerQuadrado,
+    BannerRetanguloGrande,
     Galeria,
     Mapa,
+    Modal,
     Thumbnail
+  },
+  methods: {
+    showModal () {
+      this.$refs.modalRef.show()
+    }
   }
 }
 </script>

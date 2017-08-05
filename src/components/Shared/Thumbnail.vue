@@ -1,6 +1,6 @@
 <template>
   <div class="thumbnail">
-    <router-link :to="{ name: 'home' }" title="República Dom Almir">
+    <router-link :to="{ name: 'anuncio', params: { slug: 'slug-do-anuncio' } }" title="República Dom Almir">
       <img src="../../assets/img/anuncio-1.jpg" alt="República Dom Almir">
       <span class="label label-success price">R$ 550,00</span>
     </router-link>
@@ -10,7 +10,7 @@
       <p class="detail"><i class="icon icon-cama"></i> Compartilhado</p>
       <p class="detail"><i class="icon icon-dinheiro"></i> Contas inclusas</p>
       <p class="text-right">
-        <router-link :to="{ name: 'home' }" class="btn btn-link" title="veja mais detalhes">
+        <router-link :to="{ name: 'anuncio', params: { slug: 'slug-do-anuncio' } }" class="btn btn-link" title="veja mais detalhes">
           veja mais detalhes <span class="glyphicon glyphicon-menu-right"></span>
         </router-link>
       </p>

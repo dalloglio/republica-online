@@ -12,12 +12,19 @@ import UtilsAuth from './utils/auth'
 import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueResource)
 Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
 Vue.use(UtilsCep)
 Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs'
+  }
+})
 
 Vue.http.options.root = process.env.API_URL
 

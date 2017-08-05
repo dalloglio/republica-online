@@ -46,6 +46,7 @@ a:hover {
     display: inline-block;
     width: 40px;
     height: 40px;
+    margin-bottom: -3px
 }
 .icon:before {
     position: absolute;
@@ -76,4 +77,16 @@ a:hover {
 }
 .icon-dinheiro:before {
     background-position: 0 -40px;
+}
+.icon-map-marker:before {
+    background-position: -40px -40px;
+}
+.icon-user:before {
+    background-position: -80px -40px;
+}
+.icon-mobile:before {
+    background-position: -120px -40px;
+}
+.icon-whatsapp:before {
+    background-position: -160px -40px;
 }
