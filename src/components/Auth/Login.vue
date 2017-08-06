@@ -168,6 +168,9 @@ h3 {
   box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
   display: block;
 }
+.form-group {
+  margin-bottom: 15px;
+}
 .help-block {
   text-transform: lowercase;
   display: inline-block;

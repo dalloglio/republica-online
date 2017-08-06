@@ -330,9 +330,6 @@ select#ad_category_id {
   margin-left: -30px;
 }
 
-.form-group {
-  margin-bottom: 30px;
-}
 .radio {
   margin-top: 20px;
   margin-bottom: 20px;

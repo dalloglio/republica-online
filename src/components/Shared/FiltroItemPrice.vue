@@ -110,6 +110,7 @@ a[data-toggle] span {
 }
 .form-group {
   padding: 0 40px;
+  margin-bottom: 15px;
 }
 .glyphicon:before {
     content: "\E259";

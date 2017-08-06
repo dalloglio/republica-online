@@ -16,7 +16,10 @@ import AuthLogin from '@/components/Auth/Login'
 import AuthLogout from '@/components/Auth/Logout'
 
 // Dashboard
-import Dashboard from '@/components/Dashboard/Home'
+import Dashboard from '@/components/Dashboard/Dashboard'
+import DashboardHome from '@/components/Dashboard/Home'
+import DashboardMinhaConta from '@/components/Dashboard/MinhaConta'
+import DashboardMeusAnuncios from '@/components/Dashboard/MeusAnuncios'
 
 // Page not found
 import PageNotFound from '@/components/Site/PageNotFound'
@@ -43,7 +46,36 @@ const router = new Router({
     { path: '/v1/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
-    { path: '/v1/dashboard', name: 'dashboard.home', component: Dashboard, meta: { requiresAuth: true } },
+    {
+      path: '/v1/dashboard',
+      name: 'dashboard',
+      component: Dashboard,
+      meta: {
+        requiresAuth: true
+      },
+      children: [{
+        path: '/v1/dashboard/home',
+        name: 'dashboard.home',
+        component: DashboardHome,
+        meta: {
+          requiresAuth: true
+        }
+      }, {
+        path: '/v1/dashboard/minha-conta',
+        name: 'dashboard.minha-conta',
+        component: DashboardMinhaConta,
+        meta: {
+          requiresAuth: true
+        }
+      }, {
+        path: '/v1/dashboard/meus-anuncios',
+        name: 'dashboard.meus-anuncios',
+        component: DashboardMeusAnuncios,
+        meta: {
+          requiresAuth: true
+        }
+      }]
+    },
 
     // Page not found
     { path: '*', component: PageNotFound }
