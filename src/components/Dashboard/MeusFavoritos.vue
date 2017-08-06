@@ -1,12 +1,15 @@
 <template>
-  <div class="dashboard-meus-anuncios">
-    <h2><span>Meus Anúncios</span>, anunciou?</h2>
-    <p>Ta aqui!</p>
+  <div class="dashboard-meus-favoritos">
+    <h2><span>Meus Favoritos</span>, gostou desses anúncios?</h2>
+    <p>Se você favoritou, vai estar aqui ;)</p>
     <div class="line"></div>
 
     <table class="table table-hover">
       <tbody>
         <tr v-for="ad in ads">
+          <td width="1%">
+            <span class="favorite glyphicon glyphicon-star"></span>
+          </td>
           <td>
             <img :src="ad.photo" :alt="ad.title">
           </td>
@@ -15,16 +18,15 @@
             {{ ad.title }}
           </td>
           <td>
-            <b>Criado:</b><br>
+            <b>Categoria:</b><br>
+            {{ ad.category }}
+          </td>
+          <td>
+            <b>Salvo em:</b><br>
             {{ ad.created_at }}
           </td>
           <td>
-            <b>Status:</b><br>
-            {{ ad.status ? 'Publicado' : 'Pausado' }}
-          </td>
-          <td>
             <b>Ações:</b><br>
-            <button type="button" @click="onEdit(ad)"><i class="icon-edit"></i> Editar</button>
             <button type="button" @click="onDelete(ad)"><i class="icon-delete"></i> Excluir</button>
           </td>
         </tr>
@@ -35,22 +37,19 @@
 
 <script>
 export default {
-  name: 'dashboard-meus-anuncios',
+  name: 'dashboard-meus-favoritos',
   computed: {
     ads () {
       return [
-        { id: 1, slug: 'anuncio-a', title: 'Anúncio A', status: true, created_at: '2017-01-01 10:30:00', photo: 'http://lorempixel.com/150/95/nature/1/' },
-        { id: 2, slug: 'anuncio-b', title: 'Anúncio B', status: true, created_at: '2017-01-02 11:30:00', photo: 'http://lorempixel.com/150/95/nature/2/' },
-        { id: 3, slug: 'anuncio-c', title: 'Anúncio C', status: true, created_at: '2017-01-03 12:30:00', photo: 'http://lorempixel.com/150/95/nature/3/' }
+        { id: 1, slug: 'anuncio-a', title: 'Anúncio A', category: 'República', created_at: '2017-01-01 10:30:00', photo: 'http://lorempixel.com/150/95/nature/1/' },
+        { id: 2, slug: 'anuncio-b', title: 'Anúncio B', category: 'República', created_at: '2017-01-02 11:30:00', photo: 'http://lorempixel.com/150/95/nature/2/' },
+        { id: 3, slug: 'anuncio-c', title: 'Anúncio C', category: 'República', created_at: '2017-01-03 12:30:00', photo: 'http://lorempixel.com/150/95/nature/3/' }
       ]
     }
   },
   methods: {
-    onEdit (ad) {
-      this.$router.push({ name: 'dashboard-meus-anuncios.edit', params: { id: ad.id } })
-    },
     onDelete (ad) {
-      if (confirm('Você tem certeza que deseja excluir este anúncio?')) {
+      if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
         console.log(ad)
       }
     }
@@ -98,10 +97,11 @@ table tr td i {
   background-image: url('../../assets/img/icons-table.png');
   background-repeat: no-repeat;
 }
-table tr td i.icon-edit {
-  background-position: 0 0;
-}
 table tr td i.icon-delete {
   background-position: 0 -30px;
+}
+table tr td .favorite {
+  color: #fdc400;
+  font-size: 20px;
 }
 </style>
