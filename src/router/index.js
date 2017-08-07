@@ -21,6 +21,7 @@ import DashboardHome from '@/components/Dashboard/Home'
 import DashboardMinhaConta from '@/components/Dashboard/MinhaConta'
 import DashboardMeusAnuncios from '@/components/Dashboard/MeusAnuncios'
 import DashboardMeusFavoritos from '@/components/Dashboard/MeusFavoritos'
+import DashboardMinhasMensagens from '@/components/Dashboard/MinhasMensagens'
 
 // Page not found
 import PageNotFound from '@/components/Site/PageNotFound'
@@ -79,6 +80,13 @@ const router = new Router({
         path: '/v1/dashboard/meus-favoritos',
         name: 'dashboard.meus-favoritos',
         component: DashboardMeusFavoritos,
+        meta: {
+          requiresAuth: true
+        }
+      }, {
+        path: '/v1/dashboard/minhas-mensagens',
+        name: 'dashboard.minhas-mensagens',
+        component: DashboardMinhasMensagens,
         meta: {
           requiresAuth: true
         }
