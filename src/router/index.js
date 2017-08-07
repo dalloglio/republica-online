@@ -22,6 +22,7 @@ import DashboardMinhaConta from '@/components/Dashboard/MinhaConta'
 import DashboardMeusAnuncios from '@/components/Dashboard/MeusAnuncios'
 import DashboardMeusFavoritos from '@/components/Dashboard/MeusFavoritos'
 import DashboardMinhasMensagens from '@/components/Dashboard/MinhasMensagens'
+import DashboardMinhasMensagensShow from '@/components/Dashboard/MinhasMensagensShow'
 
 // Page not found
 import PageNotFound from '@/components/Site/PageNotFound'
@@ -50,7 +51,6 @@ const router = new Router({
     // Dashboard
     {
       path: '/v1/dashboard',
-      name: 'dashboard',
       component: Dashboard,
       meta: {
         requiresAuth: true
@@ -87,6 +87,13 @@ const router = new Router({
         path: '/v1/dashboard/minhas-mensagens',
         name: 'dashboard.minhas-mensagens',
         component: DashboardMinhasMensagens,
+        meta: {
+          requiresAuth: true
+        }
+      }, {
+        path: '/v1/dashboard/minhas-mensagens/:id',
+        name: 'dashboard.minhas-mensagens.show',
+        component: DashboardMinhasMensagensShow,
         meta: {
           requiresAuth: true
         }

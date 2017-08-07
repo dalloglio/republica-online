@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     onShow (ad) {
-      this.$router.push({ name: 'dashboard-minhas-mensagens.show', params: { id: ad.id } })
+      this.$router.push({ name: 'dashboard.minhas-mensagens.show', params: { id: ad.id } })
     },
     onDelete (ad) {
       if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
