@@ -5,23 +5,8 @@ const ENDPOINT = process.env.API_VERSION + '/ads'
 export default {
   state: {
     ads: [],
-    ad: {
-      address: {},
-      contact: {},
-      user: {},
-      details: [],
-      photos: []
-    }
-  },
-
-  getters: {
-    getAdById: (state, getters) => (id) => {
-      if (state.ads.data) {
-        return state.ads.data.find(ad => ad.id === id)
-      } else {
-        return {}
-      }
-    }
+    ad: {},
+    latest: []
   },
 
   mutations: {
@@ -31,6 +16,10 @@ export default {
 
     setAd (state, data) {
       state.ad = data
+    },
+
+    setLatest (state, data) {
+      state.latest = data
     }
   },
 
@@ -42,29 +31,14 @@ export default {
     },
 
     getAd ({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-          let ad = response.body
-          if (!ad.address) {
-            ad.address = {}
-          }
-          if (!ad.contact) {
-            ad.contact = {}
-          }
-          if (!ad.user) {
-            ad.user = {}
-          }
-          if (!ad.details) {
-            ad.details = []
-          }
-          if (!ad.photos) {
-            ad.photos = []
-          }
-          commit('setAd', ad)
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+        commit('setAd', response.body)
+      })
+    },
+
+    getLatest ({ commit }, id) {
+      Vue.http.get(ENDPOINT + '/' + id + '/latest').then((response) => {
+        commit('setLatest', response.body)
       })
     },
 

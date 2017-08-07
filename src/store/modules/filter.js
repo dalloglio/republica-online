@@ -10,16 +10,6 @@ export default {
     }
   },
 
-  getters: {
-    getFilterById: (state, getters) => (id) => {
-      if (state.filters.data) {
-        return state.filters.data.find(filter => filter.id === id)
-      } else {
-        return {}
-      }
-    }
-  },
-
   mutations: {
     setFilters (state, data) {
       state.filters = data
@@ -32,13 +22,8 @@ export default {
 
   actions: {
     getFilters ({ commit }) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(ENDPOINT).then((response) => {
-          commit('setFilters', response.body)
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+      Vue.http.get(ENDPOINT).then((response) => {
+        commit('setFilters', response.body)
       })
     },
 

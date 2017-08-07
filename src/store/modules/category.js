@@ -10,16 +10,6 @@ export default {
     }
   },
 
-  getters: {
-    getCategoryById: (state, getters) => (id) => {
-      if (state.categories.data) {
-        return state.categories.data.find(category => category.id === id)
-      } else {
-        return {}
-      }
-    }
-  },
-
   mutations: {
     setCategories (state, data) {
       state.categories = data
@@ -38,13 +28,8 @@ export default {
     },
 
     getCategory ({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-          commit('setCategory', response.body)
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+        commit('setCategory', response.body)
       })
     },
 

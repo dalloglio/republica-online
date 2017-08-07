@@ -21,16 +21,6 @@ export default {
     }
   },
 
-  getters: {
-    getUserById: (state, getters) => (id) => {
-      if (state.users.data) {
-        return state.users.data.find(user => user.id === id)
-      } else {
-        return {}
-      }
-    }
-  },
-
   mutations: {
     setUsers (state, data) {
       state.users = data
@@ -43,41 +33,14 @@ export default {
 
   actions: {
     getUsers ({ commit }) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(ENDPOINT).then((response) => {
-          commit('setUsers', response.body)
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+      Vue.http.get(ENDPOINT).then((response) => {
+        commit('setUsers', response.body)
       })
     },
 
     getUser ({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-          let user = response.body
-          if (!user.address) {
-            user.address = {
-              zip_code: '',
-              street: '',
-              number: '',
-              sub_address: '',
-              neighborhood: '',
-              country: 'Brasil',
-              state: '',
-              city: '',
-              show_on_map: '0'
-            }
-          }
-          if (!user.photo) {
-            user.photo = {}
-          }
-          commit('setUser', user)
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+        commit('setUser', response.body)
       })
     },
 
