@@ -42,8 +42,8 @@
                 <h3>Localização:</h3>
               </div>
               <div class="form-group col-xs-3">
-                <label for="ad_address_zipcode" class="sr-only">Cep:</label>
-                <input v-model.trim="ad.address.zipcode" id="ad_address_zipcode" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
+                <label for="ad_address_zip_code" class="sr-only">Cep:</label>
+                <input v-model.trim="ad.address.zip_code" id="ad_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
               </div>
               <div class="form-group col-xs-3">
                 <label for="ad_address_state" class="sr-only">Estado:</label>
