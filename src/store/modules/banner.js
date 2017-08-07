@@ -17,16 +17,6 @@ export default {
     }
   },
 
-  getters: {
-    getBannerById: (state, getters) => (id) => {
-      if (state.banners.data) {
-        return state.banners.data.find(banner => banner.id === id)
-      } else {
-        return {}
-      }
-    }
-  },
-
   mutations: {
     setBanners (state, data) {
       state.banners = data

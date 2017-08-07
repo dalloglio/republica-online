@@ -17,16 +17,6 @@ export default {
     }
   },
 
-  getters: {
-    getPartnerById: (state, getters) => (id) => {
-      if (state.partners.data) {
-        return state.partners.data.find(partner => partner.id === id)
-      } else {
-        return {}
-      }
-    }
-  },
-
   mutations: {
     setPartners (state, data) {
       state.partners = data
