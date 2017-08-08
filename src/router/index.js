@@ -27,6 +27,7 @@ import DashboardMinhasMensagensShow from '@/components/Dashboard/MinhasMensagens
 
 // Page not found
 import PageNotFound from '@/components/Site/PageNotFound'
+import Teste from '@/components/Teste'
 
 Vue.use(Router)
 
@@ -109,7 +110,8 @@ const router = new Router({
     },
 
     // Page not found
-    { path: '*', component: PageNotFound }
+    { path: '*', component: PageNotFound },
+    { path: '/teste', component: Teste }
   ]
 })
 

@@ -6,7 +6,7 @@
         <div class="col-xs-4 col-xs-offset-1">
           <form autocomplete="off" id="login" @submit.prevent="onLogin">
             <h3 class="text-center">Login</h3>
-            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook">
+            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="onLoginFacebook">
               <i class="icon-facebook"></i>
               Entrar
             </button>
@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    
+
   </div>
 </template>
 
@@ -106,6 +106,18 @@ export default {
     },
     onRegister () {
 
+    },
+    onLoginFacebook: function () {
+      this.$http.get('https://www.facebook.com/v2.10/dialog/oauth', {
+        params: {
+          client_id: '252087528629349',
+          redirect_uri: 'http://localhost:8080'
+        }
+      }).then((response) => {
+        console.log(response)
+      }, (error) => {
+        console.log(error)
+      })
     },
     message: function (msg) {
       console.log(msg)
