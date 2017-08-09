@@ -6,7 +6,7 @@
         <div class="col-xs-4 col-xs-offset-1">
           <form autocomplete="off" id="login" @submit.prevent="onLogin">
             <h3 class="text-center">Login</h3>
-            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="onLoginFacebook">
+            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="loginTestFacebook" :disabled="false">
               <i class="icon-facebook"></i>
               Entrar
             </button>
@@ -39,7 +39,7 @@
         <div class="col-xs-4">
           <form autocomplete="off" id="register" @submit.prevent="onRegister">
             <h3 class="text-center">Cadastre-se</h3>
-            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook">
+            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="onRegisterFacebook" :disabled="!facebook.ready">
               <i class="icon-facebook"></i>
               Entrar
             </button>
@@ -89,6 +89,9 @@ export default {
         username: '',
         password: '',
         remember_me: false
+      },
+      facebook: {
+        ready: false
       }
     }
   },
@@ -98,30 +101,61 @@ export default {
         if (response.status === true) {
           this.$router.push({ name: response.redirect })
         } else {
-          this.message('Oops, não foi possível fazer login! ' + response.message)
+          console.log('Oops, não foi possível fazer login! ' + response.message)
         }
       }, (error) => {
-        this.message('Oops, não foi possível fazer login! ' + error.message)
+        console.log('Oops, não foi possível fazer login! ' + error.message)
       })
     },
     onRegister () {
-
     },
-    onLoginFacebook: function () {
-      this.$http.get('https://www.facebook.com/v2.10/dialog/oauth', {
-        params: {
-          client_id: '252087528629349',
-          redirect_uri: 'http://localhost:8080'
-        }
-      }).then((response) => {
-        console.log(response)
-      }, (error) => {
-        console.log(error)
+    loginTestFacebook () {
+      window.open('https://www.facebook.com/v2.10/dialog/oauth?client_id=252087528629349&redirect_uri=http://localhost:8080/v1/facebook/callback', '_top')
+    },
+    onLoginFacebook () {
+      let self = this
+      self.$FB.getLoginStatus(function (response) {
+        self.statusChangeCallback(response)
       })
     },
-    message: function (msg) {
-      console.log(msg)
+    onRegisterFacebook () {
+    },
+    onFacebookReady () {
+      this.facebook.ready = true
+    },
+    statusChangeCallback (response) {
+      console.log(response)
+      if (response.status === 'connected') {
+        this.facebookUser()
+      } else {
+        console.log('fazer login...')
+        let self = this
+        self.$FB.login(function (response) {
+          if (response.status === 'connected') {
+            self.facebookUser()
+          } else {
+            console.log('não foi possível fazer o login!')
+          }
+        }, { scope: 'public_profile,email' })
+      }
+    },
+    facebookUser () {
+      let self = this
+      self.$FB.api('/me?fields=id,name,email,picture,gender,birthday,first_name,last_name', function (response) {
+        console.log(response)
+        // Revoke
+        // self.$FB.api('/me/permissions', 'DELETE', function (response) {
+        //   console.log(response)
+        // })
+      })
     }
+  },
+  mounted () {
+    console.log(this.$http.options)
+    window.addEventListener('fb-sdk-ready', this.onFacebookReady)
+  },
+  beforeDestroy () {
+    window.removeEventListener('fb-sdk-ready', this.onFacebookReady)
   }
 }
 </script>

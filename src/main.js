@@ -22,6 +22,7 @@ Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsFacebook, {
   appId: '252087528629349',
+  client_secret: '54da75be23a46fe1bcd8e4766cf2c1ef',
   cookie: true,
   xfbml: true,
   version: 'v2.10'
@@ -33,6 +34,8 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
+Vue.http.options.xhr = { withCredentials: true }
+Vue.http.options.emulateJSON = true
 Vue.http.options.root = process.env.API_URL
 
 Vue.http.interceptors.push(function (request, next) {

@@ -29,6 +29,8 @@ import DashboardMinhasMensagensShow from '@/components/Dashboard/MinhasMensagens
 import PageNotFound from '@/components/Site/PageNotFound'
 import Teste from '@/components/Teste'
 
+import FacebookCallback from '@/components/FacebookCallback'
+
 Vue.use(Router)
 
 const router = new Router({
@@ -49,6 +51,8 @@ const router = new Router({
     // Auth
     { path: '/v1/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
     { path: '/v1/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+
+    { path: '/v1/facebook/callback', name: 'facebook.callback', component: FacebookCallback, meta: { requiresAuth: false } },
 
     // Dashboard
     {
