@@ -14,5 +14,13 @@
   </head>
   <body>
     <div id="app"></div>
+    <script>
+    function me() {
+      console.log('Welcome!  Fetching your information.... ');
+      FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', function(response) {
+        console.log(response)
+      });
+    }
+    </script>
   </body>
 </html>
