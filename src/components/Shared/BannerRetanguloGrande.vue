@@ -1,14 +1,23 @@
 <template>
   <div class="banner-retangulo-grande">
-    <a href="" title="Banner Retângulo Grande" target="_blank">
-      <img src="http://lorempixel.com/336/280/food/10/" alt="Banner Retângulo Grande" class="img-responsive">
+    <a :href="banner.link" :title="banner.title" target="_blank" class="img-responsive">
+      <img :src="banner.photo.url" :alt="banner.title">
     </a>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'banner-retangulo-grande'
+  name: 'banner-retangulo-grande',
+  props: {
+    banner: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {}
+      }
+    }
+  }
 }
 </script>
 

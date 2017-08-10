@@ -16,14 +16,12 @@
           <div class="col-xs-3">
             <filtros-aplicados></filtros-aplicados>
             <filtros></filtros>
-            <banner-meia-pagina></banner-meia-pagina>
-            <banner-meia-pagina></banner-meia-pagina>
-            <banner-meia-pagina></banner-meia-pagina>
+            <banner-meia-pagina v-for="bannerHalfPage in bannersHalfPage" :key="bannerHalfPage.id" :banner="bannerHalfPage"></banner-meia-pagina>
           </div>
           <div class="col-xs-9">
-            <div class="row">
+            <div v-if="bannersOutdoor" class="row">
               <div class="col-xs-12">
-                <banner-outdoor></banner-outdoor>
+                <banner-outdoor :banner="bannersOutdoor[0]"></banner-outdoor>
               </div>
             </div>
             <div class="row">
@@ -63,6 +61,20 @@ export default {
     Newsletter,
     Pagination,
     Thumbnail
+  },
+
+  computed: {
+    bannersHalfPage () {
+      return this.$store.state.banner.bannersHalfPage
+    },
+    bannersOutdoor () {
+      return this.$store.state.banner.bannersOutdoor
+    }
+  },
+
+  created () {
+    this.$store.dispatch('getBannersHalfPage')
+    this.$store.dispatch('getBannersOutdoor')
   }
 }
 </script>

@@ -1,14 +1,23 @@
 <template>
   <div class="banner-meia-pagina">
-    <a href="" title="Banner Meia Página" target="_blank">
-      <img src="../../assets/img/banner-270x400-a.jpg" alt="Banner Meia Página" class="img-responsive">
+    <a :href="banner.link" :title="banner.title" target="_blank" class="img-responsive">
+      <img :src="banner.photo.url" :alt="banner.title">
     </a>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'banner-meia-pagina'
+  name: 'banner-meia-pagina',
+  props: {
+    banner: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {}
+      }
+    }
+  }
 }
 </script>
 

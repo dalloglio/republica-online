@@ -12,16 +12,10 @@
       </div>
     </div>
 
-    <div class="container banners">
+    <div v-if="bannersLargeRectangle" class="container banners">
       <div class="row">
-        <div class="col-xs-4">
-          <banner-retangulo-grande></banner-retangulo-grande>
-        </div>
-        <div class="col-xs-4">
-          <banner-retangulo-grande></banner-retangulo-grande>
-        </div>
-        <div class="col-xs-4">
-          <banner-retangulo-grande></banner-retangulo-grande>
+        <div v-for="bannerLargeRectangle in bannersLargeRectangle" :key="bannerLargeRectangle.id" class="col-xs-4">
+          <banner-retangulo-grande :banner="bannerLargeRectangle"></banner-retangulo-grande>
         </div>
       </div>
     </div>
@@ -36,10 +30,21 @@ import DashboardMenu from '@/components/Dashboard/Shared/DashboardMenu'
 import Newsletter from '@/components/Shared/Newsletter'
 export default {
   name: 'dashboard',
+
   components: {
     BannerRetanguloGrande,
     DashboardMenu,
     Newsletter
+  },
+
+  computed: {
+    bannersLargeRectangle () {
+      return this.$store.state.banner.bannersLargeRectangle
+    }
+  },
+
+  created () {
+    this.$store.dispatch('getBannersLargeRectangle')
   }
 }
 </script>

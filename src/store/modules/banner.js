@@ -4,79 +4,62 @@ const ENDPOINT = process.env.API_VERSION + '/banners'
 
 export default {
   state: {
-    banners: [],
-    banner: {
-      photo: {
-        id: null,
-        name: null,
-        photo: null,
-        size: null,
-        type: null,
-        url: null
-      }
-    }
+    bannersLargeRectangle: [],
+    bannersHalfPage: [],
+    bannersOutdoor: []
   },
 
   mutations: {
-    setBanners (state, data) {
-      state.banners = data
+    setBannersLargeRectangle (state, data) {
+      state.bannersLargeRectangle = data
     },
 
-    setBanner (state, data) {
-      state.banner = data
+    setBannersHalfPage (state, data) {
+      state.bannersHalfPage = data
+    },
+
+    setBannersOutdoor (state, data) {
+      state.bannersOutdoor = data
     }
   },
 
   actions: {
-    getBanners ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setBanners', response.body)
+    getBannersLargeRectangle({ commit }, params) {
+      params.size = '336x280'
+      if (!params.random) {
+        params.random = 1
+      }
+      if (!params.limit) {
+        params.limit = 3
+      }
+      Vue.http.get(ENDPOINT, params).then((response) => {
+        commit('setBannersLargeRectangle', response.body)
       })
     },
 
-    getBanner ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
-        commit('setBanner', response.body)
+    getBannersHalfPage({ commit }, params) {
+      params.size = '300x600'
+      if (!params.random) {
+        params.random = 1
+      }
+      if (!params.limit) {
+        params.limit = 3
+      }
+      Vue.http.get(ENDPOINT, params).then((response) => {
+        commit('setBannersHalfPage', response.body)
       })
     },
 
-    createBanner ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT, data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    updateBanner ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    deleteBanner ({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    createBannerPhoto ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
+    getBannersOutdoor({ commit }, params) {
+      params.size = '970x250'
+      if (!params.random) {
+        params.random = 1
+      }
+      if (!params.limit) {
+        params.limit = 1
+      }
+      Vue.http.get(ENDPOINT, params).then((response) => {
+        commit('setBannersOutdoor', response.body)
       })
     }
   }

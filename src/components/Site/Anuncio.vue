@@ -29,20 +29,18 @@
               </div>
             </div>
 
-            <div class="row">
-              <div class="banner-336x280 col-xs-5 col-xs-offset-1">
-                <banner-retangulo-grande></banner-retangulo-grande>
+            <div v-if="bannersLargeRectangle" class="row">
+              <div v-if="bannersLargeRectangle[0]" class="banner-336x280 col-xs-5 col-xs-offset-1">
+                <banner-retangulo-grande :banner="bannersLargeRectangle[0]"></banner-retangulo-grande>
               </div>
-              <div class="banner-336x280 col-xs-5">
-                <banner-retangulo-grande></banner-retangulo-grande>
+              <div v-if="bannersLargeRectangle[1]" class="banner-336x280 col-xs-5">
+                <banner-retangulo-grande :banner="bannersLargeRectangle[1]"></banner-retangulo-grande>
               </div>
             </div>
           </div>
           <div class="col-xs-3">
             <h3>&nbsp;</h3>
-            <banner-meia-pagina></banner-meia-pagina>
-            <banner-meia-pagina></banner-meia-pagina>
-            <banner-meia-pagina></banner-meia-pagina>
+            <banner-meia-pagina v-for="bannerHalfPage in bannersHalfPage" :key="bannerHalfPage.id" :banner="bannerHalfPage"></banner-meia-pagina>
           </div>
         </div>
 
@@ -66,6 +64,7 @@ import Modal from '@/components/Shared/Modal'
 import Thumbnail from '@/components/Shared/Thumbnail'
 export default {
   name: 'anuncio',
+
   components: {
     AnuncioContacts,
     AnuncioDetails,
@@ -76,10 +75,25 @@ export default {
     Modal,
     Thumbnail
   },
+
   methods: {
     showModal () {
       this.$refs.modalRef.show()
     }
+  },
+
+  computed: {
+    bannersLargeRectangle () {
+      return this.$store.state.banner.bannersLargeRectangle
+    },
+    bannersHalfPage () {
+      return this.$store.state.banner.bannersHalfPage
+    }
+  },
+
+  created () {
+    this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
+    this.$store.dispatch('getBannersHalfPage')
   }
 }
 </script>

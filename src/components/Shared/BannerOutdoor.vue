@@ -1,14 +1,23 @@
 <template>
   <div class="banner-outdoor">
-    <a href="" title="Banner" target="_blank">
-      <img src="../../assets/img/banner-870x250.jpg" alt="Banner" class="img-responsive">
+    <a :href="banner.link" :title="banner.title" target="_blank" class="img-responsive">
+      <img :src="banner.photo.url" :alt="banner.title">
     </a>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'banner-outdoor'
+  name: 'banner-outdoor',
+  props: {
+    banner: {
+      type: Object,
+      required: true,
+      default: () => {
+        return {}
+      }
+    }
+  }
 }
 </script>
 
