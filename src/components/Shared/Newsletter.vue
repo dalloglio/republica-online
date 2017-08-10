@@ -48,10 +48,10 @@ export default {
       }
       this.$store.dispatch('createFormContact', params).then((response) => {
         this.loading = false
-        newsletter.ok = response.ok
+        this.newsletter.ok = response.ok
       }, (error) => {
         this.loading = false
-        newsletter.ok = error.ok
+        this.newsletter.ok = error.ok
         console.log(error)
       })
     }

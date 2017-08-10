@@ -24,7 +24,7 @@ export default {
   },
 
   actions: {
-    getBannersLargeRectangle({ commit }, params) {
+    getBannersLargeRectangle ({ commit }, params) {
       params.size = '336x280'
       if (!params.random) {
         params.random = 1
@@ -37,7 +37,7 @@ export default {
       })
     },
 
-    getBannersHalfPage({ commit }, params) {
+    getBannersHalfPage ({ commit }, params) {
       params.size = '300x600'
       if (!params.random) {
         params.random = 1
@@ -50,7 +50,7 @@ export default {
       })
     },
 
-    getBannersOutdoor({ commit }, params) {
+    getBannersOutdoor ({ commit }, params) {
       params.size = '970x250'
       if (!params.random) {
         params.random = 1

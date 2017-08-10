@@ -73,10 +73,10 @@ export default {
       }
       this.$store.dispatch('createFormContact', params).then((response) => {
         this.loading = false
-        contact.ok = response.ok
+        this.contact.ok = response.ok
       }, (error) => {
         this.loading = false
-        contact.ok = error.ok
+        this.contact.ok = error.ok
         console.log(error)
       })
     }
