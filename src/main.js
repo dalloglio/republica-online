@@ -34,8 +34,6 @@ Vue.use(VueGoogleMaps, {
   }
 })
 
-Vue.http.options.xhr = { withCredentials: true }
-Vue.http.options.emulateJSON = true
 Vue.http.options.root = process.env.API_URL
 
 Vue.http.interceptors.push(function (request, next) {

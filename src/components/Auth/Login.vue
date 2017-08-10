@@ -6,10 +6,7 @@
         <div class="col-xs-4 col-xs-offset-1">
           <form autocomplete="off" id="login" @submit.prevent="onLogin">
             <h3 class="text-center">Login</h3>
-            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="loginTestFacebook" :disabled="false">
-              <i class="icon-facebook"></i>
-              Entrar
-            </button>
+            <button-facebook-login></button-facebook-login>
             <span class="or text-center">ou</span>
             <fieldset>
               <div class="form-group">
@@ -39,10 +36,7 @@
         <div class="col-xs-4">
           <form autocomplete="off" id="register" @submit.prevent="onRegister">
             <h3 class="text-center">Cadastre-se</h3>
-            <button type="button" class="btn btn-lg btn-block text-uppercase btn-facebook" @click="onRegisterFacebook" :disabled="!facebook.ready">
-              <i class="icon-facebook"></i>
-              Entrar
-            </button>
+            <button-facebook-login></button-facebook-login>
             <span class="or text-center">ou</span>
             <fieldset>
               <div class="form-group">
@@ -75,8 +69,12 @@
 </template>
 
 <script>
+import ButtonFacebookLogin from './ButtonFacebookLogin'
 export default {
   name: 'login',
+  components: {
+    ButtonFacebookLogin
+  },
   data () {
     return {
       login: {
@@ -89,9 +87,6 @@ export default {
         username: '',
         password: '',
         remember_me: false
-      },
-      facebook: {
-        ready: false
       }
     }
   },
@@ -109,53 +104,26 @@ export default {
     },
     onRegister () {
     },
-    loginTestFacebook () {
-      window.open('https://www.facebook.com/v2.10/dialog/oauth?client_id=252087528629349&redirect_uri=http://localhost:8080/v1/facebook/callback', '_top')
-    },
-    onLoginFacebook () {
-      let self = this
-      self.$FB.getLoginStatus(function (response) {
-        self.statusChangeCallback(response)
-      })
-    },
-    onRegisterFacebook () {
-    },
-    onFacebookReady () {
-      this.facebook.ready = true
-    },
-    statusChangeCallback (response) {
-      console.log(response)
+    loginFacebook (response) {
+      this.$FB.Event.unsubscribe('auth.login', this.loginFacebook)
       if (response.status === 'connected') {
-        this.facebookUser()
-      } else {
-        console.log('fazer login...')
-        let self = this
-        self.$FB.login(function (response) {
-          if (response.status === 'connected') {
-            self.facebookUser()
-          } else {
-            console.log('não foi possível fazer o login!')
-          }
-        }, { scope: 'public_profile,email' })
+        this.me()
       }
     },
-    facebookUser () {
-      let self = this
-      self.$FB.api('/me?fields=id,name,email,picture,gender,birthday,first_name,last_name', function (response) {
+    me () {
+      this.$FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', (response) => {
         console.log(response)
-        // Revoke
-        // self.$FB.api('/me/permissions', 'DELETE', function (response) {
-        //   console.log(response)
-        // })
       })
+    },
+    facebookReady () {
+      this.$FB.Event.subscribe('auth.login', this.loginFacebook)
     }
   },
   mounted () {
-    console.log(this.$http.options)
-    window.addEventListener('fb-sdk-ready', this.onFacebookReady)
+    window.addEventListener('fb-sdk-ready', this.facebookReady)
   },
   beforeDestroy () {
-    window.removeEventListener('fb-sdk-ready', this.onFacebookReady)
+    window.removeEventListener('fb-sdk-ready', this.facebookReady)
   }
 }
 </script>
