@@ -5,6 +5,6 @@ module.exports = merge(prodEnv, {
   NODE_ENV: '"development"',
   API_URL: '"http://localhost.api.republica.online"',
   API_CLIENT_ID: '"2"',
-  API_CLIENT_SECRET: '"ljatRpBzHyVTLupw0bzLlsUqQEE3BeBBsFspzH4V"',
+  API_CLIENT_SECRET: '"McfRy5yyOEoxn6Ate3NqLNgnIjOrNLtp1G9Cbmyd"',
   API_VERSION: '"v1"'
 })

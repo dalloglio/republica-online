@@ -45,16 +45,16 @@
               </div>
               <div class="form-group">
                 <label for="register_email" class="sr-only">E-mail</label>
-                <input v-model="register.username" type="email" id="register_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required>
+                <input v-model="register.email" type="email" id="register_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required>
               </div>
               <div class="form-group">
                 <label for="register_password" class="sr-only">Senha</label>
                 <input v-model="register.password" type="password" id="register_password" class="form-control input-lg" placeholder="Senha" minlength="6" maxlength="20" required>
               </div>
               <div class="form-group">
-                <label for="register_password_repeat" class="sr-only">Repita a senha</label>
-                <input v-model="register.password_repeat" type="password" id="register_password_repeat" class="form-control input-lg" placeholder="Repita a senha" minlength="6" maxlength="20" required>
-                <span class="help-block">* As senhas não conferem</span>
+                <label for="register_password_confirmation" class="sr-only">Repita a senha</label>
+                <input v-model="register.password_confirmation" type="password" id="register_password_confirmation" class="form-control input-lg" placeholder="Repita a senha" minlength="6" maxlength="20" required>
+                <!-- <span class="help-block">* As senhas não conferem</span> -->
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Cadastrar</button>
@@ -86,9 +86,8 @@ export default {
       },
       register: {
         name: '',
-        username: '',
-        password: '',
-        remember_me: false
+        email: '',
+        password: ''
       }
     }
   },
@@ -104,16 +103,41 @@ export default {
       })
     },
     onRegister () {
+      this.loadingRegister = true
+      this.$store.dispatch('registerUser', this.register).then((response) => {
+        this.loadingRegister = false
+        if (response.ok) {
+          this.login.username = this.register.email
+          this.login.password = this.register.password
+          this.onLogin()
+        }
+      }, (error) => {
+        this.loadingRegister = false
+        console.log(error.message)
+      })
+    },
+    onLoginFacebook () {
+      let user = this.me()
+      this.$store.dispatch('loginFacebook', user).then((response) => {
+        if (response.ok) {
+          this.login.username = response.body.email
+          this.login.password = response.body.facebook_id
+          this.onLogin()
+        }
+      }, (error) => {
+        this.loadingRegister = false
+        console.log(error.message)
+      })
     },
     loginFacebook (response) {
       this.$FB.Event.unsubscribe('auth.login', this.loginFacebook)
       if (response.status === 'connected') {
-        this.me()
+        this.onLoginFacebook()
       }
     },
     me () {
       this.$FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', (response) => {
-        console.log(response)
+        return response
       })
     },
     facebookReady () {

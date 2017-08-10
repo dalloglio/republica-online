@@ -44,6 +44,26 @@ export default {
       })
     },
 
+    registerUser ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/register', data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    loginFacebook ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/facebook', data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
     createUser ({ commit }, data) {
       return new Promise((resolve, reject) => {
         Vue.http.post(ENDPOINT, data).then((response) => {
