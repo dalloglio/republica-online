@@ -2,8 +2,8 @@
   <div class="carousel">
     <div class="container">
       <div class="row">
-        <div v-for="i in 6" class="col-xs-2">
-          <thumbnail-simple></thumbnail-simple>
+        <div v-for="item in items" class="col-xs-2">
+          <thumbnail-simple :item="item"></thumbnail-simple>
         </div>
       </div>
     </div>
@@ -14,6 +14,14 @@
 import ThumbnailSimple from '@/components/Shared/ThumbnailSimple'
 export default {
   name: 'carousel',
+  props: {
+    items: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    }
+  }
   components: {
     ThumbnailSimple
   }

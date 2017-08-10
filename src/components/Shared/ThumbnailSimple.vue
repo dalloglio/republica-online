@@ -1,14 +1,23 @@
 <template>
   <div class="thumbnail-simple">
-    <router-link :to="{ name: 'home' }" title="Title" class="thumbnail">
-      <img src="../../assets/img/parceiro.png" alt="Title">
-    </router-link>
+    <a :href="item.link" :title="item.title" class="thumbnail" target="_blank">
+      <img :src="item.photo.url" :alt="item.title">
+    </a>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'thumbnail-simple'
+  name: 'thumbnail-simple',
+  props: {
+    item: {
+      type: Object,
+      default: function () {
+        return {}
+      },
+      required: true
+    }
+  }
 }
 </script>
 

@@ -77,7 +77,7 @@
         <p>Estas são algumas das empresas e entidades que acreditam na República Online.</p>
       </div>
       <div class="line"></div>
-      <carousel></carousel>
+      <carousel :items="partners"></carousel>
     </section>
 
     <newsletter></newsletter>
@@ -96,6 +96,11 @@ export default {
     Newsletter,
     Search,
     Thumbnail
+  },
+  computed: {
+    partners () {
+      return this.$store.state.partner.partners
+    }
   }
 }
 </script>
