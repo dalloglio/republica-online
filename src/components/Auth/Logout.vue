@@ -3,7 +3,7 @@
 <script>
 export default {
   beforeCreate () {
-    this.$auth.logout()
+    this.$store.dispatch('logout')
   }
 }
 </script>

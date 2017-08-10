@@ -8,7 +8,7 @@
             <h3 class="text-center">Login</h3>
             <button-facebook-login></button-facebook-login>
             <span class="or text-center">ou</span>
-            <fieldset>
+            <fieldset :disabled="loadingLogin">
               <div class="form-group">
                 <label for="login_email" class="sr-only">E-mail</label>
                 <input v-model="login.username" type="email" id="login_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required autofocus>
@@ -38,7 +38,7 @@
             <h3 class="text-center">Cadastre-se</h3>
             <button-facebook-login></button-facebook-login>
             <span class="or text-center">ou</span>
-            <fieldset>
+            <fieldset :disabled="loadingRegister">
               <div class="form-group">
                 <label for="register_name" class="sr-only">Nome</label>
                 <input v-model="register.name" type="text" id="register_name" class="form-control input-lg" placeholder="Nome" maxlength="100" required>
@@ -77,6 +77,8 @@ export default {
   },
   data () {
     return {
+      loadingLogin: false,
+      loadingRegister: false,
       login: {
         username: 'ricardo.tech@live.com',
         password: '123456',
@@ -92,14 +94,13 @@ export default {
   },
   methods: {
     onLogin () {
-      this.$auth.login(this.login).then((response) => {
-        if (response.status === true) {
-          this.$router.push({ name: response.redirect })
-        } else {
-          console.log('Oops, não foi possível fazer login! ' + response.message)
-        }
+      this.loadingLogin = true
+      this.$store.dispatch('login', this.login).then((response) => {
+        this.loadingLogin = false
+        this.$router.push({ name: response.redirect })
       }, (error) => {
-        console.log('Oops, não foi possível fazer login! ' + error.message)
+        this.loadingLogin = false
+        console.log(error.message)
       })
     },
     onRegister () {

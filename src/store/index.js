@@ -3,6 +3,7 @@ import Vuex from 'vuex'
 
 import ad from './modules/ad'
 import app from './modules/app'
+import auth from './modules/auth'
 import banner from './modules/banner'
 import category from './modules/category'
 import filter from './modules/filter'
@@ -17,6 +18,7 @@ export const store = new Vuex.Store({
   modules: {
     ad,
     app,
+    auth,
     banner,
     category,
     filter,

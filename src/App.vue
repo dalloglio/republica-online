@@ -4,9 +4,7 @@
     }">
     <app-header></app-header>
     <main>
-      <transition name="fade">
-        <router-view></router-view>
-      </transition>
+      <router-view></router-view>
     </main>
     <app-footer></app-footer>
   </div>

@@ -2,7 +2,11 @@
   <div class="menu">
     <nav :class="{ 'pull-right': true }">
       <ul class="nav nav-pills pull-right">
-        <li v-for="item in items"><router-link :to="item.route" :title="item.title">{{ item.title }}</router-link></li>
+        <li><router-link :to="{ name: 'sobre' }" title="Sobre">Sobre</router-link></li>
+        <!-- <li><router-link :to="{ name: 'faq' }" title="Central de Ajuda">Central de Ajuda</router-link></li> -->
+        <li><router-link :to="{ name: 'contato' }" title="Contato">Contato</router-link></li>
+        <li v-if="isAuthenticated"><router-link :to="{ name: 'auth.logout' }" title="Sair">Sair</router-link></li>
+        <li v-else><router-link :to="{ name: 'auth.login' }" title="Login">Login</router-link></li>
       </ul>
       <div class="clearfix"></div>
       <router-link :to="{ name: 'criar-anuncio' }" class="btn btn-lg btn-warning pull-right" title="Anuncie sua vaga!">
@@ -15,14 +19,9 @@
 <script>
 export default {
   name: 'app-menu',
-  data () {
-    return {
-      items: [
-        { route: { name: 'sobre' }, title: 'Sobre' },
-        // { route: { name: 'faq' }, title: 'Central de Ajuda' },
-        { route: { name: 'contato' }, title: 'Contato' },
-        { route: { name: 'auth.login' }, title: 'Login' }
-      ]
+  computed: {
+    isAuthenticated () {
+      return this.$store.state.auth.isAuthenticated
     }
   }
 }
