@@ -1,7 +1,7 @@
 <template>
-  <div class="banner-outdoor">
-    <a :href="banner.link" :title="banner.title" target="_blank" class="img-responsive">
-      <img :src="banner.photo.url" :alt="banner.title">
+  <div v-if="media.photo" class="banner-outdoor">
+    <a :href="media.link" :title="media.title" target="_blank">
+      <img :src="media.photo.url" :alt="media.title" class="img-responsive">
     </a>
   </div>
 </template>
@@ -17,6 +17,11 @@ export default {
         return {}
       }
     }
+  },
+  computed: {
+    media () {
+      return this.banner
+    }
   }
 }
 </script>
@@ -25,7 +30,10 @@ export default {
 .banner-outdoor {
   margin-bottom: 15px;
 }
-.banner-outdoor img {
+.banner-outdoor a {
+  display: inline-block;
+}
+.banner-outdoor a img {
   border-radius: 6px;
 }
 </style>

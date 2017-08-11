@@ -44,7 +44,7 @@ export default {
   },
 
   created () {
-    this.$store.dispatch('getBannersLargeRectangle')
+    this.$store.dispatch('getBannersLargeRectangle', {})
   }
 }
 </script>

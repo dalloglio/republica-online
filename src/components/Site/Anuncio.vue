@@ -93,7 +93,7 @@ export default {
 
   created () {
     this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
-    this.$store.dispatch('getBannersHalfPage')
+    this.$store.dispatch('getBannersHalfPage', { limit: 2 })
   }
 }
 </script>

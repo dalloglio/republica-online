@@ -65,16 +65,26 @@ export default {
 
   computed: {
     bannersHalfPage () {
-      return this.$store.state.banner.bannersHalfPage
+      let banners = this.$store.state.banner.bannersHalfPage
+      if (!banners) {
+        return []
+      }
+      return banners
     },
     bannersOutdoor () {
-      return this.$store.state.banner.bannersOutdoor
+      let banners = this.$store.state.banner.bannersOutdoor
+      if (!banners) {
+        return [
+          { photo: {} }
+        ]
+      }
+      return banners
     }
   },
 
   created () {
-    this.$store.dispatch('getBannersHalfPage')
-    this.$store.dispatch('getBannersOutdoor')
+    this.$store.dispatch('getBannersHalfPage', {})
+    this.$store.dispatch('getBannersOutdoor', {})
   }
 }
 </script>

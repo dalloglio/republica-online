@@ -1,7 +1,7 @@
 <template>
-  <div class="banner-retangulo-grande">
-    <a :href="banner.link" :title="banner.title" target="_blank" class="img-responsive">
-      <img :src="banner.photo.url" :alt="banner.title">
+  <div v-if="media.photo" class="banner-retangulo-grande">
+    <a :href="media.link" :title="media.title" target="_blank" class="img-responsive">
+      <img :src="media.photo.url" :alt="media.title">
     </a>
   </div>
 </template>
@@ -16,6 +16,11 @@ export default {
       default: () => {
         return {}
       }
+    }
+  },
+  computed: {
+    media () {
+      return this.banner
     }
   }
 }
