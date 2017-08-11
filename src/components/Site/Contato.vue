@@ -11,8 +11,6 @@
 
                         <form autocomplete="off" @submit.prevent="onSubmit">
                             <fieldset class="row" :disabled="loading">
-                              <div v-if="contact.ok === true" class="alert alert-success col-xs-12">Obrigado! Sua mensagem foi enviada com sucesso.</div>
-                              <div v-if="contact.ok === false" class="alert alert-danger col-xs-12">Ops! Não foi possível enviar a sua mensagem Preencha corretamente o formulário.</div>
                               <div class="form-group col-xs-4">
                                   <input v-model.trim="contact.name" type="text" class="form-control input-lg" maxlength="100" placeholder="Nome" required autofocus>
                               </div>
@@ -23,7 +21,7 @@
                                   <input v-model.trim="contact.phone" type="text" class="form-control input-lg" maxlength="15" placeholder="Telefone" required>
                               </div>
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.state" type="text" class="form-control input-lg" maxlength="100" placeholder="Cidade" required>
+                                  <input v-model.trim="contact.state" type="text" class="form-control input-lg" maxlength="100" placeholder="Estado" required>
                               </div>
                               <div class="form-group col-xs-4">
                                   <input v-model.trim="contact.city" type="text" class="form-control input-lg" maxlength="100" placeholder="Cidade" required>
@@ -34,7 +32,17 @@
                               <div class="form-group col-xs-12">
                                   <textarea v-model.trim="contact.message" class="form-control input-lg" maxlength="1000" placeholder="Mensagem" required rows="7"></textarea>
                               </div>
-                              <div class="col-xs-2 col-xs-offset-10">
+                              <div class="col-xs-10">
+                                <div v-if="contact.ok === true" class="alert alert-success col-xs-12">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Obrigado!</strong> Sua mensagem foi enviada com sucesso.
+                                </div>
+                                <div v-if="contact.ok === false" class="alert alert-danger col-xs-12">
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                  <strong>Ops!</strong> Não foi possível enviar a sua mensagem Preencha corretamente o formulário.
+                                </div>
+                              </div>
+                              <div class="col-xs-2">
                                   <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Enviar!</button>
                               </div>
                             </fieldset>
@@ -74,6 +82,17 @@ export default {
       this.$store.dispatch('createFormContact', params).then((response) => {
         this.loading = false
         this.contact.ok = response.ok
+        this.contact.name = ''
+        this.contact.email = ''
+        this.contact.phone = ''
+        this.contact.state = ''
+        this.contact.city = ''
+        this.contact.subject = ''
+        this.contact.message = ''
+        let self = this
+        setTimeout(() => {
+          self.contact.ok = ''
+        }, 10000)
       }, (error) => {
         this.loading = false
         this.contact.ok = error.ok
