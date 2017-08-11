@@ -6,7 +6,7 @@
     data-size="large"
     data-button-type="login_with"
     data-show-faces="false"
-    data-auto-logout-link="false"
+    data-auto-logout-link="true"
     data-use-continue-as="false"></div>
 </template>
 

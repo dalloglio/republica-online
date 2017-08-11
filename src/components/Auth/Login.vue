@@ -117,16 +117,18 @@ export default {
       })
     },
     onLoginFacebook () {
-      let user = this.me()
-      this.$store.dispatch('loginFacebook', user).then((response) => {
-        if (response.ok) {
-          this.login.username = response.body.email
-          this.login.password = response.body.facebook_id
-          this.onLogin()
-        }
-      }, (error) => {
-        this.loadingRegister = false
-        console.log(error.message)
+      this.me().then((res) => {
+        let user = res
+        this.$store.dispatch('loginFacebook', user).then((response) => {
+          if (response.ok) {
+            this.login.username = user.email
+            this.login.password = user.id
+            this.onLogin()
+          }
+        }, (error) => {
+          this.loadingRegister = false
+          console.log(error.message)
+        })
       })
     },
     loginFacebook (response) {
@@ -136,8 +138,10 @@ export default {
       }
     },
     me () {
-      this.$FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', (response) => {
-        return response
+      return new Promise((resolve, reject) => {
+        this.$FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', function (response) {
+          resolve(response)
+        })
       })
     },
     facebookReady () {
