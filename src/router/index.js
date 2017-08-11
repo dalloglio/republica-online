@@ -34,72 +34,72 @@ const router = new Router({
   mode: 'history',
   routes: [
     // Site
-    { path: '/v1/', name: 'home', component: Home, meta: { requiresAuth: false } },
-    { path: '/v1/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
-    { path: '/v1/anuncio/:slug', name: 'anuncio', component: Anuncio, meta: { requiresAuth: false } },
-    { path: '/v1/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
-    { path: '/v1/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
-    { path: '/v1/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
+    { path: '/', name: 'home', component: Home, meta: { requiresAuth: false } },
+    { path: '/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false } },
+    { path: '/anuncio/:slug', name: 'anuncio', component: Anuncio, meta: { requiresAuth: false } },
+    { path: '/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
+    { path: '/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
+    { path: '/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
 
     // Site - Anúncio
-    { path: '/v1/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: false } },
-    { path: '/v1/compartilhar-anuncio', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false } },
+    { path: '/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: false } },
+    { path: '/compartilhar-anuncio', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false } },
 
     // Auth
-    { path: '/v1/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
-    { path: '/v1/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+    { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false } },
+    { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
 
     // Dashboard
     {
-      path: '/v1/dashboard',
+      path: '/dashboard',
       component: Dashboard,
       meta: {
         requiresAuth: true
       },
       children: [{
-        path: '/v1/dashboard/home',
+        path: '/dashboard/home',
         name: 'dashboard.home',
         component: DashboardHome,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/minha-conta',
+        path: '/dashboard/minha-conta',
         name: 'dashboard.minha-conta',
         component: DashboardMinhaConta,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/meus-anuncios',
+        path: '/dashboard/meus-anuncios',
         name: 'dashboard.meus-anuncios',
         component: DashboardMeusAnuncios,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/meus-anuncios/:id',
+        path: '/dashboard/meus-anuncios/:id',
         name: 'dashboard.meus-anuncios.show',
         component: DashboardMeusAnunciosShow,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/meus-favoritos',
+        path: '/dashboard/meus-favoritos',
         name: 'dashboard.meus-favoritos',
         component: DashboardMeusFavoritos,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/minhas-mensagens',
+        path: '/dashboard/minhas-mensagens',
         name: 'dashboard.minhas-mensagens',
         component: DashboardMinhasMensagens,
         meta: {
           requiresAuth: true
         }
       }, {
-        path: '/v1/dashboard/minhas-mensagens/:id',
+        path: '/dashboard/minhas-mensagens/:id',
         name: 'dashboard.minhas-mensagens.show',
         component: DashboardMinhasMensagensShow,
         meta: {
