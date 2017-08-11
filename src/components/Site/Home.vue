@@ -71,7 +71,7 @@
       </div>
     </section>
 
-    <section id="partners">
+    <section v-if="partners && partners.length > 0" id="partners">
       <div class="container">
         <h2>Conheça nossos parceiros!</h2>
         <p>Estas são algumas das empresas e entidades que acreditam na República Online.</p>
@@ -101,6 +101,9 @@ export default {
     partners () {
       return this.$store.state.partner.partners
     }
+  },
+  created () {
+    this.$store.dispatch('getPartners')
   }
 }
 </script>
