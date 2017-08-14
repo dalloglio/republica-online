@@ -27,7 +27,7 @@ export default {
     }
 
     Object.defineProperties(Vue.prototype, {
-      date: {
+      $date: {
         get: () => {
           return Vue.date
         }

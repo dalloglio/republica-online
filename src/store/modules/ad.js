@@ -24,6 +24,11 @@ export default {
   },
 
   actions: {
+    getAdsUser ({ commit }) {
+      Vue.http.get(process.env.API_VERSION + '/user/ads').then((response) => {
+        commit('setAds', response.body)
+      })
+    },
     getAds ({ commit }) {
       Vue.http.get(ENDPOINT).then((response) => {
         commit('setAds', response.body)

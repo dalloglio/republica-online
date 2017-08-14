@@ -20,7 +20,7 @@ import Dashboard from '@/components/Dashboard/Dashboard'
 import DashboardHome from '@/components/Dashboard/Home'
 import DashboardMinhaConta from '@/components/Dashboard/MinhaConta'
 import DashboardMeusAnuncios from '@/components/Dashboard/MeusAnuncios'
-import DashboardMeusAnunciosShow from '@/components/Dashboard/MeusAnunciosShow'
+import DashboardMeusAnunciosEdit from '@/components/Dashboard/MeusAnunciosEdit'
 import DashboardMeusFavoritos from '@/components/Dashboard/MeusFavoritos'
 import DashboardMinhasMensagens from '@/components/Dashboard/MinhasMensagens'
 import DashboardMinhasMensagensShow from '@/components/Dashboard/MinhasMensagensShow'
@@ -78,9 +78,9 @@ const router = new Router({
           requiresAuth: true
         }
       }, {
-        path: '/dashboard/meus-anuncios/:id',
-        name: 'dashboard.meus-anuncios.show',
-        component: DashboardMeusAnunciosShow,
+        path: '/dashboard/meus-anuncios/:id/edit',
+        name: 'dashboard.meus-anuncios.edit',
+        component: DashboardMeusAnunciosEdit,
         meta: {
           requiresAuth: true
         }

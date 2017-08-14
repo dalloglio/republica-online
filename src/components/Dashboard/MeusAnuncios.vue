@@ -8,7 +8,7 @@
       <tbody>
         <tr v-for="ad in ads">
           <td>
-            <img :src="ad.photo" :alt="ad.title">
+            <img :src="ad.photo.url" :alt="ad.title">
           </td>
           <td>
             <b>Anúncio:</b><br>
@@ -16,7 +16,7 @@
           </td>
           <td>
             <b>Criado:</b><br>
-            {{ ad.created_at }}
+            {{ $date.toDateTimeBr(ad.created_at) }}
           </td>
           <td>
             <b>Status:</b><br>
@@ -38,22 +38,25 @@ export default {
   name: 'dashboard-meus-anuncios',
   computed: {
     ads () {
-      return [
-        { id: 1, slug: 'anuncio-a', title: 'Anúncio A', status: true, created_at: '2017-01-01 10:30:00', photo: 'http://lorempixel.com/150/95/nature/1/' },
-        { id: 2, slug: 'anuncio-b', title: 'Anúncio B', status: true, created_at: '2017-01-02 11:30:00', photo: 'http://lorempixel.com/150/95/nature/2/' },
-        { id: 3, slug: 'anuncio-c', title: 'Anúncio C', status: true, created_at: '2017-01-03 12:30:00', photo: 'http://lorempixel.com/150/95/nature/3/' }
-      ]
+      let ads = this.$store.state.ad.ads
+      if (!ads.data) {
+        return []
+      }
+      return ads.data
     }
   },
   methods: {
     onEdit (ad) {
-      this.$router.push({ name: 'dashboard-meus-anuncios.edit', params: { id: ad.id } })
+      this.$router.push({ name: 'dashboard.meus-anuncios.edit', params: { id: ad.id } })
     },
     onDelete (ad) {
       if (confirm('Você tem certeza que deseja excluir este anúncio?')) {
         console.log(ad)
       }
     }
+  },
+  created () {
+    this.$store.dispatch('getAdsUser')
   }
 }
 </script>

@@ -1,30 +1,30 @@
 <template>
-  <div class="dashboard-menu">
-    <div class="panel">
-      <div class="panel-avatar">
-        <a href="" title="Avatar" class="avatar">
-          <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="Avatar">
-        </a>
-        <div class="edit-photo">
-          <input type="file" id="edit-photo">
-          <label for="edit-photo">
-            <span class="glyphicon glyphicon-camera"></span>
-            editar foto
-          </label>
+    <div class="dashboard-menu">
+        <div class="panel">
+            <div class="panel-avatar">
+                <a href="" title="Avatar" class="avatar">
+                    <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="Avatar">
+                </a>
+                <div class="edit-photo">
+                    <input type="file" id="edit-photo">
+                    <label for="edit-photo">
+                        <span class="glyphicon glyphicon-camera"></span>
+                        editar foto
+                    </label>
+                </div>
+                <h4>Francisco Antunes</h4>
+                <p>membro desde: 14/05/2017</p>
+            </div>
+            <div class="panel-body">
+                <ul class="nav">
+                    <li><router-link :to="{ name: 'dashboard.minha-conta' }">Meu Cadastro <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                    <li><router-link :to="{ name: 'dashboard.meus-anuncios' }">Meus Anúncios <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                    <li><router-link :to="{ name: 'dashboard.minhas-mensagens' }">Minhas Mensagens <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                    <li><router-link :to="{ name: 'dashboard.meus-favoritos' }">Meus Favoritos <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                </ul>
+            </div>
         </div>
-        <h4>Francisco Antunes</h4>
-        <p>membro desde: 14/05/2017</p>
-      </div>
-      <div class="panel-body">
-        <ul class="nav">
-          <li><a href="">Meu Cadastro <span class="glyphicon glyphicon-menu-right"></span></a></li>
-          <li><a href="">Meus Anúncios <span class="glyphicon glyphicon-menu-right"></span></a></li>
-          <li><a href="">Minhas Mensagens <span class="glyphicon glyphicon-menu-right"></span></a></li>
-          <li><a href="">Meus Favoritos <span class="glyphicon glyphicon-menu-right"></span></a></li>
-        </ul>
-      </div>
     </div>
-  </div>
 </template>
 
 <style scoped>
