@@ -1,0 +1,127 @@
+<template>
+  <div class="dashboard-minha-conta">
+    <h2><span>Minha Conta</span>, sem os 10% do garçon!</h2>
+    <p>Chamamos de conta, mas não cobramos nada ;)</p>
+    <div class="line"></div>
+
+    <form autocomplete="off" class="row" @submit.prevent="onSubmit">
+      <fieldset>
+        <div class="form-group col-xs-5">
+          <label for="user_name" class="sr-only">Nome:</label>
+          <input v-model.trim="user.name" id="user_name" type="text" class="form-control input-lg" maxlength="100" placeholder="Nome" required autofocus>
+        </div>
+        <div class="form-group col-xs-3">
+          <label for="user_cpf" class="sr-only">CPF:</label>
+          <input v-model.trim="user.cpf" id="user_cpf" type="text" class="form-control input-lg" maxlength="14" placeholder="CPF" required>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="user_birthday" class="sr-only">Data de Nascimento:</label>
+          <input v-model.trim="user.birthday" id="user_birthday" type="text" class="form-control input-lg" maxlength="10" placeholder="Data de Nascimento" required>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="user_gender" class="sr-only">Sexo:</label>
+          <select v-model.trim="user.gender" id="user_gender" class="form-control input-lg" required>
+            <option value="">Selecione</option>
+            <option v-for="gender in genders" :value="gender.key">{{ gender.value }}</option>
+          </select>
+        </div>
+        <div class="form-group col-xs-5">
+          <label for="user_email" class="sr-only">E-mail:</label>
+          <input v-model.trim="user.email" id="user_email" type="email" class="form-control input-lg" maxlength="100" placeholder="E-mail" required>
+        </div>
+        <div class="form-group col-xs-3">
+          <button type="button" class="btn btn-link btn-password" title="Trocar de senha" @click="showModal">Trocar de senha</button>
+        </div>
+
+        <div class="clearfix"></div>
+
+        <div class="form-group col-xs-2">
+          <label for="user_address_zipcode" class="sr-only">Cep:</label>
+          <input v-model.trim="user.address.zipcode" id="user_address_zipcode" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
+        </div>
+        <div class="form-group col-xs-2">
+          <label for="user_address_state" class="sr-only">Estado:</label>
+          <input v-model.trim="user.address.state" id="user_address_state" type="text" class="form-control input-lg" maxlength="50" placeholder="Estado" required>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="user_address_city" class="sr-only">Cidade:</label>
+          <input v-model.trim="user.address.city" id="user_address_city" type="text" class="form-control input-lg" maxlength="50" placeholder="Cidade" required>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="user_address_neighborhood" class="sr-only">Bairro:</label>
+          <input v-model.trim="user.address.neighborhood" id="user_address_neighborhood" type="text" class="form-control input-lg" maxlength="50" placeholder="Bairro" required>
+        </div>
+        <div class="form-group col-xs-6">
+          <label for="user_address_street" class="sr-only">Rua:</label>
+          <input v-model.trim="user.address.street" id="user_address_street" type="text" class="form-control input-lg" maxlength="100" placeholder="Rua" required>
+        </div>
+        <div class="form-group col-xs-2">
+          <label for="user_address_number" class="sr-only">Número:</label>
+          <input v-model.trim="user.address.number" id="user_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required>
+        </div>
+        <div class="form-group col-xs-4">
+          <label for="user_address_sub_address" class="sr-only">Complemento:</label>
+          <input v-model.trim="user.address.sub_address" id="user_address_sub_address" type="text" class="form-control input-lg" maxlength="100" placeholder="Complemento">
+        </div>
+
+        <div class="col-xs-4 col-xs-offset-8">
+          <button type="submit" class="btn btn-lg btn-success btn-block">Salvar</button>
+        </div>
+      </fieldset>
+    </form>
+
+    <modal-change-password ref="modalRef">
+      <h3 slot="title">Trocar de senha</h3>
+    </modal-change-password>
+  </div>
+</template>
+
+<script>
+import ModalChangePassword from '@/components/Dashboard/Shared/ModalChangePassword'
+export default {
+  name: 'dashboard-minha-conta',
+  components: {
+    ModalChangePassword
+  },
+  data () {
+    return {
+      genders: [
+        { key: 'Male', value: 'Masculinho' },
+        { key: 'Female', value: 'Feminino' }
+      ],
+      user: {
+        name: '',
+        email: '',
+        cpf: '',
+        birthday: '',
+        gender: '',
+        address: {
+          zip_code: '',
+          state: '',
+          city: '',
+          street: '',
+          number: '',
+          sub_address: ''
+        }
+      }
+    }
+  },
+  methods: {
+    onSubmit () {
+      alert('Salvo!')
+    },
+    showModal () {
+      this.$refs.modalRef.show()
+    }
+  }
+}
+</script>
+
+<style scoped>
+.btn-password {
+  font-weight: 600;
+  color: #57d9a3;
+  line-height: 24px;
+  padding: 10px;
+}
+</style>

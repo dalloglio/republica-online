@@ -1,29 +1,43 @@
 <template>
-  <div id="app">
-    <el-row :gutter="0" class="tac">
-      <el-col :xs="24" :sm="4" :md="4" :lg="4">
-        <navbar></navbar>
-      </el-col>
-      <el-col :xs="24" :sm="20" :md="20" :lg="20">
-        <router-view></router-view>
-      </el-col>
-    </el-row>
+  <div id="app" :class="{
+    login: isLogin
+    }">
+    <app-header></app-header>
+    <main>
+      <router-view></router-view>
+    </main>
+    <app-footer></app-footer>
   </div>
 </template>
 
 <script>
-  import Navbar from '@/components/Shared/Navbar'
-  export default {
-    name: 'app',
-    components: {
-      'navbar': Navbar
+import '@/assets/sass/app.scss'
+import appHeader from '@/components/Shared/Header.vue'
+import appFooter from '@/components/Shared/Footer.vue'
+export default {
+  name: 'app',
+  components: {
+    'app-header': appHeader,
+    'app-footer': appFooter
+  },
+  watch: {
+    '$route' (to, from) {
+      this.$store.dispatch('setPage', to.name)
     }
+  },
+  computed: {
+    isLogin () {
+      return this.$store.getters.appPageIs('auth.login')
+    }
+  },
+  created () {
+    this.$store.dispatch('setPage', this.$route.name)
   }
+}
 </script>
 
 <style>
-  body {
-    margin: 0px;
-    padding: 0px;
-  }
+#app.login {
+  background: transparent url('./assets/img/bg-login.jpg') no-repeat top center;
+}
 </style>
