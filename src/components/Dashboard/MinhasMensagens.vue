@@ -6,7 +6,7 @@
 
     <table class="table table-hover">
       <tbody>
-        <tr v-for="contact in contacts">
+        <tr v-for="(contact, contactIindex) in contacts">
           <td>
             <img :src="contact.ad.photo.url" :alt="contact.ad.title">
           </td>
@@ -27,7 +27,7 @@
           <td>
             <b>Ações:</b><br>
             <button type="button" @click="onShow(contact)"><i class="icon-edit"></i> Ver</button>
-            <button type="button" @click="onDelete(contact)"><i class="icon-delete"></i> Excluir</button>
+            <button type="button" @click="onDelete(contact, contactIindex)"><i class="icon-delete"></i> Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -69,9 +69,18 @@ export default {
     onShow (contact) {
       this.$router.push({ name: 'dashboard.minhas-mensagens.show', params: { ad_id: contact.ad.id, id: contact.id } })
     },
-    onDelete (contact) {
+    onDelete (contact, index) {
       if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
-        console.log(contact)
+        this.$store.dispatch('deleteAdContact', {
+          ad_id: contact.ad.id,
+          id: contact.id
+        }).then((response) => {
+          if (response.ok) {
+            this.$router.push({ name: 'dashboard.minhas-mensagens' })
+          }
+        }, (error) => {
+          console.log(error)
+        })
       }
     }
   },

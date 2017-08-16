@@ -41,7 +41,16 @@ export default {
     },
     onDelete (contact) {
       if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
-        this.$router.push({ name: 'dashboard.minhas-mensagens' })
+        this.$store.dispatch('deleteAdContact', {
+          ad_id: this.$route.params.ad_id,
+          id: this.$route.params.id
+        }).then((response) => {
+          if (response.ok) {
+            this.$router.push({ name: 'dashboard.minhas-mensagens' })
+          }
+        }, (error) => {
+          console.log(error)
+        })
       }
     }
   },

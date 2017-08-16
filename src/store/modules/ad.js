@@ -53,19 +53,16 @@ export default {
         commit('setAds', response.body)
       })
     },
-
     getAd ({ commit }, id) {
       Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setAd', response.body)
       })
     },
-
     getLatest ({ commit }, id) {
       Vue.http.get(ENDPOINT + '/' + id + '/latest').then((response) => {
         commit('setLatest', response.body)
       })
     },
-
     createAd ({ commit }, data) {
       return new Promise((resolve, reject) => {
         Vue.http.post(ENDPOINT, data).then((response) => {
@@ -75,7 +72,6 @@ export default {
         })
       })
     },
-
     updateAd ({ commit }, params) {
       return new Promise((resolve, reject) => {
         Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
@@ -85,7 +81,6 @@ export default {
         })
       })
     },
-
     deleteAd ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
@@ -95,7 +90,15 @@ export default {
         })
       })
     },
-
+    deleteAdContact ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.delete(process.env.API_VERSION + '/user/ads/' + params.ad_id + '/contacts/' + params.id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
     createAdPhoto ({ commit }, params) {
       return new Promise((resolve, reject) => {
         Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
