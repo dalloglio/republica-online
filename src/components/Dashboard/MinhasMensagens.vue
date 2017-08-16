@@ -48,19 +48,21 @@ export default {
     },
     contacts () {
       let ads = this.ads
-      if (!ads) {
+      if (!ads || ads.length <= 0) {
         return []
       }
       let contacts = []
       ads.forEach((ad, index) => {
-        ad.contacts.forEach((contact, key) => {
-          contact.ad = {}
-          contact.ad.id = ad.id
-          contact.ad.slug = ad.slug
-          contact.ad.title = ad.title
-          contact.ad.photo = ad.photo
-          contacts.push(contact)
-        })
+        if (ad.contacts) {
+          ad.contacts.forEach((contact, key) => {
+            contact.ad = {}
+            contact.ad.id = ad.id
+            contact.ad.slug = ad.slug
+            contact.ad.title = ad.title
+            contact.ad.photo = ad.photo
+            contacts.push(contact)
+          })
+        }
       })
       return contacts
     }
