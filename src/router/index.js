@@ -99,7 +99,7 @@ const router = new Router({
           requiresAuth: true
         }
       }, {
-        path: '/dashboard/minhas-mensagens/:id',
+        path: '/dashboard/minhas-mensagens/anuncio/:ad_id/contact/:id',
         name: 'dashboard.minhas-mensagens.show',
         component: DashboardMinhasMensagensShow,
         meta: {

@@ -6,7 +6,12 @@ export default {
   state: {
     ads: [],
     ad: {},
-    latest: []
+    latest: [],
+    contact: {
+      ad: {
+        photo: {}
+      }
+    }
   },
 
   mutations: {
@@ -18,6 +23,10 @@ export default {
       state.ad = data
     },
 
+    setAdContact (state, data) {
+      state.contact = data
+    },
+
     setLatest (state, data) {
       state.latest = data
     }
@@ -27,6 +36,16 @@ export default {
     getAdsUser ({ commit }) {
       Vue.http.get(process.env.API_VERSION + '/user/ads').then((response) => {
         commit('setAds', response.body)
+      })
+    },
+    getAdsContactsUser ({ commit }) {
+      Vue.http.get(process.env.API_VERSION + '/user/ads/contacts').then((response) => {
+        commit('setAds', response.body)
+      })
+    },
+    getAdContactUser ({ commit }, params) {
+      Vue.http.get(process.env.API_VERSION + '/user/ads/' + params.ad_id + '/contacts/' + params.id).then((response) => {
+        commit('setAdContact', response.body)
       })
     },
     getAds ({ commit }) {

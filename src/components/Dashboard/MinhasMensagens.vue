@@ -8,19 +8,21 @@
       <tbody>
         <tr v-for="contact in contacts">
           <td>
-            <img :src="contact.ad.photo" :alt="contact.ad.title">
+            <img :src="contact.ad.photo.url" :alt="contact.ad.title">
           </td>
-          <td>
+          <td width="150">
             <b>Anúncio:</b><br>
-            {{ contact.ad.title }}
+            <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title" target="_blank">
+              {{ contact.ad.title }}
+            </router-link>
           </td>
-          <td>
+          <td width="150">
             <b>De:</b><br>
             {{ contact.name }}
           </td>
           <td>
             <b>Enviada em:</b><br>
-            {{ contact.created_at }}
+            {{ $date.toNice(contact.created_at) }}
           </td>
           <td>
             <b>Ações:</b><br>
@@ -37,55 +39,44 @@
 export default {
   name: 'dashboard-minhas-mensagens',
   computed: {
+    ads () {
+      let ads = this.$store.state.ad.ads
+      if (!ads.data) {
+        return []
+      }
+      return ads.data
+    },
     contacts () {
-      return [{
-        id: 1,
-        name: 'Gustavo',
-        phone: '(99) 9 9999-9999',
-        email: 'gustavo@email.com',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt veritatis, eius laboriosam reprehenderit quod aliquid id quaerat, repudiandae quos at sapiente vel maxime libero similique voluptate possimus. Odio, voluptatum, in?',
-        created_at: '2017-01-01 10:30:00',
-        ad: {
-          id: 1,
-          title: 'Anúncio A',
-          photo: 'http://lorempixel.com/150/95/nature/1/'
-        }
-      }, {
-        id: 2,
-        name: 'Maria',
-        phone: '(99) 9 9999-9999',
-        email: 'gustavo@email.com',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt veritatis, eius laboriosam reprehenderit quod aliquid id quaerat, repudiandae quos at sapiente vel maxime libero similique voluptate possimus. Odio, voluptatum, in?',
-        created_at: '2017-01-01 11:30:00',
-        ad: {
-          id: 2,
-          title: 'Anúncio B',
-          photo: 'http://lorempixel.com/150/95/nature/2/'
-        }
-      }, {
-        id: 3,
-        name: 'João',
-        phone: '(99) 9 9999-9999',
-        email: 'gustavo@email.com',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt veritatis, eius laboriosam reprehenderit quod aliquid id quaerat, repudiandae quos at sapiente vel maxime libero similique voluptate possimus. Odio, voluptatum, in?',
-        created_at: '2017-01-01 12:30:00',
-        ad: {
-          id: 3,
-          title: 'Anúncio C',
-          photo: 'http://lorempixel.com/150/95/nature/3/'
-        }
-      }]
+      let ads = this.ads
+      if (!ads) {
+        return []
+      }
+      let contacts = []
+      ads.forEach((ad, index) => {
+        ad.contacts.forEach((contact, key) => {
+          contact.ad = {}
+          contact.ad.id = ad.id
+          contact.ad.slug = ad.slug
+          contact.ad.title = ad.title
+          contact.ad.photo = ad.photo
+          contacts.push(contact)
+        })
+      })
+      return contacts
     }
   },
   methods: {
-    onShow (ad) {
-      this.$router.push({ name: 'dashboard.minhas-mensagens.show', params: { id: ad.id } })
+    onShow (contact) {
+      this.$router.push({ name: 'dashboard.minhas-mensagens.show', params: { ad_id: contact.ad.id, id: contact.id } })
     },
-    onDelete (ad) {
+    onDelete (contact) {
       if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
-        console.log(ad)
+        console.log(contact)
       }
     }
+  },
+  created () {
+    this.$store.dispatch('getAdsContactsUser')
   }
 }
 </script>
@@ -106,7 +97,7 @@ table tr td img {
   border-radius: 6px;
 }
 table tr td {
-  vertical-align: middle;
+  vertical-align: top;
   padding: 15px;
   border-color: #091e42;
 }
