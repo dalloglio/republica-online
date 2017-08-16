@@ -23,6 +23,13 @@ export default {
           return moment(date).format('DD/MM/YYYY HH:mm:ss')
         }
         return date
+      },
+
+      toNice (date) {
+        if (date) {
+          return moment(date).format('DD/MM/YYYY [às] HH:mm')
+        }
+        return date
       }
     }
 

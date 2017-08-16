@@ -10,13 +10,15 @@
           <td>
             <img :src="ad.photo.url" :alt="ad.title">
           </td>
-          <td>
+          <td width="200">
             <b>Anúncio:</b><br>
-            {{ ad.title }}
+            <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" :title="ad.title" target="_blank">
+              {{ ad.title }}
+            </router-link>
           </td>
           <td>
             <b>Criado:</b><br>
-            {{ $date.toDateTimeBr(ad.created_at) }}
+            {{ $date.toNice(ad.created_at) }}
           </td>
           <td>
             <b>Status:</b><br>
@@ -77,7 +79,7 @@ table tr td img {
   border-radius: 6px;
 }
 table tr td {
-  vertical-align: middle;
+  vertical-align: top;
   padding: 15px;
   border-color: #091e42;
 }
