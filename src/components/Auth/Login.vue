@@ -1,12 +1,11 @@
 <template>
   <div class="login">
-
     <div class="container">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1">
           <form autocomplete="off" id="login" @submit.prevent="onLogin">
             <h3 class="text-center">Login</h3>
-            <button-facebook-login></button-facebook-login>
+            <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
             <span class="or text-center">ou</span>
             <fieldset :disabled="loadingLogin">
               <div class="form-group">
@@ -36,7 +35,7 @@
         <div class="col-xs-4">
           <form autocomplete="off" id="register" @submit.prevent="onRegister">
             <h3 class="text-center">Cadastre-se</h3>
-            <button-facebook-login></button-facebook-login>
+            <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
             <span class="or text-center">ou</span>
             <fieldset :disabled="loadingRegister">
               <div class="form-group">
@@ -64,16 +63,15 @@
         </div>
       </div>
     </div>
-
   </div>
 </template>
 
 <script>
-import ButtonFacebookLogin from './ButtonFacebookLogin'
+import BtnFacebook from './BtnFacebook'
 export default {
   name: 'login',
   components: {
-    ButtonFacebookLogin
+    BtnFacebook
   },
   data () {
     return {
@@ -116,43 +114,21 @@ export default {
         console.log(error.message)
       })
     },
-    onLoginFacebook () {
-      this.me().then((res) => {
-        let user = res
-        this.$store.dispatch('loginFacebook', user).then((response) => {
-          if (response.ok) {
-            this.login.username = user.email
-            this.login.password = user.id
-            this.onLogin()
-          }
-        }, (error) => {
-          this.loadingRegister = false
-          console.log(error.message)
-        })
-      })
-    },
-    loginFacebook (response) {
-      this.$FB.Event.unsubscribe('auth.login', this.loginFacebook)
-      if (response.status === 'connected') {
-        this.onLoginFacebook()
+    onLoginFacebook (status, user) {
+      if (status === false) {
+        return
       }
-    },
-    me () {
-      return new Promise((resolve, reject) => {
-        this.$FB.api('/me?fields=id,name,first_name,last_name,email,gender,picture', function (response) {
-          resolve(response)
-        })
+      this.$store.dispatch('loginFacebook', user).then((response) => {
+        if (response.ok) {
+          this.login.username = user.email
+          this.login.password = user.id
+          this.onLogin()
+        }
+      }, (error) => {
+        this.loadingRegister = false
+        console.log(error.message)
       })
-    },
-    facebookReady () {
-      this.$FB.Event.subscribe('auth.login', this.loginFacebook)
     }
-  },
-  mounted () {
-    window.addEventListener('fb-sdk-ready', this.facebookReady)
-  },
-  beforeDestroy () {
-    window.removeEventListener('fb-sdk-ready', this.facebookReady)
   }
 }
 </script>
@@ -183,24 +159,6 @@ h3 {
 }
 .btn {
   font-weight: 600;
-}
-.btn-facebook {
-  position: relative;
-  background-color: #3b5998;
-  color: #fff;
-  overflow: hidden;
-}
-.icon-facebook {
-  position: absolute;
-  content: "";
-  width: 45px;
-  height:   45px;
-  background-color: transparent;
-  background-image: url('../../assets/img/icon-facebook.png');
-  background-repeat: no-repeat;
-  background-position: 0 0;
-  top: -1px;
-  left: -1px;
 }
 .divider {
   position: relative;

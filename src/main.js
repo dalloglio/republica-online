@@ -12,7 +12,6 @@ import UtilsAuth from './utils/auth'
 import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
-import UtilsFacebook from './utils/facebook'
 import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueResource)
@@ -20,13 +19,6 @@ Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: proces
 Vue.use(UtilsCep)
 Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
-Vue.use(UtilsFacebook, {
-  appId: '252087528629349',
-  client_secret: '54da75be23a46fe1bcd8e4766cf2c1ef',
-  cookie: true,
-  xfbml: true,
-  version: 'v2.10'
-})
 
 Vue.use(VueGoogleMaps, {
   load: {
