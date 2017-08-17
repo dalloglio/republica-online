@@ -2,36 +2,44 @@
   <div class="dashboard-minhas-mensagens">
     <h2><span>Minhas Mensagens</span>, será que deu match?</h2>
     <p>Veja as mensagens enviadas por seus interessados 8)</p>
-    <div class="line"></div>
 
-    <table class="table table-hover">
-      <tbody>
-        <tr v-for="(contact, contactIindex) in contacts">
-          <td>
-            <img :src="contact.ad.photo.url" :alt="contact.ad.title">
-          </td>
-          <td width="150">
-            <b>Anúncio:</b><br>
-            <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title" target="_blank">
-              {{ contact.ad.title }}
-            </router-link>
-          </td>
-          <td width="150">
-            <b>De:</b><br>
-            {{ contact.name }}
-          </td>
-          <td>
-            <b>Enviada em:</b><br>
-            {{ $date.toNice(contact.created_at) }}
-          </td>
-          <td>
-            <b>Ações:</b><br>
-            <button type="button" @click="onShow(contact)"><i class="icon-edit"></i> Ver</button>
-            <button type="button" @click="onDelete(contact, contactIindex)"><i class="icon-delete"></i> Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="contacts.length > 0">
+      <div class="line"></div>
+      <table class="table table-hover">
+        <tbody>
+          <tr v-for="(contact, contactIindex) in contacts">
+            <td>
+              <img :src="contact.ad.photo.url" :alt="contact.ad.title">
+            </td>
+            <td width="150">
+              <b>Anúncio:</b><br>
+              <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title" target="_blank">
+                {{ contact.ad.title }}
+              </router-link>
+            </td>
+            <td width="150">
+              <b>De:</b><br>
+              {{ contact.name }}
+            </td>
+            <td>
+              <b>Enviada em:</b><br>
+              {{ $date.toNice(contact.created_at) }}
+            </td>
+            <td>
+              <b>Ações:</b><br>
+              <button type="button" @click="onShow(contact)"><i class="icon-edit"></i> Ver</button>
+              <button type="button" @click="onDelete(contact, contactIindex)"><i class="icon-delete"></i> Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div v-else>
+      <p>
+        <strong>Nenhuma mensagem recebida, ainda!!!</strong>
+      </p>
+    </div>
   </div>
 </template>
 
