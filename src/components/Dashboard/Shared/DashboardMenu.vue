@@ -17,10 +17,12 @@
             </div>
             <div class="panel-body">
                 <ul class="nav">
+                    <li><router-link :to="{ name: 'dashboard.home' }">Início <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.minha-conta' }">Meu Cadastro <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.meus-anuncios' }">Meus Anúncios <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.minhas-mensagens' }">Minhas Mensagens <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.meus-favoritos' }">Meus Favoritos <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                    <li><router-link :to="{ name: 'auth.logout' }">Sair <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                 </ul>
             </div>
         </div>
@@ -90,6 +92,9 @@
   border-bottom: 1px solid #091e42;
   background-color: transparent;
   color: #091e42;
+}
+.nav > li:last-child > a {
+  border-bottom: 0 none;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {
