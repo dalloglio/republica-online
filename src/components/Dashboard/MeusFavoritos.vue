@@ -2,38 +2,48 @@
   <div class="dashboard-meus-favoritos">
     <h2><span>Meus Favoritos</span>, gostou desses anúncios?</h2>
     <p>Se você favoritou, vai estar aqui ;)</p>
-    <div class="line"></div>
 
-    <table class="table table-hover">
-      <tbody>
-        <tr v-for="favorite in favorites">
-          <td width="1%">
-            <span class="favorite glyphicon glyphicon-star"></span>
-          </td>
-          <td>
-            <img :src="favorite.ad.photo.url" :alt="favorite.ad.title">
-          </td>
-          <td width="180">
-            <b>Anúncio:</b><br>
-            <router-link :to="{ name: 'anuncio', params: { slug: favorite.ad.slug } }" :title="favorite.ad.title" target="_blank">
-              {{ favorite.ad.title }}
-            </router-link>
-          </td>
-          <td width="150">
-            <b>Categoria:</b><br>
-            {{ favorite.ad.category.title }}
-          </td>
-          <td>
-            <b>Salvo em:</b><br>
-            {{ $date.toNice(favorite.created_at) }}
-          </td>
-          <td>
-            <b>Ações:</b><br>
-            <button type="button" @click="onDelete(favorite)"><i class="icon-delete"></i> Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-if="favorites.length > 0">
+      <div class="line"></div>
+      <table class="table table-hover">
+        <tbody>
+          <tr v-for="favorite in favorites">
+            <td width="1%">
+              <span class="favorite glyphicon glyphicon-star"></span>
+            </td>
+            <td>
+              <img :src="favorite.ad.photo.url" :alt="favorite.ad.title">
+            </td>
+            <td width="180">
+              <b>Anúncio:</b><br>
+              <router-link :to="{ name: 'anuncio', params: { slug: favorite.ad.slug } }" :title="favorite.ad.title" target="_blank">
+                {{ favorite.ad.title }}
+              </router-link>
+            </td>
+            <td width="150">
+              <b>Categoria:</b><br>
+              {{ favorite.ad.category.title }}
+            </td>
+            <td>
+              <b>Salvo em:</b><br>
+              {{ $date.toNice(favorite.created_at) }}
+            </td>
+            <td>
+              <b>Ações:</b><br>
+              <button type="button" @click="onDelete(favorite)"><i class="icon-delete"></i> Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div v-else>
+      <p><strong>Você ainda não possui nenhum república favorita :(</strong></p>
+      <p>
+        <router-link :to="{ name: 'anuncios' }" class="btn btn-lg btn-warning" title="Ver anúncios">
+          Ver anúncios
+        </router-link>
+      </p>
+    </div>
   </div>
 </template>
 
