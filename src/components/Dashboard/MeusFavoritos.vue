@@ -6,28 +6,30 @@
 
     <table class="table table-hover">
       <tbody>
-        <tr v-for="ad in ads">
+        <tr v-for="favorite in favorites">
           <td width="1%">
             <span class="favorite glyphicon glyphicon-star"></span>
           </td>
           <td>
-            <img :src="ad.photo" :alt="ad.title">
+            <img :src="favorite.ad.photo.url" :alt="favorite.ad.title">
           </td>
-          <td>
+          <td width="180">
             <b>Anúncio:</b><br>
-            {{ ad.title }}
+            <router-link :to="{ name: 'anuncio', params: { slug: favorite.ad.slug } }" :title="favorite.ad.title" target="_blank">
+              {{ favorite.ad.title }}
+            </router-link>
           </td>
-          <td>
+          <td width="150">
             <b>Categoria:</b><br>
-            {{ ad.category }}
+            {{ favorite.ad.category.title }}
           </td>
           <td>
             <b>Salvo em:</b><br>
-            {{ ad.created_at }}
+            {{ $date.toNice(favorite.created_at) }}
           </td>
           <td>
             <b>Ações:</b><br>
-            <button type="button" @click="onDelete(ad)"><i class="icon-delete"></i> Excluir</button>
+            <button type="button" @click="onDelete(favorite)"><i class="icon-delete"></i> Excluir</button>
           </td>
         </tr>
       </tbody>
@@ -39,20 +41,19 @@
 export default {
   name: 'dashboard-meus-favoritos',
   computed: {
-    ads () {
-      return [
-        { id: 1, slug: 'anuncio-a', title: 'Anúncio A', category: 'República', created_at: '2017-01-01 10:30:00', photo: 'http://lorempixel.com/150/95/nature/1/' },
-        { id: 2, slug: 'anuncio-b', title: 'Anúncio B', category: 'República', created_at: '2017-01-02 11:30:00', photo: 'http://lorempixel.com/150/95/nature/2/' },
-        { id: 3, slug: 'anuncio-c', title: 'Anúncio C', category: 'República', created_at: '2017-01-03 12:30:00', photo: 'http://lorempixel.com/150/95/nature/3/' }
-      ]
+    favorites () {
+      return this.$store.state.user.favorites
     }
   },
   methods: {
-    onDelete (ad) {
+    onDelete (favorite) {
       if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
-        console.log(ad)
+        console.log(favorite)
       }
     }
+  },
+  created () {
+    this.$store.dispatch('getUserFavorites')
   }
 }
 </script>
@@ -73,7 +74,7 @@ table tr td img {
   border-radius: 6px;
 }
 table tr td {
-  vertical-align: middle;
+  vertical-align: top;
   padding: 15px;
   border-color: #091e42;
 }

@@ -5,20 +5,8 @@ const ENDPOINT = process.env.API_VERSION + '/users'
 export default {
   state: {
     users: [],
-    user: {
-      address: {
-        zip_code: '',
-        street: '',
-        number: '',
-        sub_address: '',
-        neighborhood: '',
-        country: 'Brasil',
-        state: '',
-        city: '',
-        show_on_map: '0'
-      },
-      photo: {}
-    }
+    user: {},
+    favorites: []
   },
 
   mutations: {
@@ -28,6 +16,10 @@ export default {
 
     setUser (state, data) {
       state.user = data
+    },
+
+    setUserFavorites (state, data) {
+      state.favorites = data
     }
   },
 
@@ -101,6 +93,12 @@ export default {
         }, (error) => {
           reject(error)
         })
+      })
+    },
+
+    getUserFavorites ({ commit }) {
+      Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
+        commit('setUserFavorites', response.body)
       })
     }
   }
