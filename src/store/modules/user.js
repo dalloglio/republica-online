@@ -100,6 +100,15 @@ export default {
       Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
         commit('setUserFavorites', response.body)
       })
+    },
+    deleteUserFavorite ({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        Vue.http.delete(process.env.API_VERSION + '/user/favorites/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     }
   }
 }

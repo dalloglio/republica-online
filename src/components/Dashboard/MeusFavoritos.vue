@@ -48,7 +48,13 @@ export default {
   methods: {
     onDelete (favorite) {
       if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
-        console.log(favorite)
+        this.$store.dispatch('deleteUserFavorite', favorite.id).then((response) => {
+          if (response.ok) {
+            this.$store.dispatch('getUserFavorites')
+          }
+        }, (error) => {
+          console.log(error)
+        })
       }
     }
   },
