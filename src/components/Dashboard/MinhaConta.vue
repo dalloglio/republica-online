@@ -37,7 +37,7 @@
 
         <div class="form-group col-xs-2">
           <label for="user_address_zip_code" class="sr-only">Cep:</label>
-          <input v-model.trim="user.address.zip_code" id="user_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
+          <input v-model.trim="user.address.zip_code" id="user_address_zip_code" type="text" class="form-control input-lg" minlength="8" maxlength="8" placeholder="Cep" @blur="pesquisarCep" required>
         </div>
         <div class="form-group col-xs-2">
           <label for="user_address_state" class="sr-only">Estado:</label>
@@ -57,7 +57,7 @@
         </div>
         <div class="form-group col-xs-2">
           <label for="user_address_number" class="sr-only">Número:</label>
-          <input v-model.trim="user.address.number" id="user_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required>
+          <input v-model.trim="user.address.number" id="user_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" ref="addressNumberRef" required>
         </div>
         <div class="form-group col-xs-4">
           <label for="user_address_sub_address" class="sr-only">Complemento:</label>
@@ -107,6 +107,18 @@ export default {
     },
     showModal () {
       this.$refs.modalRef.show()
+    },
+    pesquisarCep () {
+      if (this.user.address.zip_code !== '') {
+        this.loading = true
+        this.cep.pesquisar(this.user.address.zip_code, this.user.address).then((response) => {
+          this.loading = false
+          this.$refs.addressNumberRef.focus()
+        }, (error) => {
+          this.loading = false
+          console.log(error)
+        })
+      }
     }
   },
   computed: {
