@@ -58,6 +58,16 @@ export default {
       })
     },
 
+    updateUserPassword ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.http.patch(process.env.API_VERSION + '/user/password', data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
     deleteUser ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.delete(ENDPOINT + '/' + id).then((response) => {

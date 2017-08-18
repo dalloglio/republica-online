@@ -2,7 +2,7 @@
   <div class="modal modal-change-password fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        
+
         <div class="modal-body">
 
           <div v-if="send" class="message">
@@ -15,13 +15,13 @@
             <slot name="title"></slot>
             <form autocomplete="off" class="row" @submit.prevent="onSubmit">
                 <div class="form-group col-xs-4">
-                    <input v-model.trim="user.old_password" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Senha antiga" required autofocus>
+                    <input v-model.trim="user.password_old" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Senha antiga" required autofocus>
                 </div>
                 <div class="form-group col-xs-4">
                     <input v-model.trim="user.password" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Nova senha" required>
                 </div>
                 <div class="form-group col-xs-4">
-                    <input v-model.trim="user.re_password" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Repita a nova senha" required>
+                    <input v-model.trim="user.password_confirmation" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Repita a nova senha" required>
                 </div>
                 <div class="col-xs-5 col-xs-offset-7">
                   <button type="submit" class="btn btn-lg btn-warning btn-block">Salvar</button>
@@ -42,9 +42,9 @@ export default {
       sending: false,
       send: false,
       user: {
-        old_password: '',
+        password_old: '',
         password: '',
-        re_password: ''
+        password_confirmation: ''
       }
     }
   },
@@ -56,18 +56,23 @@ export default {
       window.jQuery('.modal-change-password').modal('hide')
     },
     reset () {
-      this.user.old_password = ''
+      this.user.password_old = ''
       this.user.password = ''
-      this.user.re_password = ''
+      this.user.password_confirmation = ''
       this.sending = false
       this.send = false
     },
     onSubmit () {
       this.sending = true
-      setTimeout(() => {
+      this.$store.dispatch('updateUserPassword', this.user).then((response) => {
         this.sending = false
-        this.send = true
-      }, 1000)
+        if (response.ok) {
+          this.send = true
+        }
+      }, (error) => {
+        this.sending = false
+        console.log(error)
+      })
     }
   },
   mounted () {
