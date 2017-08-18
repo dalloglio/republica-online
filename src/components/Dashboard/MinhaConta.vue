@@ -5,18 +5,18 @@
     <div class="line"></div>
 
     <form autocomplete="off" class="row" @submit.prevent="onSubmit">
-      <fieldset>
+      <fieldset :disabled="loading">
         <div class="form-group col-xs-5">
           <label for="user_name" class="sr-only">Nome:</label>
           <input v-model.trim="user.name" id="user_name" type="text" class="form-control input-lg" maxlength="100" placeholder="Nome" required autofocus>
         </div>
         <div class="form-group col-xs-3">
           <label for="user_cpf" class="sr-only">CPF:</label>
-          <input v-model.trim="user.cpf" id="user_cpf" type="text" class="form-control input-lg" maxlength="14" placeholder="CPF" required>
+          <input v-model.trim="user.cpf" id="user_cpf" type="text" class="form-control input-lg" maxlength="11" placeholder="CPF" required>
         </div>
         <div class="form-group col-xs-4">
           <label for="user_birthday" class="sr-only">Data de Nascimento:</label>
-          <input v-model.trim="user.birthday" id="user_birthday" type="text" class="form-control input-lg" maxlength="10" placeholder="Data de Nascimento" required>
+          <input v-model.trim="user.birthday" id="user_birthday" type="date" class="form-control input-lg" maxlength="10" placeholder="Data de Nascimento" required>
         </div>
         <div class="form-group col-xs-4">
           <label for="user_gender" class="sr-only">Sexo:</label>
@@ -36,12 +36,12 @@
         <div class="clearfix"></div>
 
         <div class="form-group col-xs-2">
-          <label for="user_address_zipcode" class="sr-only">Cep:</label>
-          <input v-model.trim="user.address.zipcode" id="user_address_zipcode" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
+          <label for="user_address_zip_code" class="sr-only">Cep:</label>
+          <input v-model.trim="user.address.zip_code" id="user_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
         </div>
         <div class="form-group col-xs-2">
           <label for="user_address_state" class="sr-only">Estado:</label>
-          <input v-model.trim="user.address.state" id="user_address_state" type="text" class="form-control input-lg" maxlength="50" placeholder="Estado" required>
+          <input v-model.trim="user.address.state" id="user_address_state" type="text" class="form-control input-lg" maxlength="2" placeholder="Estado" required>
         </div>
         <div class="form-group col-xs-4">
           <label for="user_address_city" class="sr-only">Cidade:</label>
@@ -85,33 +85,34 @@ export default {
   },
   data () {
     return {
+      loading: false,
       genders: [
         { key: 'Male', value: 'Masculinho' },
         { key: 'Female', value: 'Feminino' }
-      ],
-      user: {
-        name: '',
-        email: '',
-        cpf: '',
-        birthday: '',
-        gender: '',
-        address: {
-          zip_code: '',
-          state: '',
-          city: '',
-          street: '',
-          number: '',
-          sub_address: ''
-        }
-      }
+      ]
     }
   },
   methods: {
     onSubmit () {
-      alert('Salvo!')
+      this.loading = true
+      this.$store.dispatch('updateUser', this.user).then((response) => {
+        this.loading = false
+        if (response.ok) {
+          alert('Salvo com sucesso!')
+        }
+      }, (error) => {
+        this.loading = false
+        console.log(error)
+      })
     },
     showModal () {
       this.$refs.modalRef.show()
+    }
+  },
+  computed: {
+    user () {
+      let user = this.$store.state.user.user
+      return user
     }
   }
 }

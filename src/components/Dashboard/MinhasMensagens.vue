@@ -86,7 +86,7 @@ export default {
           id: contact.id
         }).then((response) => {
           if (response.ok) {
-            this.$router.push({ name: 'dashboard.minhas-mensagens' })
+            this.$store.dispatch('getAdsContactsUser')
           }
         }, (error) => {
           console.log(error)
