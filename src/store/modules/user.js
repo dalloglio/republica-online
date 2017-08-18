@@ -4,16 +4,14 @@ const ENDPOINT = process.env.API_VERSION + '/users'
 
 export default {
   state: {
-    users: [],
-    user: {},
+    user: {
+      address: {},
+      photo: {}
+    },
     favorites: []
   },
 
   mutations: {
-    setUsers (state, data) {
-      state.users = data
-    },
-
     setUser (state, data) {
       state.user = data
     },
@@ -24,14 +22,8 @@ export default {
   },
 
   actions: {
-    getUsers ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setUsers', response.body)
-      })
-    },
-
     getUser ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      Vue.http.get(process.env.API_VERSION + '/user').then((response) => {
         commit('setUser', response.body)
       })
     },
@@ -56,9 +48,9 @@ export default {
       })
     },
 
-    createUser ({ commit }, data) {
+    updateUser ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT, data).then((response) => {
+        Vue.http.put(process.env.API_VERSION + '/user', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
@@ -66,9 +58,9 @@ export default {
       })
     },
 
-    updateUser ({ commit }, params) {
+    updateUserPassword ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
+        Vue.http.patch(process.env.API_VERSION + '/user/password', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
