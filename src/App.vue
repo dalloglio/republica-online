@@ -4,7 +4,9 @@
     }">
     <app-header></app-header>
     <main>
-      <router-view></router-view>
+      <transition name="fade">
+        <router-view></router-view>
+      </transition>
     </main>
     <app-footer></app-footer>
   </div>
@@ -45,5 +47,12 @@ export default {
 <style>
 #app.login {
   background: transparent url('./assets/img/bg-login.jpg') no-repeat top center;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0
 }
 </style>
