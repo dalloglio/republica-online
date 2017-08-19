@@ -25,12 +25,18 @@ export default {
       this.$store.dispatch('setPage', to.name)
     }
   },
+  methods: {
+    checkAuthentication () {
+      this.$store.dispatch('setAuthenticated')
+    }
+  },
   computed: {
     isLogin () {
       return this.$store.getters.appPageIs('auth.login')
     }
   },
   created () {
+    this.checkAuthentication()
     this.$store.dispatch('setPage', this.$route.name)
   }
 }
