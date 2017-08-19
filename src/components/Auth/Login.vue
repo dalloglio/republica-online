@@ -129,6 +129,11 @@ export default {
         console.log(error.message)
       })
     }
+  },
+  created () {
+    if (this.$store.getters.isAuthenticated) {
+      this.$router.push({ name: 'dashboard.home' })
+    }
   }
 }
 </script>
