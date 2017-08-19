@@ -10,6 +10,8 @@ import Faq from '@/components/Site/Faq'
 import Contato from '@/components/Site/Contato'
 import CriarAnuncio from '@/components/Site/CriarAnuncio'
 import CompartilharAnuncio from '@/components/Site/CompartilharAnuncio'
+import TermosDeUso from '@/components/Site/TermosDeUso'
+import PoliticasDePrivacidade from '@/components/Site/PoliticasDePrivacidade'
 
 // Auth
 import AuthLogin from '@/components/Auth/Login'
@@ -40,6 +42,8 @@ const router = new Router({
     { path: '/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false } },
     { path: '/faq', name: 'faq', component: Faq, meta: { requiresAuth: false } },
     { path: '/contato', name: 'contato', component: Contato, meta: { requiresAuth: false } },
+    { path: '/termos-de-uso', name: 'termos-de-uso', component: TermosDeUso, meta: { requiresAuth: false } },
+    { path: '/politicas-de-privacidade', name: 'politicas-de-privacidade', component: PoliticasDePrivacidade, meta: { requiresAuth: false } },
 
     // Site - Anúncio
     { path: '/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: false } },

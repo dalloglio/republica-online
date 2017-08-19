@@ -3,7 +3,7 @@
     <section class="container">
       <div class="row">
         <div class="col-xs-12">
-          
+
           <h2>Vamos cadastrar sua vaga!</h2>
           <p>Preencha, preferencialmente, todos os campos e o mais detalhado possível, anúncios bem estruturados normalmente tem 70% a mais de visualizações!!!</p>
 
@@ -20,7 +20,7 @@
                   <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
                 </select>
               </div>
-              
+
               <div class="clearfix"></div>
 
               <div class="form-group col-xs-10">
@@ -111,7 +111,7 @@
               </div>
 
               <div class="clearfix"></div>
-              
+
               <div class="uploader clearfix">
                 <div v-if="photos.length < 8" class="col-xs-3">
                   <label for="photos" class="clickable">
@@ -158,12 +158,12 @@
               <div class="clearfix"></div>
 
               <div class="col-xs-12">
-                <p>Ao publicar um anúncio você concorda e aceita os <a title="Termos de Uso">Termos de Uso</a> e a <a title="Política de Privacidade">Política de Privacidade</a> da República Online.</p>
+                <p>Ao publicar um anúncio você concorda e aceita os <router-link :to="{ name: 'termos-de-uso' }" target="_blank" title="Termos de Uso">Termos de Uso</router-link> e a <router-link :to="{ name: 'politicas-de-privacidade' }" target="_blank" title="Política de Privacidade">Política de Privacidade</router-link> da República Online.</p>
               </div>
 
               <div class="clearfix"></div>
               <br><br>
-              
+
               <div class="col-xs-3 col-xs-offset-9">
                 <button type="submit" class="btn btn-lg btn-success btn-block">Publicar agora!</button>
               </div>
