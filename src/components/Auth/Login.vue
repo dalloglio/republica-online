@@ -10,11 +10,35 @@
             <fieldset :disabled="loadingLogin">
               <div class="form-group">
                 <label for="login_email" class="sr-only">E-mail</label>
-                <input v-model="login.username" type="email" id="login_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required autofocus>
+                <input v-model.trim="login.username"
+                type="email"
+                id="login_email"
+                name="login_email"
+                class="form-control input-lg"
+                placeholder="E-mail"
+                maxlength="100"
+                data-vv-as="e-mail"
+                data-vv-rules="required|email"
+                v-validate
+                required
+                autofocus>
+                <span v-if="errors.has('login_email')" class="help-block">* {{ errors.first('login_email') }}</span>
               </div>
               <div class="form-group">
                 <label for="login_password" class="sr-only">Senha</label>
-                <input v-model="login.password" type="password" id="login_password" class="form-control input-lg" placeholder="Senha" minlength="6" maxlength="20" required>
+                <input v-model="login.password"
+                type="password"
+                id="login_password"
+                name="login_password"
+                class="form-control input-lg"
+                placeholder="Senha"
+                minlength="6"
+                maxlength="20"
+                data-vv-as="senha"
+                data-vv-rules="required|min:6|max:20"
+                v-validate
+                required>
+                <span v-if="errors.has('login_password')" class="help-block">* {{ errors.first('login_password') }}</span>
               </div>
               <div class="checkbox">
                 <input v-model="login.remember_me" type="checkbox" id="login_remember_me" checked>
@@ -40,20 +64,66 @@
             <fieldset :disabled="loadingRegister">
               <div class="form-group">
                 <label for="register_name" class="sr-only">Nome</label>
-                <input v-model="register.name" type="text" id="register_name" class="form-control input-lg" placeholder="Nome" maxlength="100" required>
+                <input v-model.trim="register.name"
+                type="text"
+                id="register_name"
+                name="register_name"
+                class="form-control input-lg"
+                placeholder="Nome"
+                minlength="3"
+                maxlength="100"
+                data-vv-as="nome"
+                data-vv-rules="required|min:3|max:100"
+                v-validate
+                required>
+                <span v-if="errors.has('register_name')" class="help-block">* {{ errors.first('register_name') }}</span>
               </div>
               <div class="form-group">
                 <label for="register_email" class="sr-only">E-mail</label>
-                <input v-model="register.email" type="email" id="register_email" class="form-control input-lg" placeholder="E-mail" maxlength="100" required>
+                <input v-model="register.email"
+                type="email"
+                id="register_email"
+                name="register_email"
+                class="form-control input-lg"
+                placeholder="E-mail"
+                maxlength="100"
+                data-vv-as="email"
+                data-vv-rules="required|email"
+                v-validate
+                required>
+                <span v-if="errors.has('register_email')" class="help-block">* {{ errors.first('register_email') }}</span>
               </div>
               <div class="form-group">
                 <label for="register_password" class="sr-only">Senha</label>
-                <input v-model="register.password" type="password" id="register_password" class="form-control input-lg" placeholder="Senha" minlength="6" maxlength="20" required>
+                <input v-model="register.password"
+                type="password"
+                id="register_password"
+                name="register_password"
+                class="form-control input-lg"
+                placeholder="Senha"
+                minlength="6"
+                maxlength="20"
+                data-vv-as="senha"
+                data-vv-rules="required|confirmed:register_password_confirmation|min:6|max:20"
+                v-validate
+                required>
+                <span v-if="errors.has('register_password')" class="help-block">* {{ errors.first('register_password') }}</span>
               </div>
               <div class="form-group">
                 <label for="register_password_confirmation" class="sr-only">Repita a senha</label>
-                <input v-model="register.password_confirmation" type="password" id="register_password_confirmation" class="form-control input-lg" placeholder="Repita a senha" minlength="6" maxlength="20" required>
-                <!-- <span class="help-block">* As senhas não conferem</span> -->
+                <input v-model="register.password_confirmation"
+                type="password"
+                id="register_password_confirmation"
+                name="register_password_confirmation"
+                class="form-control input-lg"
+                placeholder="Repita a senha"
+                minlength="6"
+                maxlength="20"
+                data-vv-as="repita a senha"
+                data-vv-rules="required|min:6|max:20"
+                v-validate
+                required>
+                <span v-if="errors.has('register_password_confirmation')" class="help-block">* {{ errors.first('register_password_confirmation') }}</span>
               </div>
               <div class="form-group">
                 <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Cadastrar</button>

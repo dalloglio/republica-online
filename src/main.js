@@ -5,6 +5,8 @@ require('bootstrap-sass')
 
 import Vue from 'vue'
 import VueResource from 'vue-resource'
+import ptBR from 'vee-validate/dist/locale/pt_BR'
+import VeeValidate, { Validator } from 'vee-validate'
 import App from './App'
 import router from './router'
 import { store } from './store'
@@ -16,6 +18,12 @@ import UtilsMask from './utils/mask'
 import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueResource)
+
+Validator.addLocale(ptBR)
+Vue.use(VeeValidate, {
+  locale: 'pt_BR'
+})
+
 Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
 Vue.use(UtilsCep)
 Vue.use(UtilsDate)
