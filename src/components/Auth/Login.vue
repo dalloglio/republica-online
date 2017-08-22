@@ -3,7 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1">
-          <form autocomplete="off" id="login" @submit.prevent="onLogin">
+          <form autocomplete="off" id="login" @submit.prevent="onLogin" data-vv-scope="login">
 
             <h3 class="text-center">Login</h3>
             <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
@@ -15,7 +15,7 @@
                 <input v-model.trim="login.username"
                 type="email"
                 id="login_email"
-                name="login_email"
+                name="email"
                 class="form-control input-lg"
                 placeholder="E-mail"
                 maxlength="100"
@@ -24,7 +24,7 @@
                 v-validate
                 required
                 autofocus>
-                <span v-if="errors.has('login_email')" class="help-block">* {{ errors.first('login_email') }}</span>
+                <span v-if="errors.has('email')" class="help-block">* {{ errors.first('email') }}</span>
               </div>
 
               <div class="form-group">
@@ -32,7 +32,7 @@
                 <input v-model="login.password"
                 type="password"
                 id="login_password"
-                name="login_password"
+                name="password"
                 class="form-control input-lg"
                 placeholder="Senha"
                 minlength="6"
@@ -41,7 +41,7 @@
                 data-vv-rules="required|min:6|max:20"
                 v-validate
                 required>
-                <span v-if="errors.has('login_password')" class="help-block">* {{ errors.first('login_password') }}</span>
+                <span v-if="errors.has('password')" class="help-block">* {{ errors.first('password') }}</span>
               </div>
 
               <div class="checkbox">
@@ -62,7 +62,7 @@
         </div>
 
         <div class="col-xs-4">
-          <form autocomplete="off" id="register" @submit.prevent="onRegister">
+          <form autocomplete="off" id="register" @submit.prevent="onRegister" data-vv-scope="register">
 
             <h3 class="text-center">Cadastre-se</h3>
             <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
@@ -74,7 +74,7 @@
                 <input v-model.trim="register.name"
                 type="text"
                 id="register_name"
-                name="register_name"
+                name="name"
                 class="form-control input-lg"
                 placeholder="Nome"
                 minlength="3"
@@ -83,7 +83,7 @@
                 data-vv-rules="required|min:3|max:100"
                 v-validate
                 required>
-                <span v-if="errors.has('register_name')" class="help-block">* {{ errors.first('register_name') }}</span>
+                <span v-if="errors.has('name')" class="help-block">* {{ errors.first('name') }}</span>
               </div>
 
               <div class="form-group">
@@ -91,7 +91,7 @@
                 <input v-model="register.email"
                 type="email"
                 id="register_email"
-                name="register_email"
+                name="email"
                 class="form-control input-lg"
                 placeholder="E-mail"
                 maxlength="100"
@@ -99,7 +99,7 @@
                 data-vv-rules="required|email"
                 v-validate
                 required>
-                <span v-if="errors.has('register_email')" class="help-block">* {{ errors.first('register_email') }}</span>
+                <span v-if="errors.has('email')" class="help-block">* {{ errors.first('email') }}</span>
               </div>
 
               <div class="form-group">
@@ -107,7 +107,7 @@
                 <input v-model="register.password"
                 type="password"
                 id="register_password"
-                name="register_password"
+                name="password"
                 class="form-control input-lg"
                 placeholder="Senha"
                 minlength="6"
@@ -116,7 +116,7 @@
                 data-vv-rules="required|confirmed:register_password_confirmation|min:6|max:20"
                 v-validate
                 required>
-                <span v-if="errors.has('register_password')" class="help-block">* {{ errors.first('register_password') }}</span>
+                <span v-if="errors.has('password')" class="help-block">* {{ errors.first('password') }}</span>
               </div>
 
               <div class="form-group">
@@ -124,7 +124,7 @@
                 <input v-model="register.password_confirmation"
                 type="password"
                 id="register_password_confirmation"
-                name="register_password_confirmation"
+                name="password_confirmation"
                 class="form-control input-lg"
                 placeholder="Repita a senha"
                 minlength="6"
@@ -133,7 +133,7 @@
                 data-vv-rules="required|min:6|max:20"
                 v-validate
                 required>
-                <span v-if="errors.has('register_password_confirmation')" class="help-block">* {{ errors.first('register_password_confirmation') }}</span>
+                <span v-if="errors.has('password_confirmation')" class="help-block">* {{ errors.first('password_confirmation') }}</span>
               </div>
 
               <div class="form-group">
@@ -166,14 +166,15 @@ export default {
       register: {
         name: '',
         email: '',
-        password: ''
+        password: '',
+        password_confirmation: ''
       }
     }
   },
   methods: {
-    onLogin () {
+    login (user) {
       this.loadingLogin = true
-      this.$store.dispatch('login', this.login).then((response) => {
+      this.$store.dispatch('login', user).then((response) => {
         this.loadingLogin = false
         this.$router.push({ name: response.redirect })
       }, (error) => {
@@ -181,18 +182,37 @@ export default {
         console.log(error.message)
       })
     },
-    onRegister () {
+    register (user) {
       this.loadingRegister = true
-      this.$store.dispatch('registerUser', this.register).then((response) => {
+      this.$store.dispatch('registerUser', user).then((response) => {
         this.loadingRegister = false
         if (response.ok) {
-          this.login.username = this.register.email
-          this.login.password = this.register.password
-          this.onLogin()
+          this.login({
+            username: user.email,
+            password: user.password
+          })
         }
       }, (error) => {
         this.loadingRegister = false
         console.log(error.message)
+      })
+    },
+    onLogin () {
+      this.$validator.validateAll('login').then((result) => {
+        if (result) {
+          this.login(this.login)
+        } else {
+          console.log('Erro: Por favor, preencha corretamente os campos para fazer login.')
+        }
+      })
+    },
+    onRegister () {
+      this.$validator.validateAll('register').then((result) => {
+        if (result) {
+          this.register(this.register)
+        } else {
+          console.log('Erro: Por favor, preencha corretamente os campos para se registrar.')
+        }
       })
     },
     onLoginFacebook (status, user) {
@@ -201,9 +221,10 @@ export default {
       }
       this.$store.dispatch('loginFacebook', user).then((response) => {
         if (response.ok) {
-          this.login.username = user.email
-          this.login.password = user.id
-          this.onLogin()
+          this.login({
+            username: user.email,
+            password: user.id
+          })
         }
       }, (error) => {
         this.loadingRegister = false
