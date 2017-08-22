@@ -2,7 +2,7 @@
 
 <script>
 export default {
-  beforeCreate () {
+  created () {
     this.$store.dispatch('logout')
   }
 }

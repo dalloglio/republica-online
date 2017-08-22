@@ -5,20 +5,20 @@
         <div class="col-xs-3">
           <h4 class="text-uppercase">Institucional</h4>
           <ul class="list-unstyled">
-            <li><router-link :to="{ name: 'home' }" title='Sobre nós'>Sobre nós</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Parceiros'>Parceiros</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Termos de Uso'>Termos de Uso</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Políticas de Privacidade'>Políticas de Privacidade</router-link></li>
+            <li><router-link :to="{ name: 'sobre' }" title='Sobre nós'>Sobre nós</router-link></li>
+            <!-- <li><router-link :to="{ name: 'home' }" title='Parceiros'>Parceiros</router-link></li> -->
+            <li><router-link :to="{ name: 'termos-de-uso' }" title='Termos de Uso'>Termos de Uso</router-link></li>
+            <li><router-link :to="{ name: 'politicas-de-privacidade' }" title='Políticas de Privacidade'>Políticas de Privacidade</router-link></li>
           </ul>
         </div>
 
         <div class="col-xs-3">
           <h4 class="text-uppercase">Fale Conosco</h4>
           <ul class="list-unstyled">
-            <li><router-link :to="{ name: 'home' }" title='Contato'>Contato</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Trabalhe Conosco'>Trabalhe Conosco</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Central de Ajuda'>Central de Ajuda</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Anuncie com a gente!'>Anuncie com a gente!</router-link></li>
+            <li><router-link :to="{ name: 'contato' }" title='Contato'>Contato</router-link></li>
+            <!-- <li><router-link :to="{ name: 'home' }" title='Trabalhe Conosco'>Trabalhe Conosco</router-link></li> -->
+            <li><router-link :to="{ name: 'faq' }" title='Central de Ajuda'>Central de Ajuda</router-link></li>
+            <li><router-link :to="{ name: 'criar-anuncio' }" title='Anuncie com a gente!'>Anuncie com a gente!</router-link></li>
           </ul>
         </div>
 
