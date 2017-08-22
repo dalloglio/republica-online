@@ -98,6 +98,7 @@ export default {
       this.$store.dispatch('updateUser', this.user).then((response) => {
         this.loading = false
         if (response.ok) {
+          this.$store.dispatch('getUser')
           alert('Salvo com sucesso!')
         }
       }, (error) => {
@@ -124,6 +125,12 @@ export default {
   computed: {
     user () {
       let user = this.$store.state.user.user
+      if (!user.address) {
+        user.address = {}
+      }
+      if (!user.photo) {
+        user.photo = {}
+      }
       return user
     }
   }

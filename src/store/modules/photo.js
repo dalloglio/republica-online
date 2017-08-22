@@ -5,6 +5,9 @@ const ENDPOINT = process.env.API_VERSION + '/photos'
 export default {
   getters: {
     urlPhoto: (state) => (photoId) => {
+      if (!photoId) {
+        return ''
+      }
       return Vue.http.options.root + '/photo/' + photoId
     }
   },

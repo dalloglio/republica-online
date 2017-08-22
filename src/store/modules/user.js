@@ -5,10 +5,22 @@ const ENDPOINT = process.env.API_VERSION + '/users'
 export default {
   state: {
     user: {
+      name: '',
       address: {},
       photo: {}
     },
     favorites: []
+  },
+
+  getters: {
+    userName: state => {
+      let name = state.user.name
+      if (!name) {
+        return ''
+      }
+      let names = name.split(' ', 2)
+      return names.join(' ')
+    }
   },
 
   mutations: {
@@ -78,9 +90,9 @@ export default {
       })
     },
 
-    createUserPhoto ({ commit }, params) {
+    updateUserPhoto ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
+        Vue.http.post(process.env.API_VERSION + '/user/photo', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

@@ -18,6 +18,13 @@ export default {
         return date
       },
 
+      toDateBr (date) {
+        if (date) {
+          return moment(date).format('DD/MM/YYYY')
+        }
+        return date
+      },
+
       toDateTimeBr (date) {
         if (date) {
           return moment(date).format('DD/MM/YYYY HH:mm:ss')
