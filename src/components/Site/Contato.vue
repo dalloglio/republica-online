@@ -12,26 +12,111 @@
                         <form autocomplete="off" @submit.prevent="onSubmit">
                             <fieldset class="row" :disabled="loading">
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.name" type="text" class="form-control input-lg" maxlength="100" placeholder="Nome" required autofocus>
+                                  <input
+                                  v-model.trim="contact.name"
+                                  name="name"
+                                  type="text"
+                                  class="form-control input-lg"
+                                  maxlength="100"
+                                  placeholder="Nome"
+                                  data-vv-as="nome"
+                                  data-vv-rules="required|min:3|max:100"
+                                  v-validate
+                                  required
+                                  autofocus>
+                                  <span v-if="errors.has('name')" class="help-block">* {{ errors.first('name') }}</span>
                               </div>
+
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.email" type="email" class="form-control input-lg" maxlength="100" placeholder="E-mail" required>
+                                  <input
+                                  v-model.trim="contact.email"
+                                  name="email"
+                                  type="email"
+                                  class="form-control input-lg"
+                                  maxlength="100"
+                                  placeholder="E-mail"
+                                  data-vv-as="email"
+                                  data-vv-rules="required|email|max:100"
+                                  v-validate
+                                  required>
+                                  <span v-if="errors.has('email')" class="help-block">* {{ errors.first('email') }}</span>
                               </div>
+
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.phone" type="text" class="form-control input-lg" maxlength="15" placeholder="Telefone" required>
+                                  <input
+                                  v-model.trim="contact.phone"
+                                  name="phone"
+                                  type="text"
+                                  class="form-control input-lg"
+                                  maxlength="15"
+                                  placeholder="Telefone"
+                                  data-vv-as="nome"
+                                  data-vv-rules="required|min:11|max:15"
+                                  v-validate
+                                  required>
+                                  <span v-if="errors.has('phone')" class="help-block">* {{ errors.first('phone') }}</span>
                               </div>
+
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.state" type="text" class="form-control input-lg" maxlength="100" placeholder="Estado" required>
+                                  <input
+                                  v-model.trim="contact.state"
+                                  name="state"
+                                  type="text"
+                                  class="form-control input-lg"
+                                  maxlength="100"
+                                  placeholder="Estado"
+                                  data-vv-as="estado"
+                                  data-vv-rules="required"
+                                  v-validate
+                                  required>
+                                  <span v-if="errors.has('state')" class="help-block">* {{ errors.first('state') }}</span>
                               </div>
+
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.city" type="text" class="form-control input-lg" maxlength="100" placeholder="Cidade" required>
+                                  <input
+                                  v-model.trim="contact.city"
+                                  name="city"
+                                  type="text"
+                                  class="form-control input-lg"
+                                  maxlength="100"
+                                  placeholder="Cidade"
+                                  data-vv-as="cidade"
+                                  data-vv-rules="required"
+                                  v-validate
+                                  required>
+                                  <span v-if="errors.has('city')" class="help-block">* {{ errors.first('city') }}</span>
                               </div>
+
                               <div class="form-group col-xs-4">
-                                  <input v-model.trim="contact.subject" type="text" class="form-control input-lg" maxlength="100" placeholder="Assunto" required>
+                                  <input
+                                  v-model.trim="contact.subject"
+                                  name="subject"
+                                  type="text"
+                                  class="form-control input-lg"
+                                  maxlength="100"
+                                  placeholder="Assunto"
+                                  data-vv-as="assunto"
+                                  data-vv-rules="required|min:3|max:100"
+                                  v-validate
+                                  required>
+                                  <span v-if="errors.has('subject')" class="help-block">* {{ errors.first('subject') }}</span>
                               </div>
+
                               <div class="form-group col-xs-12">
-                                  <textarea v-model.trim="contact.message" class="form-control input-lg" maxlength="1000" placeholder="Mensagem" required rows="7"></textarea>
+                                  <textarea
+                                  v-model.trim="contact.message"
+                                  name="message"
+                                  class="form-control input-lg"
+                                  maxlength="1000"
+                                  placeholder="Mensagem"
+                                  rows="7"
+                                  data-vv-as="nome"
+                                  data-vv-rules="required|min:10|max:1000"
+                                  v-validate
+                                  required></textarea>
+                                  <span v-if="errors.has('message')" class="help-block">* {{ errors.first('message') }}</span>
                               </div>
+
                               <div class="col-xs-10">
                                 <div v-if="contact.ok === true" class="alert alert-success col-xs-12">
                                   <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -42,6 +127,7 @@
                                   <strong>Ops!</strong> Não foi possível enviar a sua mensagem Preencha corretamente o formulário.
                                 </div>
                               </div>
+
                               <div class="col-xs-2">
                                   <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Enviar!</button>
                               </div>
@@ -74,29 +160,35 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.loading = true
-      let params = {
-        form_id: 1,
-        data: this.contact
-      }
-      this.$store.dispatch('createFormContact', params).then((response) => {
-        this.loading = false
-        this.contact.ok = response.ok
-        this.contact.name = ''
-        this.contact.email = ''
-        this.contact.phone = ''
-        this.contact.state = ''
-        this.contact.city = ''
-        this.contact.subject = ''
-        this.contact.message = ''
-        let self = this
-        setTimeout(() => {
-          self.contact.ok = ''
-        }, 10000)
-      }, (error) => {
-        this.loading = false
-        this.contact.ok = error.ok
-        console.log(error)
+      this.$validator.validateAll().then((result) => {
+        if (result) {
+          this.loading = true
+          let params = {
+            form_id: 1,
+            data: this.contact
+          }
+          this.$store.dispatch('createFormContact', params).then((response) => {
+            this.loading = false
+            this.contact.ok = response.ok
+            this.contact.name = ''
+            this.contact.email = ''
+            this.contact.phone = ''
+            this.contact.state = ''
+            this.contact.city = ''
+            this.contact.subject = ''
+            this.contact.message = ''
+            let self = this
+            setTimeout(() => {
+              self.contact.ok = ''
+            }, 10000)
+          }, (error) => {
+            this.loading = false
+            this.contact.ok = error.ok
+            console.log(error)
+          })
+        } else {
+          console.log('Erro: Por favor, preencha corretamente o formulário.')
+        }
       })
     }
   }
