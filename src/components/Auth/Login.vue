@@ -4,9 +4,11 @@
       <div class="row">
         <div class="col-xs-4 col-xs-offset-1">
           <form autocomplete="off" id="login" @submit.prevent="onLogin">
+
             <h3 class="text-center">Login</h3>
             <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
             <span class="or text-center">ou</span>
+
             <fieldset :disabled="loadingLogin">
               <div class="form-group">
                 <label for="login_email" class="sr-only">E-mail</label>
@@ -24,6 +26,7 @@
                 autofocus>
                 <span v-if="errors.has('login_email')" class="help-block">* {{ errors.first('login_email') }}</span>
               </div>
+
               <div class="form-group">
                 <label for="login_password" class="sr-only">Senha</label>
                 <input v-model="login.password"
@@ -40,11 +43,13 @@
                 required>
                 <span v-if="errors.has('login_password')" class="help-block">* {{ errors.first('login_password') }}</span>
               </div>
+
               <div class="checkbox">
                 <input v-model="login.remember_me" type="checkbox" id="login_remember_me" checked>
                 <label for="login_remember_me">Lembrar de mim</label>
                 <router-link :to="{ name: 'auth.login' }" class="pull-right">Esqueci minha senha</router-link>
               </div>
+
               <div class="form-group">
                 <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Entrar</button>
               </div>
@@ -58,9 +63,11 @@
 
         <div class="col-xs-4">
           <form autocomplete="off" id="register" @submit.prevent="onRegister">
+
             <h3 class="text-center">Cadastre-se</h3>
             <btn-facebook @facebook-login="onLoginFacebook"></btn-facebook>
             <span class="or text-center">ou</span>
+
             <fieldset :disabled="loadingRegister">
               <div class="form-group">
                 <label for="register_name" class="sr-only">Nome</label>
@@ -78,6 +85,7 @@
                 required>
                 <span v-if="errors.has('register_name')" class="help-block">* {{ errors.first('register_name') }}</span>
               </div>
+
               <div class="form-group">
                 <label for="register_email" class="sr-only">E-mail</label>
                 <input v-model="register.email"
@@ -93,6 +101,7 @@
                 required>
                 <span v-if="errors.has('register_email')" class="help-block">* {{ errors.first('register_email') }}</span>
               </div>
+
               <div class="form-group">
                 <label for="register_password" class="sr-only">Senha</label>
                 <input v-model="register.password"
@@ -109,6 +118,7 @@
                 required>
                 <span v-if="errors.has('register_password')" class="help-block">* {{ errors.first('register_password') }}</span>
               </div>
+
               <div class="form-group">
                 <label for="register_password_confirmation" class="sr-only">Repita a senha</label>
                 <input v-model="register.password_confirmation"
@@ -125,6 +135,7 @@
                 required>
                 <span v-if="errors.has('register_password_confirmation')" class="help-block">* {{ errors.first('register_password_confirmation') }}</span>
               </div>
+
               <div class="form-group">
                 <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Cadastrar</button>
               </div>
