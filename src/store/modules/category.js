@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = process.env.API_VERSION + '/categories'
+const ENDPOINT = process.env.API_VERSION + '/site/categories'
 
 export default {
   state: {
