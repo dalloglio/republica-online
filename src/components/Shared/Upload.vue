@@ -1,26 +1,44 @@
 <template>
   <div class="uploader clearfix">
-    <div v-if="photos.length < 8" class="col-xs-3">
-      <label for="photos" class="clickable">
-        <input ref="uploadRef" @change="onUpload" type="file" id="photos" accept="image/*" multiple>
-      </label>
+    <div class="row">
+      <div v-if="!maxFilesReached" class="col-xs-3">
+        <input
+        ref="inputFileRef"
+        type="file"
+        id="photos"
+        name="photos"
+        accept="image/*"
+        multiple
+        data-vv-as="imagens"
+        data-vv-rules="image|size:5000"
+        v-validate.reject
+        @change="onUpload"
+        :disabled="maxFilesReached">
+        <label for="photos" class="clickable"></label>
+      </div>
+
+      <div v-for="(file, index) in files" class="col-xs-3">
+        <div class="preview">
+          <p :class="{ favorite: file.favorite }">
+            Foto Principal
+            <span :class="{
+              'glyphicon': true,
+              'glyphicon-star': file.favorite,
+              'glyphicon-star-empty': !file.favorite
+            }"
+            @click="onFavorite(file)"></span>
+          </p>
+          <div class="image">
+            <img :src="file.url" :alt="file.name">
+            <a title="Remover"><span class="glyphicon glyphicon-trash" @click="onRemove(file, index)"></span></a>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div v-for="(photo, photo_index) in photos" class="col-xs-3">
-      <div class="preview">
-        <p :class="{ favorite: isFavorite(photo) }">
-          Foto Principal
-          <span :class="{
-            'glyphicon': true,
-            'glyphicon-star': isFavorite(photo) || false,
-            'glyphicon-star-empty': !isFavorite(photo) || false
-          }"
-          @click="favorite(photo)"></span>
-        </p>
-        <div class="image">
-          <img :src="photo.url" :alt="photo.name">
-          <a title="Remover"><span class="glyphicon glyphicon-trash" @click="onRemove(photo)"></span></a>
-        </div>
+    <div v-if="errors.has('photos')" class="row">
+      <div class="col-xs-12">
+        <span class="help-block">{{ errors.first('photos') }}</span>
       </div>
     </div>
   </div>
@@ -29,48 +47,80 @@
 <script>
 export default {
   name: 'app-upload',
+  props: {
+    maxFiles: {
+      type: Number,
+      default: 8
+    },
+    dataFiles: {
+      type: Array,
+      default: () => []
+    }
+  },
   data () {
     return {
-      fileList: []
+      fileList: this.dataFiles
     }
   },
   computed: {
-    photos () {
-      this.photoFavoriteId = 1
-      return [
-        { id: 1, url: 'http://lorempixel.com/1280/720/nature/1/', name: 'Nature 1', favorite: true },
-        { id: 2, url: 'http://lorempixel.com/1280/720/nature/2/', name: 'Nature 2', favorite: false },
-        { id: 3, url: 'http://lorempixel.com/1280/720/nature/3/', name: 'Nature 3', favorite: false },
-        { id: 4, url: 'http://lorempixel.com/1280/720/nature/4/', name: 'Nature 4', favorite: false },
-        { id: 5, url: 'http://lorempixel.com/1280/720/nature/5/', name: 'Nature 5', favorite: false },
-        { id: 6, url: 'http://lorempixel.com/1280/720/nature/6/', name: 'Nature 6', favorite: false },
-        { id: 7, url: 'http://lorempixel.com/1280/720/nature/7/', name: 'Nature 7', favorite: false }
-      ]
+    files () {
+      let files = this.fileList.slice(0, this.maxFiles)
+      return files
+    },
+    maxFilesReached () {
+      return this.fileList.length >= this.maxFiles || false
     }
   },
   methods: {
     onUpload (event) {
-      let files = event.target.files
-      for (let i in files) {
-        // let url = URL.createObjectURL(files[i])
-        console.log(files[i])
-        // files[i].url = url
+      let self = this
+      this.$validator.validateAll().then((result) => {
+        if (!this.errors.has('photos')) {
+          let files = event.target.files
+          let fileList = self.fileList
+          for (let i in files) {
+            let file = files[i]
+            if (file instanceof File) {
+              file.url = URL.createObjectURL(file)
+              file.favorite = false
+              fileList.push(file)
+            }
+          }
+          if (fileList.length > self.maxFiles) {
+            alert(`Apenas ${self.maxFiles} arquivos são permitidos.`)
+          }
+          self.fileList = fileList.slice(0, self.maxFiles)
+          self.$refs.inputFileRef.value = ''
+        }
+      })
+    },
+    onRemove (file, index) {
+      this.fileList.splice(index, 1)
+      this.$emit('app-upload-remove', file)
+    },
+    onFavorite (file) {
+      let files = []
+      for (let i in this.fileList) {
+        this.fileList[i].favorite = false
+        files.push(this.fileList[i])
       }
-      this.fileList = files.slice(-3)
-      this.$refs.uploadRef.value = ''
-    },
-    onRemove (photo) {
-
-    },
-    isFavorite (photo) {
-      return this.photoFavoriteId === photo.id || false
-    },
-    favorite (photo) {
-      if (this.photoFavoriteId === photo.id) {
-        return
-      }
-      this.photoFavoriteId = photo.id
+      let index = files.indexOf(file)
+      files[index].favorite = true
+      this.fileList = files
     }
+  },
+  created () {
+    const dict = {
+      pt_BR: {
+        custom: {
+          photos: {
+            size: 'Ops! Só é permitido enviar arquivos de até 5MB.',
+            image: 'Ops! Só é permitido enviar arquivos do tipo imagem (JPG, GIF e PNG).'
+          }
+        }
+      }
+    }
+    this.$validator.updateDictionary(dict)
   }
 }
 </script>
@@ -144,7 +194,7 @@ export default {
   border-radius: 50%;
   bottom: -15px;
   right: -15px;
-  z-index: 1;
+  z-index: 2;
 }
 .uploader .clickable {
   position: relative;
@@ -170,7 +220,7 @@ export default {
   cursor: pointer;
   opacity: .7
 }
-.uploader .clickable input {
+.uploader input {
   display: none;
 }
 </style>

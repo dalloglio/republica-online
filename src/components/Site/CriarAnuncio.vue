@@ -121,7 +121,13 @@
 
               <div class="clearfix"></div>
 
-              <app-upload></app-upload>
+              <div class="col-xs-12">
+                <app-upload
+                ref="uploadRef"
+                :max-files="8"
+                :data-files="photos"
+                @app-upload-remove="onUploadRemove"></app-upload>
+              </div>
 
               <div class="clearfix"></div>
 
@@ -174,7 +180,6 @@ export default {
   },
   data () {
     return {
-      photoFavoriteId: null,
       ad: {
         category_id: '',
         title: '',
@@ -201,14 +206,11 @@ export default {
     }
   },
   computed: {
+    photos () {
+      return []
+    },
     categories () {
-      return [{
-        id: 1,
-        title: 'Categoria A'
-      }, {
-        id: 2,
-        title: 'Categoria B'
-      }]
+      return []
     },
     filters () {
       let filters = [{
@@ -254,6 +256,11 @@ export default {
   },
   methods: {
     onSubmit () {
+      let files = this.$refs.uploadRef.files
+      console.log(files)
+    },
+    onUploadRemove (file) {
+      console.log(file)
     }
   }
 }
