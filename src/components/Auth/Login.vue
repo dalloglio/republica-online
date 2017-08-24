@@ -113,7 +113,7 @@
                 minlength="6"
                 maxlength="20"
                 data-vv-as="senha"
-                data-vv-rules="required|confirmed:register_password_confirmation|min:6|max:20"
+                data-vv-rules="required|confirmed:password_confirmation|min:6|max:20"
                 v-validate
                 required>
                 <span v-if="errors.has('password')" class="help-block">* {{ errors.first('password') }}</span>
@@ -172,7 +172,7 @@ export default {
     }
   },
   methods: {
-    login (user) {
+    _login (user) {
       this.loadingLogin = true
       this.$store.dispatch('login', user).then((response) => {
         this.loadingLogin = false
@@ -182,12 +182,12 @@ export default {
         console.log(error.message)
       })
     },
-    register (user) {
+    _register (user) {
       this.loadingRegister = true
       this.$store.dispatch('registerUser', user).then((response) => {
         this.loadingRegister = false
         if (response.ok) {
-          this.login({
+          this._login({
             username: user.email,
             password: user.password
           })
@@ -200,7 +200,7 @@ export default {
     onLogin () {
       this.$validator.validateAll('login').then((result) => {
         if (result) {
-          this.login(this.login)
+          this._login(this.login)
         } else {
           console.log('Erro: Por favor, preencha corretamente os campos para fazer login.')
         }
@@ -209,7 +209,7 @@ export default {
     onRegister () {
       this.$validator.validateAll('register').then((result) => {
         if (result) {
-          this.register(this.register)
+          this._register(this.register)
         } else {
           console.log('Erro: Por favor, preencha corretamente os campos para se registrar.')
         }
@@ -221,7 +221,7 @@ export default {
       }
       this.$store.dispatch('loginFacebook', user).then((response) => {
         if (response.ok) {
-          this.login({
+          this._login({
             username: user.email,
             password: user.id
           })
