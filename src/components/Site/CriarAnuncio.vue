@@ -210,7 +210,7 @@ export default {
       return []
     },
     categories () {
-      return []
+      return this.$store.state.category.categories
     },
     filters () {
       let filters = [{
@@ -262,6 +262,9 @@ export default {
     onUploadRemove (file) {
       console.log(file)
     }
+  },
+  created () {
+    this.$store.dispatch('getCategories')
   }
 }
 </script>
