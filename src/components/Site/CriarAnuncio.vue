@@ -10,7 +10,7 @@
           <div class="line"></div>
 
           <form autocomplete="off" class="row" @submit.prevent="onSubmit">
-            <fieldset>
+            <fieldset :disabled="loading">
               <div class="col-xs-3">
                 <label class="ad_category_id" for="ad_category_id">Escolha a categoria do seu anúncio:</label>
               </div>
@@ -45,7 +45,7 @@
               </div>
               <div class="form-group col-xs-3">
                 <label for="ad_address_zip_code" class="sr-only">Cep:</label>
-                <input v-model.trim="ad.address.zip_code" id="ad_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" required>
+                <input v-model.trim="ad.address.zip_code" id="ad_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" @blur="pesquisarCep" required>
               </div>
 
               <div class="form-group col-xs-3">
@@ -180,6 +180,7 @@ export default {
   },
   data () {
     return {
+      loading: false,
       ad: {
         category_id: '',
         title: '',
@@ -261,6 +262,17 @@ export default {
     },
     onUploadRemove (file) {
       console.log(file)
+    },
+    pesquisarCep () {
+      if (this.ad.address.zip_code !== '') {
+        this.loading = true
+        this.cep.pesquisar(this.ad.address.zip_code, this.ad.address).then((response) => {
+          this.loading = false
+        }, (error) => {
+          this.loading = false
+          console.log(error)
+        })
+      }
     }
   },
   created () {
