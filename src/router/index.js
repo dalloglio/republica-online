@@ -68,7 +68,7 @@ const router = new Router({
     { path: '/politicas-de-privacidade', name: 'politicas-de-privacidade', component: PoliticasDePrivacidade, meta: { requiresAuth: false, scrollToTop: true } },
 
     // Site - Anúncio
-    { path: '/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: false, scrollToTop: true } },
+    { path: '/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: true, scrollToTop: true } },
     { path: '/compartilhar-anuncio', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false, scrollToTop: true } },
 
     // Auth
@@ -124,7 +124,8 @@ router.beforeEach((to, from, next) => {
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!Vue.auth.isAuthenticated()) {
       next({
-        name: 'auth.login'
+        name: 'auth.login',
+        query: { redirect: to.fullPath }
       })
     } else {
       next()

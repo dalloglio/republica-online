@@ -176,7 +176,11 @@ export default {
       this.loadingLogin = true
       this.$store.dispatch('login', user).then((response) => {
         this.loadingLogin = false
-        this.$router.push({ name: response.redirect })
+        if (!this.$route.query.redirect) {
+          this.$router.push({ name: response.redirect })
+        } else {
+          this.$router.push({ path: this.$route.query.redirect })
+        }
       }, (error) => {
         this.loadingLogin = false
         console.log(error.message)
