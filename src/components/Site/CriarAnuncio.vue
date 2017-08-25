@@ -100,13 +100,13 @@
 
               <div class="clearfix"></div>
 
-              <div class="col-xs-12">
+              <div v-if="filters.length" class="col-xs-12">
                 <h3>Filtros:</h3>
               </div>
 
-              <div v-for="(filter, filter_index) in filters" class="form-group col-xs-3" :key="filter_index">
+              <div v-for="(filter, filter_index) in filters" class="form-group col-xs-3" :key="filter.id">
                 <label :for="'ad_details_' + filter.id" class="sr-only">{{ filter.title }}</label>
-                <select v-model.trim="ad.details[filter.id]" :id="'ad_details_' + filter.id" class="form-control input-lg">
+                <select v-model.trim="ad.details[filter_index]" :id="'ad_details_' + filter.id" class="form-control input-lg">
                   <option value="">{{ filter.title }}</option>
                   <option v-for="(input, input_index) in filter.inputs" :value="input.key">{{ input.value }}</option>
                 </select>
@@ -207,58 +207,47 @@ export default {
     }
   },
   computed: {
-    photos () {
-      return []
+    category () {
+      if (!this.ad.category_id) {
+        return {}
+      }
+      return this.categories.find(category => category.id === this.ad.category_id)
     },
     categories () {
       return this.$store.state.category.categories
     },
     filters () {
-      let filters = [{
-        id: 1,
-        title: 'Filtro 1',
-        inputs: [
-          { id: 1, key: 'option-a', value: 'Opção A' },
-          { id: 2, key: 'option-b', value: 'Opção B' },
-          { id: 3, key: 'option-c', value: 'Opção C' }
-        ]
-      }, {
-        id: 2,
-        title: 'Filtro 2',
-        inputs: [
-          { id: 1, key: 'option-a', value: 'Opção A' },
-          { id: 2, key: 'option-b', value: 'Opção B' },
-          { id: 3, key: 'option-c', value: 'Opção C' }
-        ]
-      }, {
-        id: 3,
-        title: 'Filtro 3',
-        inputs: [
-          { id: 1, key: 'option-a', value: 'Opção A' },
-          { id: 2, key: 'option-b', value: 'Opção B' },
-          { id: 3, key: 'option-c', value: 'Opção C' }
-        ]
-      }, {
-        id: 4,
-        title: 'Filtro 4',
-        inputs: [
-          { id: 1, key: 'option-a', value: 'Opção A' },
-          { id: 2, key: 'option-b', value: 'Opção B' },
-          { id: 3, key: 'option-c', value: 'Opção C' }
-        ]
-      }]
-
-      filters.forEach((filter, index) => {
-        this.ad.details[filter.id] = ''
-      })
-
-      return filters
+      return this.category.filters || []
+    },
+    photos () {
+      return this.ad.photos
     }
   },
   methods: {
     onSubmit () {
-      let files = this.$refs.uploadRef.files
-      console.log(files)
+      this.loading = true
+      // Usuário deve estar logado para poder criar o anúncio
+      setTimeout(() => {
+        this.loading = false
+        alert('O anúncio foi criado com sucesso.')
+        this.$router.push({ name: 'compartilhar-anuncio' })
+      }, 2000)
+      // this.$store.dispatch('createAd', this.form).then((response) => {
+      //   if (response.ok) {
+      //     this.ad.id = response.body.id
+      //     let files = this.$refs.uploadRef.files
+      //   } else {
+      //     this.loading = false
+      //   }
+      // }, (error) => {
+      //   this.loading = false
+      //   console.log(error)
+      //   this.$message({
+      //     showClose: true,
+      //     message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
+      //     type: 'error'
+      //   })
+      // })
     },
     onUploadRemove (file) {
       console.log(file)
