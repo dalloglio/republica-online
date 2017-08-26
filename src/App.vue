@@ -1,6 +1,6 @@
 <template>
   <div id="app" :class="{
-    login: isLogin
+    login: isLogin || isPasswordEmail || isPasswordReset
     }">
     <app-header></app-header>
     <main>
@@ -35,6 +35,12 @@ export default {
   computed: {
     isLogin () {
       return this.$store.getters.appPageIs('auth.login')
+    },
+    isPasswordEmail () {
+      return this.$store.getters.appPageIs('auth.password.email')
+    },
+    isPasswordReset () {
+      return this.$store.getters.appPageIs('auth.password.reset')
     }
   },
   created () {

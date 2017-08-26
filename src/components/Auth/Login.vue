@@ -47,7 +47,7 @@
               <div class="checkbox">
                 <input v-model="login.remember_me" type="checkbox" id="login_remember_me" checked>
                 <label for="login_remember_me">Lembrar de mim</label>
-                <router-link :to="{ name: 'auth.login' }" class="pull-right">Esqueci minha senha</router-link>
+                <router-link :to="{ name: 'auth.password.email' }" class="pull-right">Esqueci minha senha</router-link>
               </div>
 
               <div class="form-group">

@@ -16,6 +16,8 @@ import PoliticasDePrivacidade from '@/components/Site/PoliticasDePrivacidade'
 // Auth
 import AuthLogin from '@/components/Auth/Login'
 import AuthLogout from '@/components/Auth/Logout'
+import AuthPasswordEmail from '@/components/Auth/Password/Email'
+import AuthPasswordReset from '@/components/Auth/Password/Reset'
 
 // Dashboard
 import Dashboard from '@/components/Dashboard/Dashboard'
@@ -74,6 +76,8 @@ const router = new Router({
     // Auth
     { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false, scrollToTop: true } },
     { path: '/logout', name: 'auth.logout', component: AuthLogout, meta: { requiresAuth: true } },
+    { path: '/password/email', name: 'auth.password.email', component: AuthPasswordEmail, meta: { requiresAuth: false, scrollToTop: true } },
+    { path: '/password/reset', name: 'auth.password.reset', component: AuthPasswordReset, meta: { requiresAuth: false, scrollToTop: true } },
 
     // Dashboard
     {
