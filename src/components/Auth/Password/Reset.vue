@@ -8,7 +8,7 @@
             <fieldset :disabled="loading">
               <div class="form-group">
                 <label for="email" class="sr-only">E-mail</label>
-                <input v-model="email"
+                <input v-model="user.email"
                 type="email"
                 id="email"
                 name="email"
@@ -24,7 +24,7 @@
 
               <div class="form-group">
                 <label for="password" class="sr-only">Nova senha</label>
-                <input v-model="password"
+                <input v-model="user.password"
                 type="password"
                 id="password"
                 name="password"
@@ -41,7 +41,7 @@
 
               <div class="form-group">
                 <label for="password_confirmation" class="sr-only">Repita a senha</label>
-                <input v-model="password_confirmation"
+                <input v-model="user.password_confirmation"
                 type="password"
                 id="password_confirmation"
                 name="password_confirmation"
@@ -76,7 +76,8 @@ export default {
       user: {
         email: '',
         password: '',
-        password_confirmation: ''
+        password_confirmation: '',
+        token: this.$route.query.token || ''
       }
     }
   },
@@ -95,6 +96,12 @@ export default {
           console.log('Erro: Por favor, preencha corretamente os campos para enviar a nova senha.')
         }
       })
+    }
+  },
+  beforeCreated () {
+    console.log(this.user.token)
+    if (!this.user.token) {
+      this.$router.push({ name: 'auth.password.email' })
     }
   }
 }
