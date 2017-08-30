@@ -35,6 +35,26 @@ export default {
       commit('setAuthenticated', false)
     },
 
+    passwordReset ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.auth.passwordReset(data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    passwordEmail ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.auth.passwordEmail(data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
     setAuthenticated ({commit}) {
       commit('setAuthenticated', Vue.auth.isAuthenticated())
     }
