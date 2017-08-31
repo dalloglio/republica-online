@@ -30,7 +30,7 @@
 
               <div class="form-group col-xs-2">
                 <label for="ad_price" class="sr-only">Valor:</label>
-                <input v-model.trim="ad.price" id="ad_price" type="text" class="form-control input-lg" maxlength="15" placeholder="Valor" required>
+                <input v-model.trim="ad.price" id="ad_price" type="text" class="form-control input-lg" maxlength="15" placeholder="Valor" required v-mask="'money'">
               </div>
 
               <div class="form-group col-xs-12">
@@ -45,7 +45,7 @@
               </div>
               <div class="form-group col-xs-3">
                 <label for="ad_address_zip_code" class="sr-only">Cep:</label>
-                <input v-model.trim="ad.address.zip_code" id="ad_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" @blur="pesquisarCep" required>
+                <input v-model.trim="ad.address.zip_code" id="ad_address_zip_code" type="text" class="form-control input-lg" maxlength="9" placeholder="Cep" @blur="pesquisarCep" required v-mask="'99999-999'">
               </div>
 
               <div class="form-group col-xs-3">
@@ -141,12 +141,12 @@
 
               <div class="form-group col-xs-3">
                 <label for="ad_contact_cellphone" class="sr-only">Celular:</label>
-                <input v-model.trim="ad.contact.cellphone" id="ad_contact_cellphone" type="text" class="form-control input-lg" maxlength="15" placeholder="Celular">
+                <input v-model.trim="ad.contact.cellphone" id="ad_contact_cellphone" type="text" class="form-control input-lg" maxlength="15" placeholder="Celular" v-mask="'(99) 99999-9999'">
               </div>
 
               <div class="form-group col-xs-3">
                 <label for="ad_contact_whatsapp" class="sr-only">Whatsapp:</label>
-                <input v-model.trim="ad.contact.whatsapp" id="ad_contact_whatsapp" type="text" class="form-control input-lg" maxlength="15" placeholder="Whatsapp">
+                <input v-model.trim="ad.contact.whatsapp" id="ad_contact_whatsapp" type="text" class="form-control input-lg" maxlength="15" placeholder="Whatsapp" v-mask="'(99) 99999-9999'">
               </div>
 
               <div class="clearfix"></div>
@@ -170,10 +170,14 @@
 </template>
 
 <script>
+import AwesomeMask from 'awesome-mask'
 import Mapa from '@/components/Shared/Mapa'
 import AppUpload from '@/components/Shared/Upload.vue'
 export default {
   name: 'ad-create',
+  directives: {
+    'mask': AwesomeMask
+  },
   components: {
     Mapa,
     AppUpload
