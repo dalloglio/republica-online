@@ -70,7 +70,7 @@
 
               <div class="form-group col-xs-2">
                 <label for="ad_address_number" class="sr-only">Número:</label>
-                <input v-model.trim="ad.address.number" id="ad_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required>
+                <input v-model.trim="ad.address.number" id="ad_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required ref="number">
               </div>
 
               <div class="form-group col-xs-4">
@@ -79,7 +79,7 @@
               </div>
 
               <div class="col-xs-8">
-                <mapa></mapa>
+
               </div>
 
               <div class="col-xs-4">
@@ -171,7 +171,7 @@
 
 <script>
 import AwesomeMask from 'awesome-mask'
-import Mapa from '@/components/Shared/Mapa'
+// import Mapa from '@/components/Shared/Mapa'
 import AppUpload from '@/components/Shared/Upload.vue'
 export default {
   name: 'ad-create',
@@ -179,7 +179,7 @@ export default {
     'mask': AwesomeMask
   },
   components: {
-    Mapa,
+    // Mapa,
     AppUpload
   },
   data () {

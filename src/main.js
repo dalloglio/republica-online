@@ -15,7 +15,7 @@ import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
-import * as VueGoogleMaps from 'vue2-google-maps'
+// import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueResource)
 
@@ -30,11 +30,11 @@ Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
 
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs'
-  }
-})
+// Vue.use(VueGoogleMaps, {
+//   load: {
+//     key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs'
+//   }
+// })
 
 Vue.http.options.root = process.env.API_URL
 

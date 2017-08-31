@@ -30,7 +30,7 @@ export default {
 <style scoped>
 .mapa {
   width: 100%;
-  height: 280px; 
+  height: 280px;
   border-radius: 6px;
   overflow: hidden;
 }
