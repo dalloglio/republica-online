@@ -70,7 +70,7 @@
 
               <div class="form-group col-xs-2">
                 <label for="ad_address_number" class="sr-only">Número:</label>
-                <input v-model.trim="ad.address.number" id="ad_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required ref="number">
+                <input v-model.trim="ad.address.number" id="ad_address_number" type="text" class="form-control input-lg" maxlength="50" placeholder="Número" required ref="number" @blur="searchAddress()">
               </div>
 
               <div class="form-group col-xs-4">
@@ -79,21 +79,21 @@
               </div>
 
               <div class="col-xs-8">
-
+                <mapa ref="mapaRef"></mapa>
               </div>
 
               <div class="col-xs-4">
                 <h4>No mapa:</h4>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_0" :value="0">
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_0" :value="0" @change="searchAddress()">
                   <label for="ad_address_show_on_map_0">Não mostrar</label>
                 </div>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_1" :value="1">
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_1" :value="1" @change="searchAddress()">
                   <label for="ad_address_show_on_map_1">Mostrar a localização aproximada</label>
                 </div>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_2" :value="2">
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_2" :value="2" @change="searchAddress()">
                   <label for="ad_address_show_on_map_2">Mostrar a localização exata</label>
                 </div>
               </div>
@@ -171,7 +171,7 @@
 
 <script>
 import AwesomeMask from 'awesome-mask'
-// import Mapa from '@/components/Shared/Mapa'
+import Mapa from '@/components/Shared/Mapa'
 import AppUpload from '@/components/Shared/Upload.vue'
 export default {
   name: 'ad-create',
@@ -179,12 +179,15 @@ export default {
     'mask': AwesomeMask
   },
   components: {
-    // Mapa,
+    Mapa,
     AppUpload
   },
   data () {
     return {
       loading: false,
+      mapa: {
+        address: 'Brasil'
+      },
       ad: {
         category_id: '',
         title: '',
@@ -225,6 +228,18 @@ export default {
     },
     photos () {
       return this.ad.photos
+    },
+    formattedAddress () {
+      let i = 0
+      let address = []
+      if (this.ad.address.zip_code) { address[i++] = `Cep: ${this.ad.address.zip_code}` }
+      if (this.ad.address.street) { address[i++] = `${this.ad.address.street}` }
+      if (this.ad.address.number) { address[i++] = `${this.ad.address.number}` }
+      if (this.ad.address.neighborhood) { address[i++] = `${this.ad.address.neighborhood}` }
+      if (this.ad.address.state) { address[i++] = `${this.ad.address.state}` }
+      if (this.ad.address.city) { address[i++] = `${this.ad.address.city}` }
+      address[i++] = 'Brasil'
+      return address.join(', ')
     }
   },
   methods: {
@@ -261,11 +276,32 @@ export default {
         this.loading = true
         this.cep.pesquisar(this.ad.address.zip_code, this.ad.address).then((response) => {
           this.loading = false
+          this.searchAddress()
         }, (error) => {
           this.loading = false
           console.log(error)
         })
       }
+    },
+    searchAddress () {
+      let zoom = 5
+      let self = this
+      self.$refs.mapaRef.removeMarker()
+      self.$refs.mapaRef.removeCircle()
+      if (self.ad.address.show_on_map === 0) {
+        zoom = 4
+        self.$refs.mapaRef.setAddress('Brasil')
+      } else if (self.ad.address.show_on_map === 1) {
+        zoom = 5
+        self.$refs.mapaRef.setAddress(self.formattedAddress)
+        self.$refs.mapaRef.addCircle()
+      } else if (self.ad.address.show_on_map === 2) {
+        zoom = 16
+        self.$refs.mapaRef.setAddress(self.formattedAddress)
+        self.$refs.mapaRef.addMarker()
+      }
+      self.$refs.mapaRef.geocodeAddress()
+      self.$refs.mapaRef.setZoom(zoom)
     }
   },
   created () {
