@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 window.$ = window.jQuery = require('jquery')
 require('bootstrap-sass')
+require('./validator/validates')
 
 import Vue from 'vue'
 import VueResource from 'vue-resource'
