@@ -27,7 +27,14 @@ a:hover {
 
 // FORM
 .form-group {
+  position: relative;
   margin-bottom: 30px;
+}
+.form-group .question {
+  margin: 0;
+  padding: 0;
+  right: 23px;
+  top: 12px;
 }
 .input-lg {
     font-weight: 600;

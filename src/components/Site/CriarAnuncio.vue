@@ -11,7 +11,7 @@
 
           <form autocomplete="off" class="row" @submit.prevent="onSubmit">
             <fieldset :disabled="loading">
-              <div class="col-xs-3">
+              <div class="col-xs-3 text-right">
                 <label class="ad_category_id" for="ad_category_id">Escolha a categoria do seu anúncio:</label>
               </div>
               <div class="form-group col-xs-4">
@@ -28,7 +28,7 @@
                   <option value="">Selecione</option>
                   <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
                 </select>
-                <span v-if="errors.has('categoria')" class="help-block">* {{ errors.first('categoria') }}</span>
+                <app-tooltip v-if="errors.has('categoria')" :title="errors.first('categoria')" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -48,7 +48,7 @@
                 data-vv-rules="required"
                 v-validate
                 required>
-                <span v-if="errors.has('title')" class="help-block">* {{ errors.first('title') }}</span>
+                <app-tooltip v-if="errors.has('title')" :title="errors.first('title')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-2">
@@ -66,7 +66,7 @@
                 v-validate
                 required
                 v-mask="'money'">
-                <span v-if="errors.has('price')" class="help-block">* {{ errors.first('price') }}</span>
+                <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-12">
@@ -83,7 +83,7 @@
                 v-validate
                 required
                 rows="6"></textarea>
-                <span v-if="errors.has('description')" class="help-block">* {{ errors.first('description') }}</span>
+                <app-tooltip v-if="errors.has('description')" :title="errors.first('description')" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -106,7 +106,7 @@
                 data-vv-rules="required|cep"
                 v-validate
                 v-mask="'99999-999'">
-                <span v-if="errors.has('cep')" class="help-block">* {{ errors.first('cep') }}</span>
+                <app-tooltip v-if="errors.has('cep')" :title="errors.first('cep')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -123,7 +123,7 @@
                 data-vv-rules="required|max:50"
                 v-validate
                 required>
-                <span v-if="errors.has('state')" class="help-block">* {{ errors.first('state') }}</span>
+                <app-tooltip v-if="errors.has('state')" :title="errors.first('state')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -140,7 +140,7 @@
                 data-vv-rules="required|max:50"
                 v-validate
                 required>
-                <span v-if="errors.has('city')" class="help-block">* {{ errors.first('city') }}</span>
+                <app-tooltip v-if="errors.has('city')" :title="errors.first('city')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -157,7 +157,7 @@
                 data-vv-rules="required|max:50"
                 v-validate
                 required>
-                <span v-if="errors.has('neighborhood')" class="help-block">* {{ errors.first('neighborhood') }}</span>
+                <app-tooltip v-if="errors.has('neighborhood')" :title="errors.first('neighborhood')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-6">
@@ -174,7 +174,7 @@
                 data-vv-rules="required|max:100"
                 v-validate
                 required>
-                <span v-if="errors.has('street')" class="help-block">* {{ errors.first('street') }}</span>
+                <app-tooltip v-if="errors.has('street')" :title="errors.first('street')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-2">
@@ -193,7 +193,7 @@
                 required
                 ref="number"
                 @blur="searchAddress()">
-                <span v-if="errors.has('number')" class="help-block">* {{ errors.first('number') }}</span>
+                <app-tooltip v-if="errors.has('number')" :title="errors.first('number')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-4">
@@ -209,7 +209,7 @@
                 data-vv-as="complemento"
                 data-vv-rules="max:100"
                 v-validate>
-                <span v-if="errors.has('sub_address')" class="help-block">* {{ errors.first('sub_address') }}</span>
+                <app-tooltip v-if="errors.has('sub_address')" :title="errors.first('sub_address')" class="question"></app-tooltip>
               </div>
 
               <div class="col-xs-8">
@@ -252,7 +252,7 @@
                   <option value="">{{ filter.title }}</option>
                   <option v-for="(input, input_index) in filter.inputs" :value="input.key">{{ input.value }}</option>
                 </select>
-                <span v-if="errors.has(filter.slug)" class="help-block">* {{ errors.first(filter.slug) }}</span>
+                <app-tooltip v-if="errors.has(filter.slug)" :title="errors.first(filter.slug)" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -291,7 +291,7 @@
                 data-vv-rules="required|max:100"
                 v-validate
                 required>
-                <span v-if="errors.has('contact_name')" class="help-block">* {{ errors.first('contact_name') }}</span>
+                <app-tooltip v-if="errors.has('contact_name')" :title="errors.first('contact_name')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -308,7 +308,7 @@
                 data-vv-rules="required|celular"
                 v-validate
                 v-mask="'(99) 99999-9999'">
-                <span v-if="errors.has('contact_cellphone')" class="help-block">* {{ errors.first('contact_cellphone') }}</span>
+                <app-tooltip v-if="errors.has('contact_cellphone')" :title="errors.first('contact_cellphone')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -325,7 +325,7 @@
                 data-vv-rules="required|celular"
                 v-validate
                 v-mask="'(99) 99999-9999'">
-                <span v-if="errors.has('contact_whatsapp')" class="help-block">* {{ errors.first('contact_whatsapp') }}</span>
+                <app-tooltip v-if="errors.has('contact_whatsapp')" :title="errors.first('contact_whatsapp')" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -351,6 +351,7 @@
 <script>
 import AwesomeMask from 'awesome-mask'
 import Mapa from '@/components/Shared/Mapa'
+import AppTooltip from '@/components/Shared/Tooltip.vue'
 import AppUpload from '@/components/Shared/Upload.vue'
 export default {
   name: 'ad-create',
@@ -359,6 +360,7 @@ export default {
   },
   components: {
     Mapa,
+    AppTooltip,
     AppUpload
   },
   data () {
@@ -423,12 +425,17 @@ export default {
   methods: {
     onSubmit () {
       this.loading = true
-      // Usuário deve estar logado para poder criar o anúncio
-      setTimeout(() => {
+      this.$validator.validateAll().then((result) => {
         this.loading = false
-        alert('O anúncio foi criado com sucesso.')
-        this.$router.push({ name: 'compartilhar-anuncio' })
-      }, 2000)
+        if (result) {
+          setTimeout(() => {
+            alert('O anúncio foi criado com sucesso.')
+            this.$router.push({ name: 'compartilhar-anuncio' })
+          }, 2000)
+        } else {
+          console.log('Preencha corretamente o formulário.')
+        }
+      })
       // this.$store.dispatch('createAd', this.form).then((response) => {
       //   if (response.ok) {
       //     this.ad.id = response.body.id
@@ -520,9 +527,6 @@ label {
 }
 label.ad_category_id {
   margin: 11px auto;
-}
-select#ad_category_id {
-  margin-left: -30px;
 }
 
 .radio {
