@@ -426,32 +426,54 @@ export default {
     onSubmit () {
       this.loading = true
       this.$validator.validateAll().then((result) => {
-        this.loading = false
         if (result) {
-          setTimeout(() => {
-            alert('O anúncio foi criado com sucesso.')
-            this.$router.push({ name: 'compartilhar-anuncio' })
-          }, 2000)
+          this.loading = false
+          this.save()
         } else {
           console.log('Preencha corretamente o formulário.')
+          this.loading = false
         }
       })
-      // this.$store.dispatch('createAd', this.form).then((response) => {
-      //   if (response.ok) {
-      //     this.ad.id = response.body.id
-      //     let files = this.$refs.uploadRef.files
-      //   } else {
-      //     this.loading = false
-      //   }
-      // }, (error) => {
-      //   this.loading = false
-      //   console.log(error)
-      //   this.$message({
-      //     showClose: true,
-      //     message: 'Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.',
-      //     type: 'error'
-      //   })
-      // })
+    },
+    save () {
+      this.loading = true
+      this.$store.dispatch('createAd', this.ad).then((response) => {
+        if (response.ok) {
+          this.saveFiles(response)
+        } else {
+          this.loading = false
+          alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
+        }
+      }, (error) => {
+        this.loading = false
+        alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
+        console.log(error)
+      })
+    },
+    saveFiles (response) {
+      let photo = response.body
+      let self = this
+      let total = 0
+      let files = self.$refs.uploadRef.files
+      files.forEach((file, index) => {
+        let formData = new FormData()
+        formData.append('photo', file, file.name)
+        let params = {
+          id: photo.id,
+          data: formData
+        }
+        self.$store.dispatch('createAdPhoto', params).then((response) => {
+          if (response.ok) {
+            total++
+            if (total === files.length) {
+              self.$router.push({ name: 'compartilhar-anuncio', params: { slug: photo.slug } })
+            }
+          }
+        }, (error) => {
+          console.log(error)
+          alert('O arquivo ' + file.name + ' não foi enviado.')
+        })
+      })
     },
     onUploadRemove (file) {
       console.log(file)
