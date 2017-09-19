@@ -71,7 +71,7 @@ const router = new Router({
 
     // Site - Anúncio
     { path: '/publicar-anuncio', name: 'criar-anuncio', component: CriarAnuncio, meta: { requiresAuth: true, scrollToTop: true } },
-    { path: '/compartilhar-anuncio', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false, scrollToTop: true } },
+    { path: '/compartilhar-anuncio/:slug', name: 'compartilhar-anuncio', component: CompartilharAnuncio, meta: { requiresAuth: false, scrollToTop: true } },
 
     // Auth
     { path: '/login', name: 'auth.login', component: AuthLogin, meta: { requiresAuth: false, scrollToTop: true } },

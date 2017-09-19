@@ -33,7 +33,7 @@
                 minlength="6"
                 maxlength="20"
                 data-vv-as="Nova senha"
-                data-vv-rules="required|confirmed:password_confirmation|min:6|max:20"
+                data-vv-rules="required|min:6|max:20"
                 v-validate
                 required>
                 <span v-if="errors.has('password')" class="help-block">* {{ errors.first('password') }}</span>
@@ -50,7 +50,7 @@
                 minlength="6"
                 maxlength="20"
                 data-vv-as="repita a senha"
-                data-vv-rules="required|min:6|max:20"
+                data-vv-rules="required|confirmed:password|min:6|max:20"
                 v-validate
                 required>
                 <span v-if="errors.has('password_confirmation')" class="help-block">* {{ errors.first('password_confirmation') }}</span>
@@ -82,15 +82,21 @@ export default {
     }
   },
   methods: {
-    onLogin () {
-      this.$validator.validateAll('login').then((result) => {
+    onSubmit () {
+      this.$validator.validateAll().then((result) => {
         if (result) {
           this.loading = true
-          this.$store.dispatch('login', this.user).then((response) => {
+          this.$store.dispatch('passwordReset', this.user).then((response) => {
             this.loading = false
+            if (response.ok) {
+              let message = response.body.message
+              alert(message)
+              this.$router.push({ name: 'auth.login' })
+            }
           }, (error) => {
             this.loading = false
-            console.log(error.message)
+            console.log(error)
+            alert(error.body.erro)
           })
         } else {
           console.log('Erro: Por favor, preencha corretamente os campos para enviar a nova senha.')
@@ -98,10 +104,11 @@ export default {
       })
     }
   },
-  beforeCreated () {
-    console.log(this.user.token)
-    if (!this.user.token) {
-      this.$router.push({ name: 'auth.password.email' })
+  beforeRouteEnter (to, from, next) {
+    if (!to.query.token) {
+      next({ name: 'auth.password.email' })
+    } else {
+      next()
     }
   }
 }

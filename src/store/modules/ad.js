@@ -65,7 +65,7 @@ export default {
     },
     createAd ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT, data).then((response) => {
+        Vue.http.post(process.env.API_VERSION + '/user/ads', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
@@ -101,7 +101,7 @@ export default {
     },
     createAdPhoto ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
+        Vue.http.post(process.env.API_VERSION + '/user/ads/' + params.id + '/photos', params.data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

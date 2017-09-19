@@ -52,9 +52,15 @@ export default {
           this.loading = true
           this.$store.dispatch('passwordEmail', this.user).then((response) => {
             this.loading = false
+            if (response.ok) {
+              let message = response.body.message
+              alert(message)
+              this.$router.push({ name: 'auth.login' })
+            }
           }, (error) => {
             this.loading = false
-            console.log(error.message)
+            console.log(error)
+            alert(error.body.erro)
           })
         } else {
           console.log('Erro: Por favor, preencha corretamente os campos para resetar a senha.')

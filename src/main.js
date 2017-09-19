@@ -2,11 +2,12 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 window.$ = window.jQuery = require('jquery')
 require('bootstrap-sass')
+require('./validator/messages')
+require('./validator/validates')
 
 import Vue from 'vue'
 import VueResource from 'vue-resource'
-import ptBR from 'vee-validate/dist/locale/pt_BR'
-import VeeValidate, { Validator } from 'vee-validate'
+import VeeValidate from 'vee-validate'
 import App from './App'
 import router from './router'
 import { store } from './store'
@@ -15,26 +16,17 @@ import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
-import * as VueGoogleMaps from 'vue2-google-maps'
+import UtilsGoogleMaps from './utils/google-maps'
 
 Vue.use(VueResource)
-
-Validator.addLocale(ptBR)
-Vue.use(VeeValidate, {
-  locale: 'pt_BR'
-})
+Vue.use(VeeValidate, { locale: 'pt_br' })
 
 Vue.use(UtilsAuth, { client_id: process.env.API_CLIENT_ID, client_secret: process.env.API_CLIENT_SECRET })
 Vue.use(UtilsCep)
 Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs'
-  }
-})
+Vue.use(UtilsGoogleMaps, { key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs' })
 
 Vue.http.options.root = process.env.API_URL
 
