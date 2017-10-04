@@ -241,7 +241,7 @@
               <div v-for="(filter, filter_index) in filters" class="form-group col-xs-3" :key="filter.id">
                 <label :for="'ad_details_' + filter.id" class="sr-only">{{ filter.title }}</label>
                 <select
-                v-model.trim="ad.details[filter.id]"
+                v-model.trim="ad.details[filter_index]"
                 :id="'ad_details_' + filter.id"
                 :name="filter.slug"
                 class="form-control input-lg"
@@ -249,8 +249,8 @@
                 data-vv-rules="required"
                 v-validate
                 >
-                  <option value="">{{ filter.title }}</option>
-                  <option v-for="(input, input_index) in filter.inputs" :value="input.key">{{ input.value }}</option>
+                  <option value="">{{ filter.description }}</option>
+                  <option v-for="input in filter.inputs" :key="input.id" :value="input.id">{{ input.value }}</option>
                 </select>
                 <app-tooltip v-if="errors.has(filter.slug)" :title="errors.first(filter.slug)" class="question"></app-tooltip>
               </div>
