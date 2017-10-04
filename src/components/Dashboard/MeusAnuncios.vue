@@ -8,7 +8,8 @@
         <tbody>
           <tr v-for="ad in ads">
             <td>
-              <img :src="ad.photo.url" :alt="ad.title">
+              <img v-if="ad.photo" :src="ad.photo.url" :alt="ad.title">
+              <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="ad.title">
             </td>
             <td width="200">
               <b>Anúncio:</b><br>
@@ -51,10 +52,7 @@ export default {
   computed: {
     ads () {
       let ads = this.$store.state.ad.ads
-      if (!ads.data) {
-        return []
-      }
-      return ads.data
+      return ads.data || []
     }
   },
   methods: {
