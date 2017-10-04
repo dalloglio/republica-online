@@ -74,7 +74,7 @@ export default {
     },
     updateAd ({ commit }, params) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
+        Vue.http.put(process.env.API_VERSION + '/user/ads/' + params.id, params.data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
@@ -83,7 +83,7 @@ export default {
     },
     deleteAd ({ commit }, id) {
       return new Promise((resolve, reject) => {
-        Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
+        Vue.http.delete(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

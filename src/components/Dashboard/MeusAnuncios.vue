@@ -8,7 +8,7 @@
         <tbody>
           <tr v-for="ad in ads">
             <td>
-              <img v-if="ad.photo" :src="ad.photo.url" :alt="ad.title">
+              <img v-if="ad.photo" :src="urlPhoto(ad.photo)" :alt="ad.title">
               <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="ad.title">
             </td>
             <td width="200">
@@ -56,12 +56,22 @@ export default {
     }
   },
   methods: {
+    urlPhoto (photo) {
+      return this.$store.getters.urlPhoto(photo.id)
+    },
     onEdit (ad) {
       this.$router.push({ name: 'dashboard.meus-anuncios.edit', params: { id: ad.id } })
     },
     onDelete (ad) {
       if (confirm('Você tem certeza que deseja excluir este anúncio?')) {
-        console.log(ad)
+        this.$store.dispatch('deleteAd', ad.id).then((response) => {
+          if (response.ok) {
+            alert('O anúncio foi excluído com sucesso.')
+            this.$store.dispatch('getAdsUser')
+          } else {
+            console.log(response.statusText)
+          }
+        }, (error) => console.log(error))
       }
     }
   },
