@@ -219,16 +219,16 @@
               <div class="col-xs-4">
                 <h4>No mapa:</h4>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_0" :value="0" @change="searchAddress()">
-                  <label for="ad_address_show_on_map_0">Não mostrar</label>
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_default" value="default" @change="searchAddress()">
+                  <label for="ad_address_show_on_map_default">Não mostrar</label>
                 </div>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_1" :value="1" @change="searchAddress()">
-                  <label for="ad_address_show_on_map_1">Mostrar a localização aproximada</label>
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_approximate" value="approximate" @change="searchAddress()">
+                  <label for="ad_address_show_on_map_approximate">Mostrar a localização aproximada</label>
                 </div>
                 <div class="radio">
-                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_2" :value="2" @change="searchAddress()">
-                  <label for="ad_address_show_on_map_2">Mostrar a localização exata</label>
+                  <input v-model="ad.address.show_on_map" type="radio" id="ad_address_show_on_map_exact" value="exact" @change="searchAddress()">
+                  <label for="ad_address_show_on_map_exact">Mostrar a localização exata</label>
                 </div>
               </div>
 
@@ -367,6 +367,7 @@ export default {
     return {
       loading: false,
       ad: {
+        status: true,
         category_id: '',
         title: '',
         price: '',
@@ -379,7 +380,7 @@ export default {
           street: '',
           number: '',
           sub_address: '',
-          show_on_map: 0
+          show_on_map: 'default'
         },
         details: [],
         photos: [],
@@ -451,29 +452,33 @@ export default {
       })
     },
     saveFiles (response) {
-      let photo = response.body
+      let ad = response.body
       let self = this
       let total = 0
       let files = self.$refs.uploadRef.files
-      files.forEach((file, index) => {
-        let formData = new FormData()
-        formData.append('photo', file, file.name)
-        let params = {
-          id: photo.id,
-          data: formData
-        }
-        self.$store.dispatch('createAdPhoto', params).then((response) => {
-          if (response.ok) {
-            total++
-            if (total === files.length) {
-              self.$router.push({ name: 'compartilhar-anuncio', params: { slug: photo.slug } })
-            }
+      if (files.length) {
+        files.forEach((file, index) => {
+          let formData = new FormData()
+          formData.append('photo', file, file.name)
+          let params = {
+            id: ad.id,
+            data: formData
           }
-        }, (error) => {
-          console.log(error)
-          alert('O arquivo ' + file.name + ' não foi enviado.')
+          self.$store.dispatch('createAdPhoto', params).then((response) => {
+            if (response.ok) {
+              total++
+              if (total === files.length) {
+                self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
+              }
+            }
+          }, (error) => {
+            console.log(error)
+            alert('O arquivo ' + file.name + ' não foi enviado.')
+          })
         })
-      })
+      } else {
+        self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
+      }
     },
     onUploadRemove (file) {
       console.log(file)
@@ -495,14 +500,14 @@ export default {
       let self = this
       self.$refs.mapaRef.removeMarker()
       self.$refs.mapaRef.removeCircle()
-      if (self.ad.address.show_on_map === 0) {
+      if (self.ad.address.show_on_map === 'default') {
         zoom = 4
         self.$refs.mapaRef.setAddress('Brasil')
-      } else if (self.ad.address.show_on_map === 1) {
+      } else if (self.ad.address.show_on_map === 'approximate') {
         zoom = 5
         self.$refs.mapaRef.setAddress(self.formattedAddress)
         self.$refs.mapaRef.addCircle()
-      } else if (self.ad.address.show_on_map === 2) {
+      } else if (self.ad.address.show_on_map === 'exact') {
         zoom = 16
         self.$refs.mapaRef.setAddress(self.formattedAddress)
         self.$refs.mapaRef.addMarker()

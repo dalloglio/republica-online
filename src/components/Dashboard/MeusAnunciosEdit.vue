@@ -5,7 +5,7 @@
     <div class="line"></div>
 
     <form autocomplete="off" class="row" @submit.prevent="onSubmit">
-      <fieldset class="page">
+      <fieldset :disabled="loading" class="page">
         <div class="col-xs-4 text-right">
           <label class="ad_category_id" for="ad_category_id">Escolha a categoria do seu anúncio:</label>
         </div>
@@ -26,10 +26,10 @@
           <app-tooltip v-if="errors.has('categoria')" :title="errors.first('categoria')" class="question"></app-tooltip>
         </div>
 
-        <div class="col-xs-2 text-right">
+        <div class="col-xs-1 text-right">
           <label class="ad_status" for="ad_status">Status:</label>
         </div>
-        <div class="form-group col-xs-2">
+        <div class="form-group col-xs-3">
           <select
           v-model.trim="ad.status"
           id="ad_status"
@@ -346,14 +346,14 @@
         <div class="clearfix"></div>
 
         <div class="col-xs-12">
-          <p>Ao publicar um anúncio você concorda e aceita os <router-link :to="{ name: 'termos-de-uso' }" target="_blank" title="Termos de Uso">Termos de Uso</router-link> e a <router-link :to="{ name: 'politicas-de-privacidade' }" target="_blank" title="Política de Privacidade">Política de Privacidade</router-link> da República Online.</p>
+          <p>Ao salvar o anúncio você concorda e aceita os <router-link :to="{ name: 'termos-de-uso' }" target="_blank" title="Termos de Uso">Termos de Uso</router-link> e a <router-link :to="{ name: 'politicas-de-privacidade' }" target="_blank" title="Política de Privacidade">Política de Privacidade</router-link> da República Online.</p>
         </div>
 
         <div class="clearfix"></div>
         <br><br>
 
         <div class="col-xs-3 col-xs-offset-9">
-          <button type="submit" class="btn btn-lg btn-success btn-block">Publicar agora!</button>
+          <button type="submit" class="btn btn-lg btn-success btn-block">Salvar agora!</button>
         </div>
       </fieldset>
     </form>
@@ -586,11 +586,9 @@ export default {
   color: #0052cc;
   font-weight: 600;
 }
-.page label.ad_category_id {
+.page label.ad_category_id,
+.page label.ad_status {
   margin: 11px auto;
-}
-.page select#ad_category_id {
-  margin-left: -20px;
 }
 
 .page .radio {
