@@ -28,8 +28,10 @@ export default {
   },
 
   actions: {
-    getPartners ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
+    getPartners ({ commit }, params) {
+      Vue.http.get(ENDPOINT, {
+        params
+      }).then((response) => {
         commit('setPartners', response.body)
       })
     },

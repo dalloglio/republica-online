@@ -103,7 +103,10 @@ export default {
     }
   },
   created () {
-    this.$store.dispatch('getPartners')
+    this.$store.dispatch('getPartners', {
+      limit: 6,
+      random: true
+    })
   }
 }
 </script>
