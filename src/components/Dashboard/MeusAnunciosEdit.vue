@@ -1,5 +1,5 @@
 <template>
-  <div class="dashboard-meus-anuncios-show">
+  <div v-if="ad.id && categories.length" class="dashboard-meus-anuncios-show">
     <h2><span>Meus Anúncios</span>. Vamos editar sua vaga!</h2>
     <p>Preencha, preferencialmente, todos os campos e o mais detalhado possível, anúncios bem estruturados normalmente tem 70% a mais de visualizações!!!</p>
     <div class="line"></div>
@@ -411,10 +411,12 @@ export default {
   computed: {
     ad () {
       let ad = this.$store.state.ad.ad || this.model
-      let details = ad.details.map((detail) => {
-        return detail.input_id
-      })
-      ad.details = details
+      if (ad.details) {
+        let details = ad.details.map((detail) => {
+          return detail.input_id
+        })
+        ad.details = details
+      }
       return ad
     },
     category () {
@@ -564,6 +566,9 @@ export default {
   created () {
     this.$store.dispatch('getAdUser', this.$route.params.id)
     this.$store.dispatch('getCategories')
+  },
+  beforeDestroy () {
+    this.$store.commit('setAd', {})
   }
 }
 </script>

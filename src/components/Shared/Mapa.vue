@@ -56,7 +56,11 @@ export default {
   },
   methods: {
     initMap () {
-      this.map = new google.maps.Map(document.getElementById('map'), {
+      let el = document.getElementById('map')
+      if (!el) {
+        return
+      }
+      this.map = new google.maps.Map(el, {
         center: this.center,
         zoom: this.zoom
       })
