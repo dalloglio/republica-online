@@ -74,7 +74,7 @@
           name="price"
           type="text"
           class="form-control input-lg"
-          maxlength="15"
+          maxlength="13"
           placeholder="Valor"
           data-vv-as="valor"
           data-vv-rules="required"
