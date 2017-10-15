@@ -519,7 +519,14 @@ export default {
       }
     },
     onUploadRemove (file) {
-      console.log(file)
+      if (file.id) {
+        this.$store.dispatch('deletePhoto', file.id).then((response) => {
+          alert('A foto foi excluída com sucesso.')
+        }, (error) => {
+          console.log(error)
+          alert('Não foi possível excluir a foto.')
+        })
+      }
     },
     pesquisarCep () {
       if (this.ad.address.zip_code !== '') {
