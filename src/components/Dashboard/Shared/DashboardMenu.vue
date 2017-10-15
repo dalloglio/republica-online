@@ -3,7 +3,8 @@
         <div class="panel">
             <div class="panel-avatar">
                 <router-link :to="{ name: 'dashboard.minha-conta' }" :title="user.name" class="avatar">
-                    <img :src="avatar" :alt="user.name">
+                    <img v-if="avatar" :src="avatar" :alt="user.name">
+                    <img v-else src="http://via.placeholder.com/120?text=+" :alt="user.name">
                 </router-link>
                 <div class="edit-photo">
                     <input type="file" name="edit-photo" id="edit-photo" @change="onChangeAvatar" accept="image/*">
