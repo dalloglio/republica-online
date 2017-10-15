@@ -1,6 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 window.$ = window.jQuery = require('jquery')
+window.numeral = require('numeral')
+require('../node_modules/numeral/locales/pt-br.js')
+window.numeral.locale('pt-br')
 require('bootstrap-sass')
 require('./validator/messages')
 require('./validator/validates')

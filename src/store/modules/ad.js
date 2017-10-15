@@ -63,8 +63,10 @@ export default {
         commit('setAd', response.body)
       })
     },
-    getLatest ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id + '/latest').then((response) => {
+    getLatestAds ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/latest', {
+        params
+      }).then((response) => {
         commit('setLatest', response.body)
       })
     },

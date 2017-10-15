@@ -1,16 +1,24 @@
 <template>
   <div class="thumbnail">
-    <router-link :to="{ name: 'anuncio', params: { slug: 'slug-do-anuncio' } }" title="República Dom Almir">
-      <img src="../../assets/img/anuncio-1.jpg" alt="República Dom Almir">
-      <span class="label label-success price">R$ 550,00</span>
+    <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" :title="ad.title">
+      <div class="image">
+        <img v-if="urlPhoto" :src="urlPhoto" :alt="ad.title">
+        <img v-else src="http://via.placeholder.com/263x175text=+" :alt="ad.title">
+      </div>
+      <span class="label label-success price">
+        <currency :price="ad.price"></currency>
+      </span>
     </router-link>
     <div class="caption">
-      <h3>República Dom Almir<small>Palmas - TO</small></h3>
+      <h3>
+        {{ ad.title }}
+        <small>{{ address.city }} - {{ address.state }}</small>
+      </h3>
       <p class="detail"><i class="icon icon-sexo"></i> Masculina</p>
       <p class="detail"><i class="icon icon-cama"></i> Compartilhado</p>
       <p class="detail"><i class="icon icon-dinheiro"></i> Contas inclusas</p>
       <p class="text-right">
-        <router-link :to="{ name: 'anuncio', params: { slug: 'slug-do-anuncio' } }" class="btn btn-link" title="veja mais detalhes">
+        <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" class="btn btn-link" title="veja mais detalhes">
           veja mais detalhes <span class="glyphicon glyphicon-menu-right"></span>
         </router-link>
       </p>
@@ -19,8 +27,37 @@
 </template>
 
 <script>
+import Currency from '@/components/Shared/Currency'
 export default {
-  name: 'anuncio'
+  name: 'anuncio',
+  components: {
+    Currency
+  },
+  props: {
+    model: {
+      type: Object,
+      required: true
+    }
+  },
+  data () {
+    return {
+      ad: this.model
+    }
+  },
+  computed: {
+    address () {
+      return this.ad.address || {}
+    },
+    photo () {
+      return this.ad.photo || {}
+    },
+    urlPhoto () {
+      return this.$store.getters.urlPhoto(this.photo.id)
+    }
+  },
+  beforeDestroy () {
+    this.ad = {}
+  }
 }
 </script>
 
@@ -35,6 +72,9 @@ export default {
   display: block;
   position: relative;
 }
+.thumbnail > a {
+  min-height: 175px;
+}
 .thumbnail a .price {
   position: absolute;
   top: 15px;
@@ -44,9 +84,26 @@ export default {
   font-weight: 800;
   color: #091e42;
 }
-.thumbnail a img {
+.thumbnail a .image {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: #f1f1f1;
   border-top-left-radius: 6px;
   border-top-right-radius: 6px;
+  overflow: hidden;
+}
+.thumbnail a img {
+  position: relative;
+  left: 50%;
+  -moz-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
+  max-width: none;
+  width: auto;
+  height: 100%;
 }
 .thumbnail .caption h3 {
   font-size: 18px;

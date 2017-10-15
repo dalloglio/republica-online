@@ -40,7 +40,7 @@
       </div>
     </section>
 
-    <section id="latest">
+    <section v-if="latestAds.length" id="latest">
       <div class="container">
         <h2>Estes aqui são os últimos anúncios!</h2>
         <p>Veja a lista de opções próximas ao local de sua escolha.</p>
@@ -48,8 +48,8 @@
       <div class="line"></div>
       <div class="container">
         <div class="row">
-          <div v-for="i in 4" class="col-xs-3">
-            <thumbnail></thumbnail>
+          <div v-for="ad in latestAds" class="col-xs-3">
+            <thumbnail :model="ad"></thumbnail>
           </div>
         </div>
       </div>
@@ -98,15 +98,22 @@ export default {
     Thumbnail
   },
   computed: {
+    latestAds () {
+      return this.$store.state.ad.latest || []
+    },
     partners () {
-      return this.$store.state.partner.partners
+      return this.$store.state.partner.partners || []
     }
   },
   created () {
+    this.$store.dispatch('getLatestAds')
     this.$store.dispatch('getPartners', {
       limit: 6,
       random: true
     })
+  },
+  beforeDestroy () {
+    this.$store.commit('setLatest', [])
   }
 }
 </script>
