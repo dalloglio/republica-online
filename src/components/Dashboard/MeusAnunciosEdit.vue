@@ -284,6 +284,7 @@
           ref="uploadRef"
           :max-files="8"
           :data-files="photos"
+          @app-upload-favorite="onUploadFavorite"
           @app-upload-remove="onUploadRemove"></app-upload>
         </div>
 
@@ -499,6 +500,7 @@ export default {
       if (filesToSave.length) {
         filesToSave.forEach((file, index) => {
           let formData = new FormData()
+          formData.append('favorite', file.favorite ? 1 : 0)
           formData.append('photo', file, file.name)
           let params = {
             id: ad.id,
@@ -527,6 +529,14 @@ export default {
         }, (error) => {
           console.log(error)
           alert('Não foi possível excluir a foto.')
+        })
+      }
+    },
+    onUploadFavorite (file) {
+      if (file.id) {
+        this.$store.dispatch('favoriteAdPhoto', {
+          ad_id: this.$route.params.id,
+          id: file.id
         })
       }
     },

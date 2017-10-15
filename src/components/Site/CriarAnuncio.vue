@@ -459,6 +459,7 @@ export default {
       if (files.length) {
         files.forEach((file, index) => {
           let formData = new FormData()
+          formData.append('favorite', file.favorite ? 1 : 0)
           formData.append('photo', file, file.name)
           let params = {
             id: ad.id,

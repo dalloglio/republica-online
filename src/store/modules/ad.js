@@ -112,6 +112,15 @@ export default {
           reject(error)
         })
       })
+    },
+    favoriteAdPhoto ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(process.env.API_VERSION + '/user/ads/' + params.ad_id + '/photos/' + params.id + '/favorite').then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
     }
   }
 }

@@ -107,6 +107,7 @@ export default {
       let index = files.indexOf(file)
       files[index].favorite = true
       this.fileList = files
+      this.$emit('app-upload-favorite', file)
     }
   },
   created () {
