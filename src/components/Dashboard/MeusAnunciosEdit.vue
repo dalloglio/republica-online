@@ -116,7 +116,7 @@
           class="form-control input-lg"
           maxlength="9"
           placeholder="Cep"
-          @blur="pesquisarCep"
+          @blur="pesquisarCep()"
           data-vv-as="cep"
           data-vv-rules="required|cep"
           v-validate
@@ -545,27 +545,39 @@ export default {
     searchAddress () {
       let zoom = 5
       let self = this
-      self.$refs.mapaRef.removeMarker()
-      self.$refs.mapaRef.removeCircle()
+      let mapaRef = self.$refs.mapaRef
+      if (!mapaRef) {
+        return
+      }
+      mapaRef.removeMarker()
+      mapaRef.removeCircle()
       if (self.ad.address.show_on_map === 'default') {
         zoom = 4
-        self.$refs.mapaRef.setAddress('Brasil')
+        mapaRef.setAddress('Brasil')
       } else if (self.ad.address.show_on_map === 'approximate') {
         zoom = 5
-        self.$refs.mapaRef.setAddress(self.formattedAddress)
-        self.$refs.mapaRef.addCircle()
+        mapaRef.setAddress(self.formattedAddress)
+        mapaRef.addCircle()
       } else if (self.ad.address.show_on_map === 'exact') {
         zoom = 16
-        self.$refs.mapaRef.setAddress(self.formattedAddress)
-        self.$refs.mapaRef.addMarker()
+        mapaRef.setAddress(self.formattedAddress)
+        mapaRef.addMarker()
       }
-      self.$refs.mapaRef.geocodeAddress()
-      self.$refs.mapaRef.setZoom(zoom)
+      mapaRef.geocodeAddress()
+      mapaRef.setZoom(zoom)
     }
   },
   created () {
-    this.$store.dispatch('getAdUser', this.$route.params.id)
-    this.$store.dispatch('getCategories')
+    this.$store.dispatch('getCategories').then(() => {
+      this.$store.dispatch('getAdUser', this.$route.params.id).then(() => {
+        let interval = setInterval(() => {
+          if (this.$refs.mapaRef) {
+            clearInterval(interval)
+            this.searchAddress()
+          }
+        }, 500)
+      })
+    })
   },
   beforeDestroy () {
     this.$store.commit('setAd', {})
