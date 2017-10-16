@@ -13,7 +13,7 @@
             </td>
             <td width="200">
               <b>Anúncio:</b><br>
-              <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" :title="ad.title" target="_blank">
+              <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title" target="_blank">
                 {{ ad.title }}
               </router-link>
             </td>

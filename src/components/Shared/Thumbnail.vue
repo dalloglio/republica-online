@@ -1,6 +1,6 @@
 <template>
   <div class="thumbnail">
-    <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" :title="ad.title">
+    <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title">
       <div class="image">
         <img v-if="urlPhoto" :src="urlPhoto" :alt="ad.title">
         <img v-else src="http://via.placeholder.com/263x175text=+" :alt="ad.title">
@@ -14,11 +14,11 @@
         {{ ad.title }}
         <small>{{ address.city }} - {{ address.state }}</small>
       </h3>
-      <p class="detail"><i class="icon icon-sexo"></i> Masculina</p>
-      <p class="detail"><i class="icon icon-cama"></i> Compartilhado</p>
-      <p class="detail"><i class="icon icon-dinheiro"></i> Contas inclusas</p>
+      <p class="detail"><i class="icon icon-sexo"></i> {{ details[0] ? details[0].value : '-' }}</p>
+      <p class="detail"><i class="icon icon-cama"></i> {{ details[1] ? details[1].value : '-' }}</p>
+      <p class="detail"><i class="icon icon-dinheiro"></i> {{ details[2] ? details[2].value : '-' }}</p>
       <p class="text-right">
-        <router-link :to="{ name: 'anuncio', params: { slug: ad.slug } }" class="btn btn-link" title="veja mais detalhes">
+        <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" class="btn btn-link" title="veja mais detalhes">
           veja mais detalhes <span class="glyphicon glyphicon-menu-right"></span>
         </router-link>
       </p>
@@ -47,6 +47,12 @@ export default {
   computed: {
     address () {
       return this.ad.address || {}
+    },
+    details () {
+      let details = this.ad.details.filter((detail) => {
+        return true
+      })
+      return details
     },
     photo () {
       return this.ad.photo || {}

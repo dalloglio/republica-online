@@ -15,8 +15,9 @@
       }
     },
     data () {
+      let price = parseFloat(Number(this.price).toFixed(2))
       return {
-        priceFormatted: window.numeral(this.price).format(FORMAT)
+        priceFormatted: window.numeral(price).format(FORMAT)
       }
     }
   }

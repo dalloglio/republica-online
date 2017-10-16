@@ -53,9 +53,16 @@ export default {
         commit('setAdContact', response.body)
       })
     },
-    getAds ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
+    getAds ({ commit }, params) {
+      Vue.http.get(ENDPOINT, {
+        params
+      }).then((response) => {
         commit('setAds', response.body)
+      })
+    },
+    getAdBySlug ({ commit }, slug) {
+      Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
+        commit('setAd', response.body)
       })
     },
     getAd ({ commit }, id) {
@@ -91,6 +98,15 @@ export default {
     deleteAd ({ commit }, id) {
       return new Promise((resolve, reject) => {
         Vue.http.delete(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+    createAdContact ({ commit }, params) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(ENDPOINT + '/' + params.id + '/contacts', params.data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

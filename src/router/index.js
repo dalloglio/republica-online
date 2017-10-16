@@ -62,7 +62,7 @@ const router = new Router({
     // Site
     { path: '/', name: 'home', component: Home, meta: { requiresAuth: false, scrollToTop: true } },
     { path: '/anuncios', name: 'anuncios', component: Anuncios, meta: { requiresAuth: false, scrollToTop: true } },
-    { path: '/anuncio/:slug', name: 'anuncio', component: Anuncio, meta: { requiresAuth: false, scrollToTop: true } },
+    { path: '/anuncio/:id/:slug', name: 'anuncio', component: Anuncio, meta: { requiresAuth: false, scrollToTop: true } },
     { path: '/sobre', name: 'sobre', component: Sobre, meta: { requiresAuth: false, scrollToTop: true } },
     { path: '/faq', name: 'faq', component: Faq, meta: { requiresAuth: false, scrollToTop: true } },
     { path: '/contato', name: 'contato', component: Contato, meta: { requiresAuth: false, scrollToTop: true } },

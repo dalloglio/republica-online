@@ -1,29 +1,31 @@
 <template>
-  <div class="page anuncio">
+  <div v-if="ad.id" class="page anuncio">
     <section id="anuncio">
       <div class="container">
 
-        <h2>República Dom Almir de Almeida Sales</h2>
+        <h2>{{ ad.title }}</h2>
 
         <div class="row">
           <div class="col-xs-9">
-            <galeria></galeria>
-            <h3>Descrição:</h3>
-            <p>É um fato conhecido de todos que um leitor se distrairá com o conteúdo de texto legível de uma página quando estiver examinando sua diagramação. A vantagem de usar Lorem Ipsum é que ele tem uma distribuição normal de letras, ao contrário de "Conteúdo aqui, conteúdo aqui", fazendo com que ele tenha uma aparência similar a de um texto legível. Muitos softwares de publicação e editores de páginas na internet agora usam Lorem Ipsum como texto-modelo padrão, e uma rápida busca por 'lorem ipsum' mostra vários websites ainda em sua fase de construção. Várias versões novas surgiram ao longo dos anos, eventualmente por acidente...</p>
+            <galeria :photos="photos"></galeria>
+            <div v-if="ad.description">
+              <h3>Descrição:</h3>
+              <p>{{ ad.description }}</p>
+            </div>
           </div>
           <div class="col-xs-3">
-            <anuncio-details></anuncio-details>
-            <anuncio-contacts ></anuncio-contacts>
+            <anuncio-details :ad="ad"></anuncio-details>
+            <anuncio-contacts :ad="ad"></anuncio-contacts>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-xs-9">
+          <div v-if="true" class="col-xs-9">
             <h3>Localização:</h3>
-            <mapa></mapa>
+            <mapa ref="mapaRef"></mapa>
 
             <h3>Talvez você goste destes aqui também *)</h3>
-            <div class="row">
+            <div v-if="false" class="row">
               <div v-for="i in 3" class="col-xs-4">
                 <thumbnail></thumbnail>
               </div>
@@ -47,72 +49,139 @@
       </div>
     </section>
 
-    <modal ref="modalRef">
-      <h3 slot="title">República Dom Almir de Almeida Sales</h3>
+    <modal ref="modalRef" :ad="ad">
+      <h3 slot="title">{{ ad.title }}</h3>
     </modal>
   </div>
 </template>
 
 <script>
-import AnuncioContacts from '@/components/Shared/AnuncioContacts'
-import AnuncioDetails from '@/components/Shared/AnuncioDetails'
-import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
-import BannerRetanguloGrande from '@/components/Shared/BannerRetanguloGrande'
-import Galeria from '@/components/Shared/Galeria'
-import Mapa from '@/components/Shared/Mapa'
-import Modal from '@/components/Shared/Modal'
-import Thumbnail from '@/components/Shared/Thumbnail'
-export default {
-  name: 'anuncio',
-
-  components: {
-    AnuncioContacts,
-    AnuncioDetails,
-    BannerMeiaPagina,
-    BannerRetanguloGrande,
-    Galeria,
-    Mapa,
-    Modal,
-    Thumbnail
-  },
-
-  methods: {
-    showModal () {
-      this.$refs.modalRef.show()
-    }
-  },
-
-  computed: {
-    bannersLargeRectangle () {
-      return this.$store.state.banner.bannersLargeRectangle
+  import AnuncioContacts from '@/components/Shared/AnuncioContacts'
+  import AnuncioDetails from '@/components/Shared/AnuncioDetails'
+  import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
+  import BannerRetanguloGrande from '@/components/Shared/BannerRetanguloGrande'
+  import Galeria from '@/components/Shared/Galeria'
+  import Mapa from '@/components/Shared/Mapa'
+  import Modal from '@/components/Shared/Modal'
+  import Thumbnail from '@/components/Shared/Thumbnail'
+  export default {
+    name: 'anuncio',
+    components: {
+      AnuncioContacts,
+      AnuncioDetails,
+      BannerMeiaPagina,
+      BannerRetanguloGrande,
+      Galeria,
+      Mapa,
+      Modal,
+      Thumbnail
     },
-    bannersHalfPage () {
-      return this.$store.state.banner.bannersHalfPage
-    }
-  },
 
-  created () {
-    this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
-    this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+    methods: {
+      searchAddress () {
+        let zoom = 5
+        let self = this
+        let mapaRef = self.$refs.mapaRef
+        if (!mapaRef) {
+          return
+        }
+        mapaRef.removeMarker()
+        mapaRef.removeCircle()
+        if (self.address.show_on_map === 'default') {
+          zoom = 4
+          mapaRef.setAddress('Brasil')
+        } else if (self.address.show_on_map === 'approximate') {
+          zoom = 5
+          mapaRef.setAddress(self.formattedAddress)
+          mapaRef.addCircle()
+        } else if (self.address.show_on_map === 'exact') {
+          zoom = 16
+          mapaRef.setAddress(self.formattedAddress)
+          mapaRef.addMarker()
+        }
+        mapaRef.geocodeAddress()
+        mapaRef.setZoom(zoom)
+      },
+      showModal () {
+        this.$refs.modalRef.show()
+      }
+    },
+
+    computed: {
+      ad () {
+        let ad = this.$store.state.ad.ad || {}
+        if (ad.id) {
+          setTimeout(() => {
+            this.searchAddress()
+          }, 2000)
+        }
+        return ad
+      },
+      address () {
+        return this.ad.address || {}
+      },
+      contact () {
+        return this.ad.contact || {}
+      },
+      details () {
+        return this.ad.details || []
+      },
+      photo () {
+        return this.ad.photo || {}
+      },
+      photos () {
+        return this.ad.photos || []
+      },
+      user () {
+        return this.ad.user || {}
+      },
+      bannersLargeRectangle () {
+        return this.$store.state.banner.bannersLargeRectangle
+      },
+      bannersHalfPage () {
+        return this.$store.state.banner.bannersHalfPage
+      },
+      formattedAddress () {
+        let i = 0
+        let address = []
+        if (this.address.zip_code) { address[i++] = `Cep: ${this.address.zip_code}` }
+        if (this.address.street) { address[i++] = `${this.address.street}` }
+        if (this.address.number) { address[i++] = `${this.address.number}` }
+        if (this.address.neighborhood) { address[i++] = `${this.address.neighborhood}` }
+        if (this.address.state) { address[i++] = `${this.address.state}` }
+        if (this.address.city) { address[i++] = `${this.address.city}` }
+        address[i++] = 'Brasil'
+        return address.join(', ')
+      }
+    },
+
+    created () {
+      this.$store.dispatch('getAd', this.$route.params.id)
+      this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
+      this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+    },
+
+    beforeDestroy () {
+      this.$store.commit('setAd', {})
+    }
   }
-}
 </script>
 
 <style scoped>
-#anuncio {
-  padding: 60px 0;
-}
-#anuncio h2 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 20px auto 60px;
-}
-#anuncio h3 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 20px auto;
-}
-#anuncio p {
-  line-height: 1.6em;
-}
+  #anuncio {
+    padding: 60px 0;
+  }
+  #anuncio h2 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px auto 60px;
+  }
+  #anuncio h3 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px auto;
+  }
+  #anuncio p {
+    line-height: 1.6em;
+  }
 </style>

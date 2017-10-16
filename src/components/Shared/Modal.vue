@@ -2,7 +2,7 @@
   <div class="modal fade">
     <div class="modal-dialog">
       <div class="modal-content">
-        
+
         <div class="modal-body">
 
           <div v-if="send" class="message">
@@ -14,8 +14,6 @@
           <fieldset :disabled="sending" v-else>
             <slot name="title"></slot>
             <form autocomplete="off" class="row" @submit.prevent="onSubmit">
-                <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button> -->
-
                 <div class="form-group col-xs-6">
                     <input v-model.trim="contact.name" type="text" class="form-control input-lg" maxlength="100" placeholder="Nome" required autofocus>
                 </div>
@@ -43,55 +41,69 @@
 </template>
 
 <script>
-export default {
-  name: 'modal',
-  data () {
-    return {
-      sending: false,
-      send: false,
-      contact: {
-        name: '',
-        email: '',
-        phone: '',
-        city: '',
-        message: ''
+  export default {
+    name: 'modal',
+    props: {
+      ad: {
+        type: Object,
+        required: true
+      }
+    },
+    data () {
+      return {
+        sending: false,
+        send: false,
+        contact: {
+          name: '',
+          email: '',
+          phone: '',
+          city: '',
+          message: ''
+        }
+      }
+    },
+    methods: {
+      show () {
+        window.jQuery('.modal').modal('show')
+      },
+      hide () {
+        window.jQuery('.modal').modal('hide')
+      },
+      onSubmit () {
+        this.sending = true
+        let params = {
+          id: this.ad.id,
+          data: this.contact
+        }
+        this.$store.dispatch('createAdContact', params).then((response) => {
+          this.sending = false
+          this.send = true
+        }, (error) => {
+          console.log(error)
+          this.sending = false
+          this.send = false
+        })
       }
     }
-  },
-  methods: {
-    show () {
-      window.jQuery('.modal').modal('show')
-    },
-    hide () {
-      window.jQuery('.modal').modal('hide')
-    },
-    onSubmit () {
-      this.sending = true
-      setTimeout(() => {
-        this.sending = false
-        this.send = true
-      }, 1000)
-    }
   }
-}
 </script>
 
 <style>
-h3 {
-  font-size: 24px;
-  font-weight: 800;
-  margin: 20px auto 30px;
-}
-.message {
-  text-align: center;
-  margin: 30px auto;
-}
-.message span {
-  font-size: 3em;
-}
-.message h3 {
-  font-size: 30px;
-  font-weight: 800;
-  line-height: 45px;
-}
+  h3 {
+    font-size: 24px;
+    font-weight: 800;
+    margin: 20px auto 30px;
+  }
+  .message {
+    text-align: center;
+    margin: 30px auto;
+  }
+  .message span {
+    font-size: 3em;
+  }
+  .message h3 {
+    font-size: 30px;
+    font-weight: 800;
+    line-height: 45px;
+  }
 </style>
