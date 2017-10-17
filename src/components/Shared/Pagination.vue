@@ -1,17 +1,17 @@
 <template>
-  <nav class="text-center">
+  <nav v-if="pages > 1" class="text-center">
     <ul class="pagination pagination-lg">
-      <li>
-        <a href="">Primeira</a>
+
+      <li v-if="paginator.current_page > 1" :class="{ active: paginator.current_page === 1 || false }">
+        <router-link :to="{ path: $route.path, query: { page: 1 } }">Primeira</router-link>
       </li>
-      <li><a href="#">1</a></li>
-      <li class="active"><a href="#">2</a></li>
-      <li><a href="#">3</a></li>
-      <li><a href="#">4</a></li>
-      <li><a href="#">5</a></li>
-      <li><a href="#">6</a></li>
-      <li>
-        <a href="#">Última</a>
+
+      <li v-for="(page, i) in pages" :key="i" :class="{ active: paginator.current_page === page ? true : false }">
+        <router-link :to="{ path: $route.path, query: { page: page } }">{{ page }}</router-link>
+      </li>
+
+      <li v-if="paginator.current_page < pages" :class="{ active: paginator.current_page === pages || false }">
+        <router-link :to="{ path: $route.path, query: { page: pages } }">Última</router-link>
       </li>
     </ul>
   </nav>
@@ -19,7 +19,18 @@
 
 <script>
 export default {
-  name: 'pagination'
+  name: 'pagination',
+  props: {
+    paginator: {
+      type: Object,
+      default: () => {}
+    }
+  },
+  computed: {
+    pages () {
+      return Math.ceil(this.paginator.total / this.paginator.per_page)
+    }
+  }
 }
 </script>
 

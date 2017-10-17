@@ -414,9 +414,17 @@ export default {
       let ad = this.$store.state.ad.ad || this.model
       if (ad.details) {
         let details = ad.details.map((detail) => {
-          return detail.input_id
+          if (detail) {
+            return detail.input_id
+          }
         })
         ad.details = details
+      }
+      if (ad.price) {
+        let price = Number(ad.price)
+        if (!isNaN(price)) {
+          ad.price = parseFloat(price.toFixed())
+        }
       }
       return ad
     },

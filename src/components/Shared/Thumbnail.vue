@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title">
       <div class="image">
         <img v-if="urlPhoto" :src="urlPhoto" :alt="ad.title">
-        <img v-else src="http://via.placeholder.com/263x175text=+" :alt="ad.title">
+        <img v-else src="http://via.placeholder.com/263x175&text=+" :alt="ad.title">
       </div>
       <span class="label label-success price">
         <currency :price="ad.price"></currency>
@@ -14,9 +14,15 @@
         {{ ad.title }}
         <small>{{ address.city }} - {{ address.state }}</small>
       </h3>
-      <p class="detail"><i class="icon icon-sexo"></i> {{ details[0] ? details[0].value : '-' }}</p>
-      <p class="detail"><i class="icon icon-cama"></i> {{ details[1] ? details[1].value : '-' }}</p>
-      <p class="detail"><i class="icon icon-dinheiro"></i> {{ details[2] ? details[2].value : '-' }}</p>
+      <p class="detail">
+        <i :class="`icon ${details[0].filter_icon}`"></i> {{ details[0] ? details[0].value : '-' }}
+      </p>
+      <p class="detail">
+        <i :class="`icon ${details[1].filter_icon}`"></i> {{ details[1] ? details[1].value : '-' }}
+      </p>
+      <p class="detail">
+        <i :class="`icon ${details[2].filter_icon}`"></i> {{ details[2] ? details[2].value : '-' }}
+      </p>
       <p class="text-right">
         <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" class="btn btn-link" title="veja mais detalhes">
           veja mais detalhes <span class="glyphicon glyphicon-menu-right"></span>
@@ -115,6 +121,10 @@ export default {
   font-size: 18px;
   font-weight: 800;
   margin-top: 10px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .thumbnail .caption h3 small {
   display: block;

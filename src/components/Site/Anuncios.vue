@@ -2,7 +2,7 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos {{ totalAds }} vagas pra você!</h2>
+        <h2>Encontramos {{ paginator.total }} vagas pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
         <select
         v-model="order"
@@ -35,9 +35,9 @@
                 <thumbnail :model="ad"></thumbnail>
               </div>
             </div>
-            <div class="row">
+            <div v-if="ads.length" class="row">
               <div class="col-xs-12">
-                <pagination></pagination>
+                <pagination :paginator="paginator"></pagination>
               </div>
             </div>
           </div>
@@ -68,12 +68,18 @@
       Pagination,
       Thumbnail
     },
+    watch: {
+      '$route' (to, from) {
+        this.$store.commit('setAds', [])
+        this.paginate()
+      }
+    },
     data () {
       return {
+        page: 1,
         order: 'latest',
         limit: 24,
-        paginate: true,
-        orderOptions = [
+        orderOptions: [
           { value: 'latest', label: 'mais recentes' },
           { value: 'oldest', label: 'mais antigos' }
         ]
@@ -81,10 +87,11 @@
     },
     computed: {
       ads () {
-        return this.$store.state.ad.latest || []
+        return this.$store.state.ad.ads.data || []
       },
-      totalAds () {
-        return this.ads.length
+      paginator () {
+        let ads = this.$store.state.ad.ads || []
+        return ads
       },
       bannersHalfPage () {
         let banners = this.$store.state.banner.bannersHalfPage
@@ -105,19 +112,23 @@
     },
     methods: {
       changeOrder () {
-        this.paginate()
+        this.$router.push({ name: this.$route.name, query: { order: this.order } })
       },
       paginate () {
         this.$store.dispatch('getAds', {
+          page: this.$route.query.page || this.page,
           limit: this.limit,
-          order: this.order,
-          paginate: this.paginate
+          order: this.$route.query.order || this.order
         })
       }
     },
     created () {
+      this.paginate()
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
+    },
+    beforeDestroy () {
+      this.$store.commit('setAds', [])
     }
   }
 </script>
