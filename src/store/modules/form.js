@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = process.env.API_VERSION + '/forms'
+const ENDPOINT = process.env.API_VERSION + '/site/forms'
 
 export default {
   state: {
@@ -37,16 +37,6 @@ export default {
     createFormContact ({ commit }, params) {
       return new Promise((resolve, reject) => {
         Vue.http.post(ENDPOINT + '/' + params.form_id + '/contacts', params.data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    deleteFormContact ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        Vue.http.delete(ENDPOINT + '/' + params.form_id + '/contacts/' + params.id).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

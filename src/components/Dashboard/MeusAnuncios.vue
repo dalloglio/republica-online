@@ -2,34 +2,47 @@
   <div class="dashboard-meus-anuncios">
     <h2><span>Meus Anúncios</span>, anunciou?</h2>
     <p>Ta aqui!</p>
-    <div class="line"></div>
+    <div v-if="ads.length > 0">
+      <div class="line"></div>
+      <table class="table table-hover">
+        <tbody>
+          <tr v-for="ad in ads">
+            <td>
+              <img v-if="ad.photo" :src="urlPhoto(ad.photo)" :alt="ad.title">
+              <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="ad.title">
+            </td>
+            <td width="200">
+              <b>Anúncio:</b><br>
+              <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title" target="_blank">
+                {{ ad.title }}
+              </router-link>
+            </td>
+            <td>
+              <b>Criado:</b><br>
+              {{ $date.toNice(ad.created_at) }}
+            </td>
+            <td>
+              <b>Status:</b><br>
+              {{ ad.status ? 'Publicado' : 'Pausado' }}
+            </td>
+            <td>
+              <b>Ações:</b><br>
+              <button type="button" @click="onEdit(ad)"><i class="icon-edit"></i> Editar</button>
+              <button type="button" @click="onDelete(ad)"><i class="icon-delete"></i> Excluir</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
 
-    <table class="table table-hover">
-      <tbody>
-        <tr v-for="ad in ads">
-          <td>
-            <img :src="ad.photo.url" :alt="ad.title">
-          </td>
-          <td>
-            <b>Anúncio:</b><br>
-            {{ ad.title }}
-          </td>
-          <td>
-            <b>Criado:</b><br>
-            {{ $date.toDateTimeBr(ad.created_at) }}
-          </td>
-          <td>
-            <b>Status:</b><br>
-            {{ ad.status ? 'Publicado' : 'Pausado' }}
-          </td>
-          <td>
-            <b>Ações:</b><br>
-            <button type="button" @click="onEdit(ad)"><i class="icon-edit"></i> Editar</button>
-            <button type="button" @click="onDelete(ad)"><i class="icon-delete"></i> Excluir</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <div v-else>
+      <p><strong>Nenhum anúncio cadastrado, ainda!!!</strong></p>
+      <p>
+        <router-link :to="{ name: 'criar-anuncio' }" class="btn btn-lg btn-warning" title="Anuncie sua vaga!">
+          Anuncie sua vaga!
+        </router-link>
+      </p>
+    </div>
   </div>
 </template>
 
@@ -39,19 +52,26 @@ export default {
   computed: {
     ads () {
       let ads = this.$store.state.ad.ads
-      if (!ads.data) {
-        return []
-      }
-      return ads.data
+      return ads.data || []
     }
   },
   methods: {
+    urlPhoto (photo) {
+      return this.$store.getters.urlPhoto(photo.id)
+    },
     onEdit (ad) {
       this.$router.push({ name: 'dashboard.meus-anuncios.edit', params: { id: ad.id } })
     },
     onDelete (ad) {
       if (confirm('Você tem certeza que deseja excluir este anúncio?')) {
-        console.log(ad)
+        this.$store.dispatch('deleteAd', ad.id).then((response) => {
+          if (response.ok) {
+            alert('O anúncio foi excluído com sucesso.')
+            this.$store.dispatch('getAdsUser')
+          } else {
+            console.log(response.statusText)
+          }
+        }, (error) => console.log(error))
       }
     }
   },
@@ -77,7 +97,7 @@ table tr td img {
   border-radius: 6px;
 }
 table tr td {
-  vertical-align: middle;
+  vertical-align: top;
   padding: 15px;
   border-color: #091e42;
 }

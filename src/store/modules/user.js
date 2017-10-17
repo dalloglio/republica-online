@@ -4,42 +4,38 @@ const ENDPOINT = process.env.API_VERSION + '/users'
 
 export default {
   state: {
-    users: [],
     user: {
-      address: {
-        zip_code: '',
-        street: '',
-        number: '',
-        sub_address: '',
-        neighborhood: '',
-        country: 'Brasil',
-        state: '',
-        city: '',
-        show_on_map: '0'
-      },
+      name: '',
+      address: {},
       photo: {}
+    },
+    favorites: []
+  },
+
+  getters: {
+    userName: state => {
+      let name = state.user.name
+      if (!name) {
+        return ''
+      }
+      let names = name.split(' ', 2)
+      return names.join(' ')
     }
   },
 
   mutations: {
-    setUsers (state, data) {
-      state.users = data
-    },
-
     setUser (state, data) {
       state.user = data
+    },
+
+    setUserFavorites (state, data) {
+      state.favorites = data
     }
   },
 
   actions: {
-    getUsers ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
-        commit('setUsers', response.body)
-      })
-    },
-
     getUser ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      Vue.http.get(process.env.API_VERSION + '/user').then((response) => {
         commit('setUser', response.body)
       })
     },
@@ -64,9 +60,9 @@ export default {
       })
     },
 
-    createUser ({ commit }, data) {
+    updateUser ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT, data).then((response) => {
+        Vue.http.put(process.env.API_VERSION + '/user', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
@@ -74,9 +70,9 @@ export default {
       })
     },
 
-    updateUser ({ commit }, params) {
+    updateUserPassword ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
+        Vue.http.patch(process.env.API_VERSION + '/user/password', data).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)
@@ -94,9 +90,24 @@ export default {
       })
     },
 
-    createUserPhoto ({ commit }, params) {
+    updateUserPhoto ({ commit }, data) {
       return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
+        Vue.http.post(process.env.API_VERSION + '/user/photo', data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    getUserFavorites ({ commit }) {
+      Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
+        commit('setUserFavorites', response.body)
+      })
+    },
+    deleteUserFavorite ({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        Vue.http.delete(process.env.API_VERSION + '/user/favorites/' + id).then((response) => {
           resolve(response)
         }, (error) => {
           reject(error)

@@ -7,7 +7,7 @@
     <div class="media">
       <div class="media-left">
         <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title">
-          <img :src="contact.ad.photo" :alt="contact.ad.title" class="media-object">
+          <img :src="contact.ad.photo.url" :alt="contact.ad.title" class="media-object">
         </router-link>
       </div>
       <div class="media-body">
@@ -19,11 +19,11 @@
           </div>
         </h4>
         <p><b>Mensagem de:</b><br>{{ contact.name }} [{{ contact.email }}]</p>
-        <p><b>Enviada em:</b><br>{{ contact.created_at }}</p>
-        <p><b>Telefone p/ contato:</b><br>{{ contact.phone }}</p>
+        <p><b>Enviada em:</b><br>{{ $date.toNice(contact.created_at) }}</p>
+        <p><b>Telefone p/ contato:</b><br>{{ $mask.phone(contact.phone) }}</p>
         <p><b>Mensagem:</b><br>{{ contact.message }}</p>
       </div>
-    </div>    
+    </div>
   </div>
 </template>
 
@@ -32,31 +32,33 @@ export default {
   name: 'dashboard-minhas-mensagens-show',
   computed: {
     contact () {
-      return {
-        id: 1,
-        name: 'Gustavo',
-        phone: '(99) 9 9999-9999',
-        email: 'gustavo@email.com',
-        message: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt veritatis, eius laboriosam reprehenderit quod aliquid id quaerat, repudiandae quos at sapiente vel maxime libero similique voluptate possimus. Odio, voluptatum, in?',
-        created_at: '2017-01-01 10:30:00',
-        ad: {
-          id: 1,
-          slug: 'anuncio-a',
-          title: 'Anúncio A',
-          photo: 'http://lorempixel.com/150/95/nature/1/'
-        }
-      }
+      return this.$store.state.ad.contact
     }
   },
   methods: {
     onBack () {
       this.$router.push({ name: 'dashboard.minhas-mensagens' })
     },
-    onDelete (ad) {
+    onDelete (contact) {
       if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
-        this.$router.push({ name: 'dashboard.minhas-mensagens' })
+        this.$store.dispatch('deleteAdContact', {
+          ad_id: this.$route.params.ad_id,
+          id: this.$route.params.id
+        }).then((response) => {
+          if (response.ok) {
+            this.$router.push({ name: 'dashboard.minhas-mensagens' })
+          }
+        }, (error) => {
+          console.log(error)
+        })
       }
     }
+  },
+  created () {
+    this.$store.dispatch('getAdContactUser', {
+      ad_id: this.$route.params.ad_id,
+      id: this.$route.params.id
+    })
   }
 }
 </script>
@@ -66,5 +68,10 @@ export default {
   font-weight: 800;
   border-bottom: 1px solid #091e42;
   padding-bottom: 10px;
+}
+.media .media-object {
+  width: 150px;
+  height: 95px;
+  border-radius: 6px;
 }
 </style>

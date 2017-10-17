@@ -5,8 +5,9 @@
         <li><router-link :to="{ name: 'sobre' }" title="Sobre">Sobre</router-link></li>
         <!-- <li><router-link :to="{ name: 'faq' }" title="Central de Ajuda">Central de Ajuda</router-link></li> -->
         <li><router-link :to="{ name: 'contato' }" title="Contato">Contato</router-link></li>
+        <li v-if="isAuthenticated"><router-link :to="{ name: 'dashboard.home' }" title="Minha Conta">Dashboard</router-link></li>
         <li v-if="isAuthenticated"><router-link :to="{ name: 'auth.logout' }" title="Sair">Sair</router-link></li>
-        <li v-else><router-link :to="{ name: 'auth.login' }" title="Login">Login</router-link></li>
+        <li v-if="!isAuthenticated"><router-link :to="{ name: 'auth.login' }" title="Login">Login</router-link></li>
       </ul>
       <div class="clearfix"></div>
       <router-link :to="{ name: 'criar-anuncio' }" class="btn btn-lg btn-warning pull-right" title="Anuncie sua vaga!">
@@ -21,7 +22,7 @@ export default {
   name: 'app-menu',
   computed: {
     isAuthenticated () {
-      return this.$store.state.auth.isAuthenticated
+      return this.$store.getters.isAuthenticated
     }
   }
 }

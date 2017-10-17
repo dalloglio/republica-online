@@ -5,8 +5,14 @@ export default {
     isAuthenticated: false
   },
 
+  getters: {
+    isAuthenticated: (state) => {
+      return state.isAuthenticated
+    }
+  },
+
   mutations: {
-    isAuthenticated (state, data) {
+    setAuthenticated (state, data) {
       state.isAuthenticated = data
     }
   },
@@ -15,18 +21,42 @@ export default {
     login ({ commit }, data) {
       return new Promise((resolve, reject) => {
         Vue.auth.login(data).then((response) => {
-          commit('isAuthenticated', response.status)
+          commit('setAuthenticated', true)
           resolve(response)
         }, (error) => {
-          commit('isAuthenticated', error.status)
+          commit('setAuthenticated', false)
           reject(error)
         })
       })
     },
 
     logout ({ commit }) {
-      commit('isAuthenticated', false)
       Vue.auth.logout()
+      commit('setAuthenticated', false)
+    },
+
+    passwordReset ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.auth.passwordReset(data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    passwordEmail ({ commit }, data) {
+      return new Promise((resolve, reject) => {
+        Vue.auth.passwordEmail(data).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
+      })
+    },
+
+    setAuthenticated ({commit}) {
+      commit('setAuthenticated', Vue.auth.isAuthenticated())
     }
   }
 }

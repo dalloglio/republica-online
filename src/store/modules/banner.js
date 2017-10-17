@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = process.env.API_VERSION + '/banners'
+const ENDPOINT = process.env.API_VERSION + '/site/banners'
 
 export default {
   state: {

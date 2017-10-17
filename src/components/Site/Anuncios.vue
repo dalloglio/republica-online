@@ -2,12 +2,18 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos 184 vagas pra você!</h2>
+        <h2>Encontramos {{ totalAds }} vagas pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
-        <select id="order-as" class="form-control input-lg">
+        <select
+        v-model="order"
+        id="order-as"
+        class="form-control input-lg"
+        @change="changeOrder()">
           <option value="">ordenar como:</option>
-          <option value="novos">mais novos</option>
-          <option value="antigos">mais antigos</option>
+          <option
+          v-for="item in orderOptions"
+          :key="item.value"
+          :value="item.value">{{ item.label }}</option>
         </select>
       </div>
       <div class="line"></div>
@@ -25,8 +31,8 @@
               </div>
             </div>
             <div class="row">
-              <div v-for="i in 24" class="col-xs-4">
-                <thumbnail></thumbnail>
+              <div v-for="ad in ads" class="col-xs-4">
+                <thumbnail :model="ad"></thumbnail>
               </div>
             </div>
             <div class="row">
@@ -44,49 +50,76 @@
 </template>
 
 <script>
-import BannerOutdoor from '@/components/Shared/BannerOutdoor'
-import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
-import Filtros from '@/components/Shared/Filtros'
-import FiltrosAplicados from '@/components/Shared/FiltrosAplicados'
-import Newsletter from '@/components/Shared/Newsletter'
-import Pagination from '@/components/Shared/Pagination'
-import Thumbnail from '@/components/Shared/Thumbnail'
-export default {
-  name: 'anuncios',
-  components: {
-    BannerOutdoor,
-    BannerMeiaPagina,
-    Filtros,
-    FiltrosAplicados,
-    Newsletter,
-    Pagination,
-    Thumbnail
-  },
-
-  computed: {
-    bannersHalfPage () {
-      let banners = this.$store.state.banner.bannersHalfPage
-      if (!banners) {
-        return []
-      }
-      return banners
+  import BannerOutdoor from '@/components/Shared/BannerOutdoor'
+  import BannerMeiaPagina from '@/components/Shared/BannerMeiaPagina'
+  import Filtros from '@/components/Shared/Filtros'
+  import FiltrosAplicados from '@/components/Shared/FiltrosAplicados'
+  import Newsletter from '@/components/Shared/Newsletter'
+  import Pagination from '@/components/Shared/Pagination'
+  import Thumbnail from '@/components/Shared/Thumbnail'
+  export default {
+    name: 'anuncios',
+    components: {
+      BannerOutdoor,
+      BannerMeiaPagina,
+      Filtros,
+      FiltrosAplicados,
+      Newsletter,
+      Pagination,
+      Thumbnail
     },
-    bannersOutdoor () {
-      let banners = this.$store.state.banner.bannersOutdoor
-      if (!banners) {
-        return [
-          { photo: {} }
+    data () {
+      return {
+        order: 'latest',
+        limit: 24,
+        paginate: true,
+        orderOptions = [
+          { value: 'latest', label: 'mais recentes' },
+          { value: 'oldest', label: 'mais antigos' }
         ]
       }
-      return banners
+    },
+    computed: {
+      ads () {
+        return this.$store.state.ad.latest || []
+      },
+      totalAds () {
+        return this.ads.length
+      },
+      bannersHalfPage () {
+        let banners = this.$store.state.banner.bannersHalfPage
+        if (!banners) {
+          return []
+        }
+        return banners
+      },
+      bannersOutdoor () {
+        let banners = this.$store.state.banner.bannersOutdoor
+        if (!banners) {
+          return [
+            { photo: {} }
+          ]
+        }
+        return banners
+      }
+    },
+    methods: {
+      changeOrder () {
+        this.paginate()
+      },
+      paginate () {
+        this.$store.dispatch('getAds', {
+          limit: this.limit,
+          order: this.order,
+          paginate: this.paginate
+        })
+      }
+    },
+    created () {
+      this.$store.dispatch('getBannersHalfPage', {})
+      this.$store.dispatch('getBannersOutdoor', {})
     }
-  },
-
-  created () {
-    this.$store.dispatch('getBannersHalfPage', {})
-    this.$store.dispatch('getBannersOutdoor', {})
   }
-}
 </script>
 
 <style scoped>

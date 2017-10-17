@@ -1,6 +1,6 @@
 import Vue from 'vue'
 
-const ENDPOINT = process.env.API_VERSION + '/partners'
+const ENDPOINT = process.env.API_VERSION + '/site/partners'
 
 export default {
   state: {
@@ -28,8 +28,10 @@ export default {
   },
 
   actions: {
-    getPartners ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
+    getPartners ({ commit }, params) {
+      Vue.http.get(ENDPOINT, {
+        params
+      }).then((response) => {
         commit('setPartners', response.body)
       })
     },
@@ -37,46 +39,6 @@ export default {
     getPartner ({ commit }, id) {
       Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setPartner', response.body)
-      })
-    },
-
-    createPartner ({ commit }, data) {
-      return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT, data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    updatePartner ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        Vue.http.put(ENDPOINT + '/' + params.id, params.data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    deletePartner ({ commit }, id) {
-      return new Promise((resolve, reject) => {
-        Vue.http.delete(ENDPOINT + '/' + id).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
-      })
-    },
-
-    createPartnerPhoto ({ commit }, params) {
-      return new Promise((resolve, reject) => {
-        Vue.http.post(ENDPOINT + '/' + params.id + '/photos', params.data).then((response) => {
-          resolve(response)
-        }, (error) => {
-          reject(error)
-        })
       })
     }
   }

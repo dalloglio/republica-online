@@ -1,7 +1,7 @@
 <template>
   <div class="thumbnail-simple">
     <a :href="item.link" :title="item.title" class="thumbnail" target="_blank">
-      <img :src="item.photo.url" :alt="item.title">
+      <img :src="url" :alt="item.title">
     </a>
   </div>
 </template>
@@ -16,6 +16,11 @@ export default {
         return {}
       },
       required: true
+    }
+  },
+  computed: {
+    url (id) {
+      return this.$store.getters.urlPhoto(this.item.photo.id)
     }
   }
 }

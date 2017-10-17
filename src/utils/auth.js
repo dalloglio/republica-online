@@ -2,6 +2,8 @@ import router from '@/router'
 
 const TOKEN_NAME = 'token'
 const OAUTH_TOKEN_URI = process.env.API_URL + '/oauth/token'
+const PASSWORD_EMAIL_URI = process.env.API_VERSION + '/password/email'
+const PASSWORD_RESET_URI = process.env.API_VERSION + '/password/reset'
 const LOGIN_REDIRECT = 'dashboard.home'
 const LOGOUT_REDIRECT = 'auth.login'
 
@@ -43,6 +45,31 @@ export default {
       logout () {
         this.destroyToken()
         router.push({ name: LOGOUT_REDIRECT })
+      },
+
+      passwordReset (user) {
+        return new Promise((resolve, reject) => {
+          Vue.http.post(PASSWORD_RESET_URI, {
+            email: user.email,
+            password: user.password,
+            password_confirmation: user.password_confirmation,
+            token: user.token
+          }).then((response) => {
+            resolve(response)
+          }, (error) => {
+            reject(error)
+          })
+        })
+      },
+
+      passwordEmail (user) {
+        return new Promise((resolve, reject) => {
+          Vue.http.post(PASSWORD_EMAIL_URI, { email: user.email }).then((response) => {
+            resolve(response)
+          }, (error) => {
+            reject(error)
+          })
+        })
       },
 
       setToken (token) {

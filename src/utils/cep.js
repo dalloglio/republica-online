@@ -7,20 +7,30 @@ export default {
 
       pesquisar (cep, formulario) {
         cep = cep.replace(/\D/g, '')
-
-        if (!cep) return
-        if (cep.length !== 8) return
-
-        let url = ENDPOINT.replace(xxxxxxxx, cep)
-
-        Vue.http.get(url, {
-          before: function (request) {
-            delete request.headers.map.Authorization
+        return new Promise((resolve, reject) => {
+          if (!cep) {
+            reject('O cep não foi informado.')
+          } else if (cep.length !== 8) {
+            reject('O formato do cep é inválido.')
+          } else {
+            let url = ENDPOINT.replace(xxxxxxxx, cep)
+            Vue.http.get(url, {
+              before: function (request) {
+                delete request.headers.map.Authorization
+              }
+            }).then((response) => {
+              if (response.body.status === 400) {
+                reject(response)
+              } else if (response.body.erro === true) {
+                reject('Cep não encontrado.')
+              } else {
+                this.completarFormulario(formulario, response.body)
+                resolve(response)
+              }
+            }, (error) => {
+              reject(error)
+            })
           }
-        }).then((response) => {
-          if (response.body.status === 400) return
-          if (response.body.erro === true) return
-          this.completarFormulario(formulario, response.body)
         })
       },
 

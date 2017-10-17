@@ -2,30 +2,67 @@
     <div class="dashboard-menu">
         <div class="panel">
             <div class="panel-avatar">
-                <a href="" title="Avatar" class="avatar">
-                    <img src="https://randomuser.me/api/portraits/men/81.jpg" alt="Avatar">
-                </a>
+                <router-link :to="{ name: 'dashboard.minha-conta' }" :title="user.name" class="avatar">
+                    <img v-if="avatar" :src="avatar" :alt="user.name">
+                    <img v-else src="http://via.placeholder.com/120?text=+" :alt="user.name">
+                </router-link>
                 <div class="edit-photo">
-                    <input type="file" id="edit-photo">
+                    <input type="file" name="edit-photo" id="edit-photo" @change="onChangeAvatar" accept="image/*">
                     <label for="edit-photo">
                         <span class="glyphicon glyphicon-camera"></span>
                         editar foto
                     </label>
                 </div>
-                <h4>Francisco Antunes</h4>
-                <p>membro desde: 14/05/2017</p>
+                <h4>{{ name }}</h4>
+                <p>membro desde: {{ $date.toDateBr(user.created_at) }}</p>
             </div>
             <div class="panel-body">
                 <ul class="nav">
+                    <li><router-link :to="{ name: 'dashboard.home' }">Início <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.minha-conta' }">Meu Cadastro <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.meus-anuncios' }">Meus Anúncios <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.minhas-mensagens' }">Minhas Mensagens <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                     <li><router-link :to="{ name: 'dashboard.meus-favoritos' }">Meus Favoritos <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
+                    <li><router-link :to="{ name: 'auth.logout' }">Sair <span class="glyphicon glyphicon-menu-right"></span></router-link></li>
                 </ul>
             </div>
         </div>
     </div>
 </template>
+
+<script>
+export default {
+  name: 'dashboard-menu',
+  data () {
+    return {
+      avatar: ''
+    }
+  },
+  methods: {
+    onChangeAvatar (e) {
+      let file = e.target.files[0]
+      this.avatar = URL.createObjectURL(file)
+      let formData = new FormData()
+      formData.append('photo', file)
+      this.$store.dispatch('updateUserPhoto', formData).then((response) => {
+        console.log(file)
+      })
+    }
+  },
+  computed: {
+    user () {
+      let user = this.$store.state.user.user
+      if (user.photo) {
+        this.avatar = this.$store.getters.urlPhoto(user.photo.id)
+      }
+      return user
+    },
+    name () {
+      return this.$store.getters.userName
+    }
+  }
+}
+</script>
 
 <style scoped>
 .panel {
@@ -53,13 +90,22 @@
   width: 140px;
   height: 140px;
   border: 10px solid #f4f7f9;
+  background-color: #091e42;
   border-radius: 50%;
   overflow: hidden;
 }
 .panel-avatar .avatar img {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  -moz-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  -o-transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  transform: translateX(-50%);
   display: block;
   margin: 0 auto;
-  max-width: 100%;
+  height: 100%;
 }
 .panel-avatar .edit-photo {
   position: absolute;
@@ -90,6 +136,9 @@
   border-bottom: 1px solid #091e42;
   background-color: transparent;
   color: #091e42;
+}
+.nav > li:last-child > a {
+  border-bottom: 0 none;
 }
 .nav > li > a:hover,
 .nav > li > a:focus {

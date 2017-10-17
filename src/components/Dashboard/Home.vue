@@ -1,6 +1,6 @@
 <template>
   <div class="dashboard-home">
-    <h2><span>Ricardo Pires</span>, esta é sua dashboard!</h2>
+    <h2><span>{{ name }}</span>, esta é sua dashboard!</h2>
     <p>Aqui você encontrará todas as informações de sua conta, anúncios e mensagens.</p>
     <div class="line"></div>
 
@@ -28,6 +28,11 @@ export default {
     ContadorComunidades,
     ContadorMensagens,
     ContadorRepublicas
+  },
+  computed: {
+    name () {
+      return this.$store.getters.userName
+    }
   }
 }
 </script>
