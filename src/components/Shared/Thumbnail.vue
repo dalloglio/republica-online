@@ -3,7 +3,7 @@
     <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title">
       <div class="image">
         <img v-if="urlPhoto" :src="urlPhoto" :alt="ad.title">
-        <img v-else src="http://via.placeholder.com/263x175text=+" :alt="ad.title">
+        <img v-else src="http://via.placeholder.com/263x175&text=+" :alt="ad.title">
       </div>
       <span class="label label-success price">
         <currency :price="ad.price"></currency>
@@ -115,6 +115,10 @@ export default {
   font-size: 18px;
   font-weight: 800;
   margin-top: 10px;
+  width: auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .thumbnail .caption h3 small {
   display: block;
