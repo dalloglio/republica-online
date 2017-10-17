@@ -2,7 +2,7 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos {{ paginator.total }} vagas pra você!</h2>
+        <h2>Encontramos {{ paginator.total || 0 }} vagas pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
         <select
         v-model="order"
