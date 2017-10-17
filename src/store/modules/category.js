@@ -21,8 +21,10 @@ export default {
   },
 
   actions: {
-    getCategories ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
+    getCategories ({ commit }, params) {
+      Vue.http.get(ENDPOINT, {
+        params
+      }).then((response) => {
         commit('setCategories', response.body)
       })
     },

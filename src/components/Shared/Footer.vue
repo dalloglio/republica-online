@@ -2,7 +2,7 @@
   <footer>
     <div class="container">
       <div class="row">
-        <div class="col-xs-3">
+        <div class="col-xs-4">
           <h4 class="text-uppercase">Institucional</h4>
           <ul class="list-unstyled">
             <li><router-link :to="{ name: 'sobre' }" title='Sobre nós'>Sobre nós</router-link></li>
@@ -12,7 +12,7 @@
           </ul>
         </div>
 
-        <div class="col-xs-3">
+        <div class="col-xs-4">
           <h4 class="text-uppercase">Fale Conosco</h4>
           <ul class="list-unstyled">
             <li><router-link :to="{ name: 'contato' }" title='Contato'>Contato</router-link></li>
@@ -22,7 +22,7 @@
           </ul>
         </div>
 
-        <div class="col-xs-3">
+        <div v-if="false" class="col-xs-4">
           <h4 class="text-uppercase">Saiba mais</h4>
           <ul class="list-unstyled">
             <li><router-link :to="{ name: 'home' }" title='Internet'>Internet</router-link></li>
@@ -33,14 +33,12 @@
           </ul>
         </div>
 
-        <div class="col-xs-3">
+        <div v-if="categories.length" class="col-xs-4">
           <h4 class="text-uppercase">Categorias</h4>
           <ul class="list-unstyled">
-            <li><router-link :to="{ name: 'home' }" title='Repúblicas'>Repúblicas</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Casas'>Casas</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Apartamentos'>Apartamentos</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Kitnetes'>Kitnetes</router-link></li>
-            <li><router-link :to="{ name: 'home' }" title='Hotéis'>Hotéis</router-link></li>
+            <li v-for="category in categories" :key="category.id">
+              <router-link :to="{ name: 'anuncios.category', params: { category: category.slug } }" :title="category.title">{{ category.title }}</router-link>
+            </li>
           </ul>
         </div>
       </div>
@@ -106,48 +104,56 @@
 </template>
 
 <script>
-export default {
-  name: 'app-footer'
-}
+  export default {
+    name: 'app-footer',
+    computed: {
+      categories () {
+        return this.$store.state.category.categories || []
+      }
+    },
+    created () {
+      this.$store.dispatch('getCategories')
+    }
+  }
 </script>
 
 <style scoped>
-footer {
-  background-color: #f4f7f9;
-  padding: 30px 0 0px;
-}
-h4 {
-  font-weight: 800;
-  font-size: 18px;
-}
-ul {
-  margin-bottom: 30px;
-}
-ul > li  {
-  margin-bottom: 10px;
-}
-ul > li > a {
-  color: #091e42;
-}
+  footer {
+    background-color: #f4f7f9;
+    padding: 30px 0 0px;
+  }
+  h4 {
+    font-weight: 800;
+    font-size: 18px;
+  }
+  ul {
+    margin-bottom: 30px;
+  }
+  ul > li  {
+    margin-bottom: 10px;
+  }
+  ul > li > a {
+    color: #091e42;
+  }
 
-#payment {
-  padding: 20px 0;
-  background-color: #fff;
-}
-#payment .bandeira {
-  margin-right: 20px;
-}
+  #payment {
+    padding: 20px 0;
+    background-color: #fff;
+  }
+  #payment .bandeira {
+    margin-right: 20px;
+  }
 
-#copyright {
-  background-color: #fff;
-  font-size: 12px;
-  color: #757575;
-}
-#copyright hr {
-  margin-top: 0;
-}
-#copyright a {
-  color: #757575;
-  font-weight: 600;
-}
+  #copyright {
+    background-color: #fff;
+    font-size: 12px;
+    color: #757575;
+  }
+  #copyright hr {
+    margin-top: 0;
+  }
+  #copyright a {
+    color: #757575;
+    font-weight: 600;
+  }
 </style>
