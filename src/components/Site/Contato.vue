@@ -53,7 +53,8 @@
                                   data-vv-as="nome"
                                   data-vv-rules="required|min:11|max:15"
                                   v-validate
-                                  required>
+                                  required
+                                  v-mask="'(99) 99999-9999'">
                                   <span v-if="errors.has('phone')" class="help-block">* {{ errors.first('phone') }}</span>
                               </div>
 
@@ -141,8 +142,12 @@
 </template>
 
 <script>
+import AwesomeMask from 'awesome-mask'
 export default {
   name: 'contato',
+  directives: {
+    'mask': AwesomeMask
+  },
   data () {
     return {
       loading: false,
@@ -179,6 +184,9 @@ export default {
             this.contact.message = ''
             let self = this
             setTimeout(() => {
+              this.errors.clear()
+            }, 100)
+            setTimeout(() => {
               self.contact.ok = ''
             }, 10000)
           }, (error) => {
@@ -212,5 +220,11 @@ export default {
 }
 .page .content p {
   line-height: 30px;
+}
+.page .form-group {
+  position: relative;
+}
+.page .form-group .help-block {
+  position: absolute;
 }
 </style>
