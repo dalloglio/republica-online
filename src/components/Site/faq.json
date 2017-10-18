@@ -1,0 +1,45 @@
+[{
+  "id": 1,
+  "title": "O que é o republica.online?",
+  "description": "O republica.online é uma plataforma para divulgação, busca e organização de moradias em todo o Brasil. Além disso, o republica.online também possui uma seção de classificados."
+}, {
+  "id": 2,
+  "title": "Qual o custo do serviço?",
+  "description": "Nada! Nosso site é totalmente gratuito! Assim você terá mais para gastar com o que realmente importa, VOCÊ!"
+}, {
+  "id": 3,
+  "title": "Como faço para anunciar no site?",
+  "description": "Para anunciar no nosso site basta criar uma conta e depois clicar no botão “Criar novo anúncio”. Simples, não?"
+}, {
+  "id": 4,
+  "title": "Preciso ter um cadastro para buscar algo no site?",
+  "description": "Não. Mas você vai precisar se cadastrar se quiser entrar em contato com nossos anunciantes."
+}, {
+  "id": 5,
+  "title": "Tenho um dúvida/problema. Como posso entrar em contato?",
+  "description": "Manda um e-mail pra gente: ixi@republica.online (socorro@...) responderemos seu e-mail assim que possível! Não demora mais que 48 hrs viu? :)"
+}, {
+  "id": 6,
+  "title": "Tenho uma sugestão. Como posso entrar em contato?",
+  "description": "Manda um e-mail pra gente no: falae@republica.online. Vamos analisar sua sugestão e entrar em contato com você assim que possível! Ah, não esquece de começar o campo “Assunto” do e-mail com a tag “SUGESTÃO”."
+}, {
+  "id": 7,
+  "title": "Por que vocês vendem anúncios?",
+  "description": "Vendemos anúncios para poder trazer aos usuários o melhor serviço possível sem cobrar nada por isso."
+}, {
+  "id": 8,
+  "title": "Quero ter um espaço publicitário no site. Qualquer um pode contratar?",
+  "description": "Sim. Você pode entrar em contato pelo e-mail: comercial@republica.online."
+}, {
+  "id": 9,
+  "title": "Quero trabalhar com vocês. Tem alguma vaga?",
+  "description": "Manda um e-mail pra contato@republica.online. Vamos analisar seu curriculum e entrar em contato se alguma vaga estiver disponível."
+}, {
+  "id": 10,
+  "title": "O site de vocês é O MELHOR! Quero fazer uma parceria entre nossas entidades. É possível?",
+  "description": "Siiim! É só mandar um e-mail para parceiros@republica.online. No campo “Assunto” do e-mail, você tem que colocar o nome da sua universidade e de qual entidade estudantil você faz parte."
+}, {
+  "id": 11,
+  "title": "Bolacha ou biscoito? Toddy ou Nescau?",
+  "description": "Nossos advogados nos aconselharam a não responder essa pergunta. Não serão emitidas outras notas sobre o assunto. Agradecemos a compreensão."
+}]
