@@ -7,14 +7,36 @@
 
       <ul class="list-group">
 
+        <!-- Category -->
+        <li
+        v-if="category.id"
+        class="list-group-item">
+          <span :title="category.title">{{ category.title }}</span>
+          <router-link
+          :to="{
+            name: routeName('category'),
+            params: routeParams('category'),
+            query: routeQuery('category')
+          }"
+          title="Remover"
+          class="pull-right">
+            <span class="glyphicon glyphicon-trash"></span>
+          </router-link>
+        </li>
+
         <!-- Estado -->
         <li
         v-if="estado.ID"
         class="list-group-item">
           <span :title="estado.Nome">{{ estado.Nome }}</span>
-          <a title="Remover" class="pull-right">
+          <router-link
+          :to="{
+            query: routeQuery('state')
+          }"
+          title="Remover"
+          class="pull-right">
             <span class="glyphicon glyphicon-trash"></span>
-          </a>
+          </router-link>
         </li>
 
         <!-- Cidade -->
@@ -22,19 +44,14 @@
         v-if="cidade.ID"
         class="list-group-item">
           <span :title="cidade.Nome">{{ cidade.Nome }}</span>
-          <a title="Remover" class="pull-right">
+          <router-link
+          :to="{
+            query: routeQuery('city')
+          }"
+          title="Remover"
+          class="pull-right">
             <span class="glyphicon glyphicon-trash"></span>
-          </a>
-        </li>
-
-        <!-- Category -->
-        <li
-        v-if="category.id"
-        class="list-group-item">
-          <span :title="category.title">{{ category.title }}</span>
-          <a title="Remover" class="pull-right">
-            <span class="glyphicon glyphicon-trash"></span>
-          </a>
+          </router-link>
         </li>
 
         <!-- Filters -->
@@ -43,9 +60,14 @@
         v-if="hasFilter(filter)"
         class="list-group-item">
           <span :title="filter.title">{{ getFilterValue(filter) }}</span>
-          <a title="Remover" class="pull-right">
+          <router-link
+          :to="{
+            query: routeQuery('filter', filter)
+          }"
+          title="Remover"
+          class="pull-right">
             <span class="glyphicon glyphicon-trash"></span>
-          </a>
+          </router-link>
         </li>
 
         <!-- Prices -->
@@ -53,9 +75,14 @@
         v-if="priceFormatted"
         class="list-group-item">
           <span :title="priceFormatted">{{ priceFormatted }}</span>
-          <a title="Remover" class="pull-right">
+          <router-link
+          :to="{
+            query: routeQuery('price')
+          }"
+          title="Remover"
+          class="pull-right">
             <span class="glyphicon glyphicon-trash"></span>
-          </a>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -94,9 +121,54 @@
         } else if (priceMax) {
           return 'Até ' + window.numeral(priceMax).format(format)
         }
+      },
+      preparedRoute () {
+        return {
+          name: this.$route.name,
+          params: this.$route.params,
+          query: this.$route.query
+        }
       }
     },
     methods: {
+      routeName (type) {
+        let name = this.$route.name
+        if (type === 'category') {
+          name = 'anuncios'
+        }
+        return name
+      },
+      routeParams (type) {
+        let params = Object.assign({}, this.$route.params)
+        if (type === 'category') {
+          delete params.category_id
+          delete params.category
+        }
+        return params
+      },
+      routeQuery (type, filter) {
+        let query = Object.assign({}, this.$route.query)
+        let order = query.order
+        if (type === 'category') {
+          query = {}
+          if (order) {
+            query.order = order
+          }
+        } else if (type === 'state') {
+          delete query.uf
+          delete query.cidade
+        } else if (type === 'city') {
+          delete query.cidade
+        } else if (type === 'filter') {
+          delete query[filter.slug]
+        } else if (type === 'price') {
+          delete query.price_min
+          delete query.price_max
+        } else {
+          delete query[type]
+        }
+        return query
+      },
       hasFilter (filter) {
         return this.$route.query[filter.slug] || false
       },

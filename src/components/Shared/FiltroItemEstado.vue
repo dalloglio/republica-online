@@ -53,9 +53,9 @@ export default {
     },
     routeQuery (val) {
       let query = {}
-      // Object.keys(this.$route.query).map((key) => {
-      //   query[key] = this.$route.query[key]
-      // })
+      Object.keys(this.$route.query).map((key) => {
+        query[key] = this.$route.query[key]
+      })
       query.uf = val
       return query
     }
