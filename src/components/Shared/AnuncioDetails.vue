@@ -13,6 +13,7 @@
         <p v-for="(detail, i) in details" class="detail" :key="i">
           <i :class="`icon ${detail.filter_icon}`"></i> {{ detail ? detail.value : '-' }}
         </p>
+        <favorite-button :ad="ad" class="btn btn-lg btn-block btn-warning"></favorite-button>
       </div>
     </div>
   </div>
@@ -20,10 +21,12 @@
 
 <script>
   import Currency from '@/components/Shared/Currency'
+  import FavoriteButton from '@/components/Shared/FavoriteButton'
   export default {
     name: 'anuncio-details',
     components: {
-      Currency
+      Currency,
+      FavoriteButton
     },
     props: {
       ad: {
