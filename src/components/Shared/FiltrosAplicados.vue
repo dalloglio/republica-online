@@ -90,9 +90,9 @@
         if (priceMin && priceMax) {
           return window.numeral(priceMin).format(format) + ' até ' + window.numeral(priceMax).format(format)
         } else if (priceMin) {
-          return window.numeral(priceMin).format(format)
+          return 'A partir de ' + window.numeral(priceMin).format(format)
         } else if (priceMax) {
-          return window.numeral(priceMax).format(format)
+          return 'Até ' + window.numeral(priceMax).format(format)
         }
       }
     },
