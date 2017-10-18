@@ -159,8 +159,8 @@ export default {
       loadingLogin: false,
       loadingRegister: false,
       login: {
-        username: 'ricardo.tech@live.com',
-        password: '123456',
+        username: '',
+        password: '',
         remember_me: false
       },
       register: {
