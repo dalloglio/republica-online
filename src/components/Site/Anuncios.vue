@@ -21,7 +21,7 @@
         <div class="row">
           <div class="col-xs-3">
             <filtros-aplicados></filtros-aplicados>
-            <filtros></filtros>
+            <filtros :filters="filters"></filtros>
             <banner-meia-pagina v-for="bannerHalfPage in bannersHalfPage" :key="bannerHalfPage.id" :banner="bannerHalfPage"></banner-meia-pagina>
           </div>
           <div class="col-xs-9">
@@ -91,6 +91,9 @@
       category () {
         return this.$store.state.category.category || {}
       },
+      filters () {
+        return this.category.filters || []
+      },
       paginator () {
         let ads = this.$store.state.ad.ads || []
         return ads
@@ -114,7 +117,11 @@
     },
     methods: {
       changeOrder () {
-        this.$router.push({ name: this.$route.name, query: { order: this.order } })
+        if (this.order === '') {
+          this.$router.push({ name: this.$route.name })
+        } else {
+          this.$router.push({ name: this.$route.name, query: { order: this.order } })
+        }
       },
       paginate () {
         let params = {}
@@ -133,6 +140,17 @@
         if (this.$route.query.cidade) {
           params.cidade = this.$route.query.cidade
         }
+
+        let filters = {}
+        this.filters.forEach((filter) => {
+          if (this.$route.query[filter.slug]) {
+            filters[filter.slug] = this.$route.query[filter.slug]
+          }
+        })
+        if (Object.keys(filters).length) {
+          params.filters = JSON.stringify(filters)
+        }
+
         this.$store.dispatch('getAds', params)
       }
     },

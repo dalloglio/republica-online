@@ -5,7 +5,7 @@
       <div class="panel-heading">
         <h4 class="panel-title">
           <a :class="{ 'collapsed': collapsed }" data-toggle="collapse" :href="'#' + panelCollapseID">
-            {{ title }}<span class="glyphicon"></span>
+            {{ filter.title }}<span class="glyphicon"></span>
           </a>
         </h4>
       </div>
@@ -13,9 +13,15 @@
       <div :id="panelCollapseID" :class="{ 'panel-collapse' : true, 'collapse': true, 'in': !collapsed }">
         <div class="panel-body">
           <ul class="list-unstyled">
-            <li><a href="" title="Individual">Individual</a></li>
-            <li><a href="" title="Compartilhado">Compartilhado</a></li>
-            <li><a href="" title="Suíte">Suíte</a></li>
+            <li v-for="(val, key) in values" :key="key">
+              <router-link
+              :to="{
+                name: routeName(),
+                params: routeParams(),
+                query: routeQuery(key)
+              }"
+              :title="val">{{ val }}</router-link>
+            </li>
           </ul>
         </div>
       </div>
@@ -32,7 +38,26 @@ export default {
       collapsed: !this.open
     }
   },
+  methods: {
+    routeName () {
+      return this.$route.name
+    },
+    routeParams () {
+      return this.$route.params
+    },
+    routeQuery (val) {
+      let query = {}
+      Object.keys(this.$route.query).map((key) => {
+        query[key] = this.$route.query[key]
+      })
+      query[this.filter.slug] = val
+      return query
+    }
+  },
   computed: {
+    values () {
+      return this.filter.values || []
+    },
     headID () {
       return 'heading-' + this.id
     },
@@ -41,6 +66,10 @@ export default {
     }
   },
   props: {
+    filter: {
+      type: Object,
+      required: true
+    },
     open: {
       type: Boolean,
       default: false
@@ -51,10 +80,6 @@ export default {
     },
     id: {
       type: Number,
-      required: true
-    },
-    title: {
-      type: String,
       required: true
     }
   }
