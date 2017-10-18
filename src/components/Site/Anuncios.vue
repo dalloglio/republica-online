@@ -152,6 +152,12 @@
         if (this.$route.query.cidade) {
           params.cidade = this.$route.query.cidade
         }
+        if (this.$route.query.price_min) {
+          params.price_min = this.$route.query.price_min
+        }
+        if (this.$route.query.price_max) {
+          params.price_max = this.$route.query.price_max
+        }
 
         let filters = {}
         this.filters.forEach((filter) => {

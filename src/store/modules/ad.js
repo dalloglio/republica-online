@@ -7,6 +7,12 @@ export default {
     ads: [],
     ad: {},
     latest: [],
+    filters: {
+      prices: {},
+      categories: [],
+      estados: [],
+      cidades: []
+    },
     contact: {
       ad: {
         photo: {}
@@ -29,6 +35,22 @@ export default {
 
     setLatest (state, data) {
       state.latest = data
+    },
+
+    setAdsFilterPrices (state, data) {
+      state.filters.prices = data
+    },
+
+    setAdsFilterCategories (state, data) {
+      state.filters.categories = data
+    },
+
+    setAdsFilterStates (state, data) {
+      state.filters.estados = data
+    },
+
+    setAdsFilterCities (state, data) {
+      state.filters.cidades = data
     }
   },
 
@@ -75,6 +97,26 @@ export default {
         params
       }).then((response) => {
         commit('setLatest', response.body)
+      })
+    },
+    getAdsFilterPrices ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/prices').then((response) => {
+        commit('setAdsFilterPrices', response.body)
+      })
+    },
+    getAdsFilterCategories ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/categories').then((response) => {
+        commit('setAdsFilterCategories', response.body)
+      })
+    },
+    getAdsFilterStates ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/states').then((response) => {
+        commit('setAdsFilterStates', response.body)
+      })
+    },
+    getAdsFilterCities ({ commit }, id) {
+      Vue.http.get(ENDPOINT + '/states/' + id + '/cities').then((response) => {
+        commit('setAdsFilterCities', response.body)
       })
     },
     createAd ({ commit }, data) {

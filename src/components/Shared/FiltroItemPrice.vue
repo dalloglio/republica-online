@@ -14,10 +14,22 @@
         <div class="panel-body">
           <form autocomplete="off" @submit.prevent="onSubmit">
             <div class="form-group">
-              <input v-model.trim="price.from" type="text" class="form-control input-lg" maxlength="10" placeholder="De:">
+              <input
+              v-model.trim="price.min"
+              type="tel"
+              class="form-control input-lg"
+              minlength="1"
+              maxlength="9"
+              placeholder="De:">
             </div>
             <div class="form-group">
-              <input v-model.trim="price.to" type="text" class="form-control input-lg" maxlength="10" placeholder="Até:">
+              <input
+              v-model.trim="price.max"
+              type="tel"
+              class="form-control input-lg"
+              minlength="1"
+              maxlength="9"
+              placeholder="Até:">
             </div>
             <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Aplicar!</button>
           </form>
@@ -35,17 +47,55 @@ export default {
     return {
       collapsed: !this.open,
       price: {
-        from: '',
-        to: ''
+        min: this.$route.query.price_min || '',
+        max: this.$route.query.price_max || ''
       }
     }
   },
+  created () {
+    this.$store.dispatch('getAdsFilterPrices')
+  },
   methods: {
+    routeName () {
+      return this.$route.name
+    },
+    routeParams () {
+      return this.$route.params
+    },
+    routeQuery () {
+      let query = {}
+      Object.keys(this.$route.query).map((key) => {
+        query[key] = this.$route.query[key]
+      })
+
+      if (query.price_min) {
+        delete query.price_min
+      }
+      if (query.price_max) {
+        delete query.price_max
+      }
+
+      if (this.price.min) {
+        query.price_min = this.price.min
+      }
+      if (this.price.max) {
+        query.price_max = this.price.max
+      }
+      return query
+    },
     onSubmit () {
-      this.$router.push({ name: 'anuncios' })
+      this.$router.push({
+        name: this.routeName(),
+        params: this.routeParams(),
+        query: this.routeQuery()
+      })
     }
   },
   computed: {
+    prices () {
+      let prices = this.$store.state.ad.filters.prices || { min: 0, max: 999999999 }
+      return prices
+    },
     headID () {
       return 'heading-' + this.id
     },
