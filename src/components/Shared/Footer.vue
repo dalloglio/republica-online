@@ -37,7 +37,9 @@
           <h4 class="text-uppercase">Categorias</h4>
           <ul class="list-unstyled">
             <li v-for="category in categories" :key="category.id">
-              <router-link :to="{ name: 'anuncios.category', params: { category: category.slug } }" :title="category.title">{{ category.title }}</router-link>
+              <router-link
+              :to="{ name: 'anuncios.category', params: { category: category.slug, category_id: category.id } }"
+              :title="category.title">{{ category.title }}</router-link>
             </li>
           </ul>
         </div>

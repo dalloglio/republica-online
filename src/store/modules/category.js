@@ -33,6 +33,12 @@ export default {
       Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setCategory', response.body)
       })
+    },
+
+    getCategoryBySlug ({ commit }, slug) {
+      Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
+        commit('setCategory', response.body)
+      })
     }
   }
 }

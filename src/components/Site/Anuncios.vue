@@ -78,7 +78,6 @@
       return {
         page: 1,
         order: 'latest',
-        limit: 24,
         orderOptions: [
           { value: 'latest', label: 'mais recentes' },
           { value: 'oldest', label: 'mais antigos' }
@@ -88,6 +87,9 @@
     computed: {
       ads () {
         return this.$store.state.ad.ads.data || []
+      },
+      category () {
+        return this.$store.state.category.category || {}
       },
       paginator () {
         let ads = this.$store.state.ad.ads || []
@@ -115,17 +117,32 @@
         this.$router.push({ name: this.$route.name, query: { order: this.order } })
       },
       paginate () {
-        this.$store.dispatch('getAds', {
-          page: this.$route.query.page || this.page,
-          limit: this.limit,
-          order: this.$route.query.order || this.order
-        })
+        let params = {}
+        if (this.$route.query.page) {
+          params.page = this.$route.query.page
+        }
+        if (this.order) {
+          params.order = this.order
+        }
+        if (this.$route.params.category_id) {
+          params.category = this.$route.params.category_id
+        }
+        if (this.$route.query.uf) {
+          params.uf = this.$route.query.uf
+        }
+        if (this.$route.query.cidade) {
+          params.cidade = this.$route.query.cidade
+        }
+        this.$store.dispatch('getAds', params)
       }
     },
     created () {
-      this.paginate()
+      if (this.$route.params.category_id) {
+        this.$store.dispatch('getCategory', this.$route.params.category_id)
+      }
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
+      this.paginate()
     },
     beforeDestroy () {
       this.$store.commit('setAds', [])
