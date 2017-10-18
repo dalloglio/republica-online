@@ -6,6 +6,8 @@ import app from './modules/app'
 import auth from './modules/auth'
 import banner from './modules/banner'
 import category from './modules/category'
+import cidade from './modules/cidade'
+import estado from './modules/estado'
 import filter from './modules/filter'
 import form from './modules/form'
 import partner from './modules/partner'
@@ -21,6 +23,8 @@ export const store = new Vuex.Store({
     auth,
     banner,
     category,
+    cidade,
+    estado,
     filter,
     form,
     partner,

@@ -1,3 +1,5 @@
+import { store } from '@/store'
+
 const xxxxxxxx = 'xxxxxxxx'
 const ENDPOINT = 'https://viacep.com.br/ws/' + xxxxxxxx + '/json/'
 
@@ -35,11 +37,27 @@ export default {
       },
 
       completarFormulario (formulario, data) {
-        if (data.bairro) formulario.neighborhood = data.bairro
-        if (data.logradouro) formulario.street = data.logradouro
-        if (data.complemento) formulario.sub_address = data.complemento
-        if (data.localidade) formulario.city = data.localidade
-        if (data.uf) formulario.state = data.uf
+        store.dispatch('getEstados').then(() => {
+          store.dispatch('getCidades').then(() => {
+            if (data.bairro) formulario.neighborhood = data.bairro
+            if (data.logradouro) formulario.street = data.logradouro
+            if (data.complemento) formulario.sub_address = data.complemento
+            if (data.localidade) formulario.city = data.localidade
+            if (data.uf) formulario.state = data.uf
+
+            let estado = store.getters.getEstadoBySigla(data.uf)
+            if (estado) {
+              formulario.state_id = estado.ID
+              formulario.state_initials = estado.Sigla
+              formulario.state = estado.Nome
+            }
+
+            let cidade = store.getters.getCidadeByNome(data.localidade)
+            if (cidade) {
+              formulario.city_id = cidade.ID
+            }
+          })
+        })
       }
     }
 
