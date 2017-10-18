@@ -23,7 +23,10 @@
                 <div class="form-group col-xs-4">
                     <input v-model.trim="user.password_confirmation" type="password" class="form-control input-lg" minlength="6" maxlength="20" placeholder="Repita a nova senha" required>
                 </div>
-                <div class="col-xs-5 col-xs-offset-7">
+                <div v-if="validationsErrors" class="col-xs-7">
+                  <p v-for="error in validationsErrors" class="text-danger">{{ error }}</p>
+                </div>
+                <div class="col-xs-5">
                   <button type="submit" class="btn btn-lg btn-warning btn-block">Salvar</button>
                 </div>
             </form>
@@ -39,6 +42,7 @@ export default {
   name: 'modal-change-password',
   data () {
     return {
+      validationsErrors: [],
       sending: false,
       send: false,
       user: {
@@ -71,6 +75,14 @@ export default {
         }
       }, (error) => {
         this.sending = false
+        if (error.status === 422) {
+          this.validationsErrors = []
+          Object.values(error.body).map((e) => {
+            e.map((msg) => {
+              this.validationsErrors.push(msg)
+            })
+          })
+        }
         console.log(error)
       })
     }

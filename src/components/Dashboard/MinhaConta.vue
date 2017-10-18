@@ -111,6 +111,7 @@ export default {
       })
     },
     showModal () {
+      this.$refs.modalRef.validationsErrors = []
       this.$refs.modalRef.show()
     },
     pesquisarCep () {
