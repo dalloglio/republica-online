@@ -20,7 +20,7 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-3">
-            <filtros-aplicados></filtros-aplicados>
+            <filtros-aplicados :filters="filters"></filtros-aplicados>
             <filtros :filters="filters"></filtros>
             <banner-meia-pagina v-for="bannerHalfPage in bannersHalfPage" :key="bannerHalfPage.id" :banner="bannerHalfPage"></banner-meia-pagina>
           </div>
@@ -71,7 +71,8 @@
     watch: {
       '$route' (to, from) {
         this.$store.commit('setAds', [])
-        this.paginate()
+        this.$store.commit('setCategory', {})
+        this.start()
       }
     },
     data () {
@@ -116,6 +117,17 @@
       }
     },
     methods: {
+      start () {
+        if (this.$route.params.category_id) {
+          this.$store.dispatch('getCategory', this.$route.params.category_id).then(() => {
+            setTimeout(() => {
+              this.paginate()
+            }, 500)
+          })
+        } else {
+          this.paginate()
+        }
+      },
       changeOrder () {
         if (this.order === '') {
           this.$router.push({ name: this.$route.name })
@@ -155,12 +167,9 @@
       }
     },
     created () {
-      if (this.$route.params.category_id) {
-        this.$store.dispatch('getCategory', this.$route.params.category_id)
-      }
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
-      this.paginate()
+      this.start()
     },
     beforeDestroy () {
       this.$store.commit('setAds', [])

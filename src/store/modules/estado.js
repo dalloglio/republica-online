@@ -9,10 +9,10 @@ export default {
 
   getters: {
     getEstadoByID: (state) => (id) => {
-      return state.estados.find((estado) => estado.ID === id)
+      return state.estados.find((estado) => estado.ID === id) || {}
     },
     getEstadoBySigla: (state) => (sigla) => {
-      return state.estados.find((estado) => estado.Sigla === sigla)
+      return state.estados.find((estado) => estado.Sigla === sigla) || {}
     }
   },
 

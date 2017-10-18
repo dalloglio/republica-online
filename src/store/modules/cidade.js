@@ -9,13 +9,13 @@ export default {
 
   getters: {
     getCidadeByID: (state) => (id) => {
-      return state.cidades.find((cidade) => cidade.ID === id)
+      return state.cidades.find((cidade) => cidade.ID === id) || {}
     },
     getCidadeByNome: (state) => (nome) => {
-      return state.cidades.find((cidade) => cidade.Nome === nome)
+      return state.cidades.find((cidade) => cidade.Nome === nome) || {}
     },
     getCidadesByEstado: (state) => (estado) => {
-      return state.cidades.filter((cidade) => cidade.Estado === estado)
+      return state.cidades.filter((cidade) => cidade.Estado === estado) || []
     }
   },
 
