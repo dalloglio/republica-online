@@ -47,6 +47,16 @@
             <span class="glyphicon glyphicon-trash"></span>
           </a>
         </li>
+
+        <!-- Prices -->
+        <li
+        v-if="priceFormatted"
+        class="list-group-item">
+          <span :title="priceFormatted">{{ priceFormatted }}</span>
+          <a title="Remover" class="pull-right">
+            <span class="glyphicon glyphicon-trash"></span>
+          </a>
+        </li>
       </ul>
     </div>
   </div>
@@ -72,6 +82,18 @@
       },
       category () {
         return this.$store.state.category.category || {}
+      },
+      priceFormatted () {
+        let format = '$ 0,0[.]00'
+        let priceMin = this.$route.query.price_min || null
+        let priceMax = this.$route.query.price_max || null
+        if (priceMin && priceMax) {
+          return window.numeral(priceMin).format(format) + ' até ' + window.numeral(priceMax).format(format)
+        } else if (priceMin) {
+          return window.numeral(priceMin).format(format)
+        } else if (priceMax) {
+          return window.numeral(priceMax).format(format)
+        }
       }
     },
     methods: {
