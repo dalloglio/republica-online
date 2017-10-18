@@ -53,19 +53,18 @@
 
               <div class="form-group col-xs-2">
                 <label for="ad_price" class="sr-only">Valor:</label>
-                <input
-                v-model.trim="ad.price"
+                <money
+                v-model="ad.price"
+                v-bind="money"
                 id="ad_price"
                 name="price"
-                type="text"
                 class="form-control input-lg"
                 maxlength="13"
                 placeholder="Valor"
                 data-vv-as="valor"
                 data-vv-rules="required"
                 v-validate
-                required
-                v-mask="'money'">
+                required></money>
                 <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
               </div>
 
@@ -392,6 +391,14 @@ export default {
           cellphone: '',
           whatsapp: ''
         }
+      },
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
       }
     }
   },
@@ -406,9 +413,7 @@ export default {
       return this.$store.state.category.categories
     },
     filters () {
-      let filters = this.category.filters || []
-      // this.ad.details[]
-      return filters
+      return this.category.filters || []
     },
     photos () {
       return this.ad.photos

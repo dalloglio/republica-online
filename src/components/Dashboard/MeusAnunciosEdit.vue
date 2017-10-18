@@ -68,19 +68,18 @@
 
         <div class="form-group col-xs-2">
           <label for="ad_price" class="sr-only">Valor:</label>
-          <input
-          v-model.trim="ad.price"
+          <money
+          v-model="ad.price"
+          v-bind="money"
           id="ad_price"
           name="price"
-          type="text"
           class="form-control input-lg"
           maxlength="13"
           placeholder="Valor"
           data-vv-as="valor"
           data-vv-rules="required"
           v-validate
-          required
-          v-mask="'money'">
+          required></money>
           <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
         </div>
 
@@ -409,7 +408,15 @@ export default {
       status: [
         { key: 1, status: true, title: 'Publicado' },
         { key: 2, status: false, title: 'Pausado' }
-      ]
+      ],
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
+      }
     }
   },
   computed: {
@@ -423,11 +430,8 @@ export default {
         })
         ad.details = details
       }
-      if (ad.price) {
-        let price = Number(ad.price)
-        if (!isNaN(price)) {
-          ad.price = parseFloat(price.toFixed())
-        }
+      if (!ad.contact) {
+        ad.contact = {}
       }
       return ad
     },
