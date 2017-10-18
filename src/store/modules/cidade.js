@@ -13,6 +13,9 @@ export default {
     },
     getCidadeByNome: (state) => (nome) => {
       return state.cidades.find((cidade) => cidade.Nome === nome)
+    },
+    getCidadesByEstado: (state) => (estado) => {
+      return state.cidades.filter((cidade) => cidade.Estado === estado)
     }
   },
 
