@@ -12,7 +12,7 @@
     <div class="caption">
       <h3>
         {{ ad.title }}
-        <small>{{ address.city }} - {{ address.state }}</small>
+        <small>{{ address.city }} - {{ address.state_initials }}</small>
       </h3>
       <p class="detail">
         <i :class="`icon ${details[0].filter_icon}`"></i> {{ details[0] ? details[0].value : '-' }}
