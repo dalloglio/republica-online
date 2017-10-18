@@ -9,11 +9,12 @@
         <tbody>
           <tr v-for="(contact, contactIindex) in contacts">
             <td>
-              <img :src="contact.ad.photo.url" :alt="contact.ad.title">
+              <img v-if="contact.ad.photo" :src="urlPhoto(contact.ad.photo)" :alt="contact.ad.title">
+              <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="contact.ad.title">
             </td>
             <td width="150">
               <b>Anúncio:</b><br>
-              <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title" target="_blank">
+              <router-link :to="{ name: 'anuncio', params: { id: contact.ad.id, slug: contact.ad.slug } }" :title="contact.ad.title" target="_blank">
                 {{ contact.ad.title }}
               </router-link>
             </td>
@@ -76,6 +77,9 @@ export default {
     }
   },
   methods: {
+    urlPhoto (photo) {
+      return this.$store.getters.urlPhoto(photo.id)
+    },
     onShow (contact) {
       this.$router.push({ name: 'dashboard.minhas-mensagens.show', params: { ad_id: contact.ad.id, id: contact.id } })
     },
