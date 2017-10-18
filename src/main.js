@@ -20,6 +20,7 @@ import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
 import UtilsGoogleMaps from './utils/google-maps'
+import money from 'v-money'
 
 Vue.use(VueResource)
 Vue.use(VeeValidate, { locale: 'pt_br' })
@@ -30,6 +31,7 @@ Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
 Vue.use(UtilsGoogleMaps, { key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs' })
+Vue.use(money, { precision: 2 })
 
 Vue.http.options.root = process.env.API_URL
 

@@ -14,22 +14,18 @@
         <div class="panel-body">
           <form autocomplete="off" @submit.prevent="onSubmit">
             <div class="form-group">
-              <input
-              v-model.trim="price.min"
-              type="tel"
+              <money
+              v-model="price.min"
+              v-bind="money"
               class="form-control input-lg"
-              minlength="1"
-              maxlength="9"
-              placeholder="De:">
+              placeholder="De:"></money>
             </div>
             <div class="form-group">
-              <input
-              v-model.trim="price.max"
-              type="tel"
+              <money
+              v-model="price.max"
+              v-bind="money"
               class="form-control input-lg"
-              minlength="1"
-              maxlength="9"
-              placeholder="Até:">
+              placeholder="Até:"></money>
             </div>
             <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Aplicar!</button>
           </form>
@@ -49,6 +45,14 @@ export default {
       price: {
         min: this.$route.query.price_min || '',
         max: this.$route.query.price_max || ''
+      },
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
       }
     }
   },
