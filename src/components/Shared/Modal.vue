@@ -21,7 +21,7 @@
                     <input v-model.trim="contact.email" type="email" class="form-control input-lg" maxlength="100" placeholder="E-mail" required>
                 </div>
                 <div class="form-group col-xs-6">
-                    <input v-model.trim="contact.phone" type="text" class="form-control input-lg" maxlength="15" placeholder="Telefone" required>
+                    <input v-model.trim="contact.phone" type="text" class="form-control input-lg" maxlength="15" placeholder="Telefone" required v-mask="'(99) 99999-9999'">
                 </div>
                 <div class="form-group col-xs-6">
                     <input v-model.trim="contact.city" type="text" class="form-control input-lg" maxlength="100" placeholder="Cidade" required>
@@ -41,8 +41,12 @@
 </template>
 
 <script>
+  import AwesomeMask from 'awesome-mask'
   export default {
     name: 'modal',
+    directives: {
+      'mask': AwesomeMask
+    },
     props: {
       ad: {
         type: Object,
