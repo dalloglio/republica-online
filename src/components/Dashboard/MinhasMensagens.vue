@@ -64,12 +64,14 @@ export default {
       ads.forEach((ad, index) => {
         if (ad.contacts) {
           ad.contacts.forEach((contact, key) => {
-            contact.ad = {}
-            contact.ad.id = ad.id
-            contact.ad.slug = ad.slug
-            contact.ad.title = ad.title
-            contact.ad.photo = ad.photo
-            contacts.push(contact)
+            if (contact.origin === 'page_form_ad') {
+              contact.ad = {}
+              contact.ad.id = ad.id
+              contact.ad.slug = ad.slug
+              contact.ad.title = ad.title
+              contact.ad.photo = ad.photo
+              contacts.push(contact)
+            }
           })
         }
       })
