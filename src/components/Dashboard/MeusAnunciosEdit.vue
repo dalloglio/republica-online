@@ -445,7 +445,7 @@ export default {
       return this.$store.state.category.categories || []
     },
     filters () {
-      return this.category.filters || []
+      return this.category.filters ? this.category.filters : []
     },
     photos () {
       let photos = this.ad.photos || []
