@@ -439,12 +439,13 @@ export default {
       if (!this.ad.category_id) {
         return {}
       }
-      return this.categories.find(category => category.id === this.ad.category_id)
+      return this.categories.find(category => category.id === this.ad.category_id) || {}
     },
     categories () {
       return this.$store.state.category.categories || []
     },
     filters () {
+      console.log(this.category)
       return this.category.filters ? this.category.filters : []
     },
     photos () {
