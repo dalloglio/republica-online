@@ -79,7 +79,7 @@
         if (!this.favorite.id) {
           return false
         }
-        return this.favorite.ad_id === this.ad.id
+        return Number(this.favorite.ad_id) === Number(this.ad.id)
       },
       loggedIn () {
         return this.$store.getters.isAuthenticated || false
