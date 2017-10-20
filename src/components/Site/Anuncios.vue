@@ -2,7 +2,7 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos {{ paginator.total }} vagas pra você!</h2>
+        <h2>Encontramos {{ paginator.total || 0 }} vagas pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
         <select
         v-model="order"
@@ -20,8 +20,8 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-3">
-            <filtros-aplicados></filtros-aplicados>
-            <filtros></filtros>
+            <filtros-aplicados :filters="filters"></filtros-aplicados>
+            <filtros :filters="filters"></filtros>
             <banner-meia-pagina v-for="bannerHalfPage in bannersHalfPage" :key="bannerHalfPage.id" :banner="bannerHalfPage"></banner-meia-pagina>
           </div>
           <div class="col-xs-9">
@@ -71,14 +71,14 @@
     watch: {
       '$route' (to, from) {
         this.$store.commit('setAds', [])
-        this.paginate()
+        this.$store.commit('setCategory', {})
+        this.start()
       }
     },
     data () {
       return {
         page: 1,
         order: 'latest',
-        limit: 24,
         orderOptions: [
           { value: 'latest', label: 'mais recentes' },
           { value: 'oldest', label: 'mais antigos' }
@@ -88,6 +88,12 @@
     computed: {
       ads () {
         return this.$store.state.ad.ads.data || []
+      },
+      category () {
+        return this.$store.state.category.category || {}
+      },
+      filters () {
+        return this.category.filters || []
       },
       paginator () {
         let ads = this.$store.state.ad.ads || []
@@ -111,21 +117,65 @@
       }
     },
     methods: {
+      start () {
+        if (this.$route.params.category_id) {
+          this.$store.dispatch('getCategory', this.$route.params.category_id).then(() => {
+            setTimeout(() => {
+              this.paginate()
+            }, 500)
+          })
+        } else {
+          this.paginate()
+        }
+      },
       changeOrder () {
-        this.$router.push({ name: this.$route.name, query: { order: this.order } })
+        if (this.order === '') {
+          this.$router.push({ name: this.$route.name })
+        } else {
+          this.$router.push({ name: this.$route.name, query: { order: this.order } })
+        }
       },
       paginate () {
-        this.$store.dispatch('getAds', {
-          page: this.$route.query.page || this.page,
-          limit: this.limit,
-          order: this.$route.query.order || this.order
+        let params = {}
+        if (this.$route.query.page) {
+          params.page = this.$route.query.page
+        }
+        if (this.order) {
+          params.order = this.order
+        }
+        if (this.$route.params.category_id) {
+          params.category = this.$route.params.category_id
+        }
+        if (this.$route.query.uf) {
+          params.uf = this.$route.query.uf
+        }
+        if (this.$route.query.cidade) {
+          params.cidade = this.$route.query.cidade
+        }
+        if (this.$route.query.price_min) {
+          params.price_min = this.$route.query.price_min
+        }
+        if (this.$route.query.price_max) {
+          params.price_max = this.$route.query.price_max
+        }
+
+        let filters = {}
+        this.filters.forEach((filter) => {
+          if (this.$route.query[filter.slug]) {
+            filters[filter.slug] = this.$route.query[filter.slug]
+          }
         })
+        if (Object.keys(filters).length) {
+          params.filters = JSON.stringify(filters)
+        }
+
+        this.$store.dispatch('getAds', params)
       }
     },
     created () {
-      this.paginate()
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
+      this.start()
     },
     beforeDestroy () {
       this.$store.commit('setAds', [])

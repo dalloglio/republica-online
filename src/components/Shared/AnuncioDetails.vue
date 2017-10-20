@@ -9,10 +9,11 @@
         </h4>
       </div>
       <div class="panel-body">
-        <p class="detail"><i class="icon icon-map-marker"></i>{{ `${address.city} - ${address.state}` }}</p>
-        <p class="detail"><i class="icon icon-sexo"></i> Masculina</p>
-        <p class="detail"><i class="icon icon-cama"></i> Compartilhado</p>
-        <p class="detail"><i class="icon icon-dinheiro"></i> Contas inclusas</p>
+        <p class="detail"><i class="icon icon-map-marker"></i>{{ `${address.city} - ${address.state_initials}` }}</p>
+        <p v-for="(detail, i) in details" class="detail" :key="i">
+          <i :class="`icon ${detail.filter_icon}`"></i> {{ detail ? detail.value : '-' }}
+        </p>
+        <favorite-button :ad="ad" class="btn btn-lg btn-block btn-warning"></favorite-button>
       </div>
     </div>
   </div>
@@ -20,10 +21,12 @@
 
 <script>
   import Currency from '@/components/Shared/Currency'
+  import FavoriteButton from '@/components/Shared/FavoriteButton'
   export default {
     name: 'anuncio-details',
     components: {
-      Currency
+      Currency,
+      FavoriteButton
     },
     props: {
       ad: {
@@ -34,6 +37,9 @@
     computed: {
       address () {
         return this.ad.address || []
+      },
+      details () {
+        return this.ad.details || []
       }
     }
   }

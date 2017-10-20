@@ -53,19 +53,18 @@
 
               <div class="form-group col-xs-2">
                 <label for="ad_price" class="sr-only">Valor:</label>
-                <input
-                v-model.trim="ad.price"
+                <money
+                v-model="ad.price"
+                v-bind="money"
                 id="ad_price"
                 name="price"
-                type="text"
                 class="form-control input-lg"
                 maxlength="13"
                 placeholder="Valor"
                 data-vv-as="valor"
                 data-vv-rules="required"
                 v-validate
-                required
-                v-mask="'money'">
+                required></money>
                 <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
               </div>
 
@@ -110,20 +109,20 @@
               </div>
 
               <div class="form-group col-xs-3">
-                <label for="ad_address_state" class="sr-only">Estado:</label>
+                <label for="ad_address_state_initials" class="sr-only">Estado:</label>
                 <input
-                v-model.trim="ad.address.state"
-                id="ad_address_state"
-                name="state"
+                v-model.trim="ad.address.state_initials"
+                id="ad_address_state_initials"
+                name="state_initials"
                 type="text"
                 class="form-control input-lg"
-                maxlength="50"
+                maxlength="2"
                 placeholder="Estado"
                 data-vv-as="estado"
-                data-vv-rules="required|max:50"
+                data-vv-rules="required|max:2"
                 v-validate
                 required>
-                <app-tooltip v-if="errors.has('state')" :title="errors.first('state')" class="question"></app-tooltip>
+                  <app-tooltip v-if="errors.has('state_initials')" :title="errors.first('state_initials')" class="question"></app-tooltip>
               </div>
 
               <div class="form-group col-xs-3">
@@ -374,8 +373,11 @@ export default {
         description: '',
         address: {
           zip_code: '',
+          state_initial: '',
           state: '',
           city: '',
+          state_id: '',
+          city_id: '',
           neighborhood: '',
           street: '',
           number: '',
@@ -387,8 +389,17 @@ export default {
         contact: {
           name: '',
           cellphone: '',
-          whatsapp: ''
+          whatsapp: '',
+          origin: 'page_create_ad'
         }
+      },
+      money: {
+        decimal: ',',
+        thousands: '.',
+        prefix: '',
+        suffix: '',
+        precision: 2,
+        masked: false
       }
     }
   },
@@ -403,9 +414,7 @@ export default {
       return this.$store.state.category.categories
     },
     filters () {
-      let filters = this.category.filters || []
-      // this.ad.details[]
-      return filters
+      return this.category.filters || []
     },
     photos () {
       return this.ad.photos

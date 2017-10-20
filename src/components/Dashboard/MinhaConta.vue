@@ -12,7 +12,7 @@
         </div>
         <div class="form-group col-xs-3">
           <label for="user_cpf" class="sr-only">CPF:</label>
-          <input v-model.trim="user.cpf" id="user_cpf" type="text" class="form-control input-lg" maxlength="11" placeholder="CPF" required>
+          <input v-model.trim="user.cpf" id="user_cpf" type="text" class="form-control input-lg" maxlength="14" placeholder="CPF" required v-mask="'999.999.999-99'">
         </div>
         <div class="form-group col-xs-4">
           <label for="user_birthday" class="sr-only">Data de Nascimento:</label>
@@ -37,11 +37,11 @@
 
         <div class="form-group col-xs-2">
           <label for="user_address_zip_code" class="sr-only">Cep:</label>
-          <input v-model.trim="user.address.zip_code" id="user_address_zip_code" type="text" class="form-control input-lg" minlength="8" maxlength="8" placeholder="Cep" @blur="pesquisarCep" required>
+          <input v-model.lazy="user.address.zip_code" id="user_address_zip_code" type="text" class="form-control input-lg" minlength="9" maxlength="9" placeholder="Cep" @blur="pesquisarCep" required v-mask="'99999-999'">
         </div>
         <div class="form-group col-xs-2">
-          <label for="user_address_state" class="sr-only">Estado:</label>
-          <input v-model.trim="user.address.state" id="user_address_state" type="text" class="form-control input-lg" maxlength="2" placeholder="Estado" required>
+          <label for="user_address_state_initials" class="sr-only">Estado:</label>
+          <input v-model.trim="user.address.state_initials" id="user_address_state_initials" type="text" class="form-control input-lg" maxlength="2" placeholder="Estado" required>
         </div>
         <div class="form-group col-xs-4">
           <label for="user_address_city" class="sr-only">Cidade:</label>
@@ -77,9 +77,13 @@
 </template>
 
 <script>
+import AwesomeMask from 'awesome-mask'
 import ModalChangePassword from '@/components/Dashboard/Shared/ModalChangePassword'
 export default {
   name: 'dashboard-minha-conta',
+  directives: {
+    'mask': AwesomeMask
+  },
   components: {
     ModalChangePassword
   },
@@ -107,6 +111,7 @@ export default {
       })
     },
     showModal () {
+      this.$refs.modalRef.validationsErrors = []
       this.$refs.modalRef.show()
     },
     pesquisarCep () {

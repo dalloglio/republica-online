@@ -1,16 +1,16 @@
 <template>
   <div class="search">
     <form autocomplete="off" @submit.prevent="onSubmit">
-        <div class="form-group">
+        <div v-if="estados.length" class="form-group">
           <select class="form-control input-lg" v-model="estado">
             <option value="">Selecione o estado</option>
-            <option v-for="estado in estados" :value="estado.abbr">{{ estado.name }}</option>
+            <option v-for="o in estados" :value="o">{{ o.Nome }}</option>
           </select>
         </div>
         <div class="form-group">
           <select class="form-control input-lg" v-model="cidade">
-            <option value="">Selecione o cidade</option>
-            <option v-for="cidade in cidades" :value="cidade.name">{{ cidade.name }}</option>
+            <option value="">Selecione a cidade</option>
+            <option v-for="o in cidades" :value="o">{{ o.Nome }}</option>
           </select>
         </div>
         <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Buscar!</button>
@@ -29,24 +29,30 @@ export default {
   },
   methods: {
     onSubmit () {
-      this.$router.push({ name: 'anuncios' })
+      let query = {}
+      if (this.estado.Sigla) {
+        query.uf = this.estado.Sigla
+      }
+      if (this.cidade.Nome) {
+        query.cidade = this.cidade.Nome
+      }
+      this.$router.push({ name: 'anuncios', query: query })
     }
   },
   computed: {
     estados () {
-      return [
-        { abbr: 'PR', name: 'Paraná' },
-        { abbr: 'SC', name: 'Santa Catarina' },
-        { abbr: 'RS', name: 'Rio Grande do Sul' }
-      ]
+      return this.$store.state.estado.estados || []
     },
     cidades () {
-      return [
-        { name: 'Curitiba' },
-        { name: 'Florianópolis' },
-        { name: 'Porto Alegre' }
-      ]
+      if (this.estado.ID) {
+        return this.$store.getters.getCidadesByEstado(this.estado.ID)
+      }
+      return []
     }
+  },
+  created () {
+    this.$store.dispatch('getEstados')
+    this.$store.dispatch('getCidades')
   }
 }
 </script>

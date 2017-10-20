@@ -3,7 +3,7 @@
     <nav :class="{ 'pull-right': true }">
       <ul class="nav nav-pills pull-right">
         <li><router-link :to="{ name: 'sobre' }" title="Sobre">Sobre</router-link></li>
-        <!-- <li><router-link :to="{ name: 'faq' }" title="Central de Ajuda">Central de Ajuda</router-link></li> -->
+        <li><router-link :to="{ name: 'faq' }" title="Central de Ajuda">Central de Ajuda</router-link></li>
         <li><router-link :to="{ name: 'contato' }" title="Contato">Contato</router-link></li>
         <li v-if="isAuthenticated"><router-link :to="{ name: 'dashboard.home' }" title="Minha Conta">Dashboard</router-link></li>
         <li v-if="isAuthenticated"><router-link :to="{ name: 'auth.logout' }" title="Sair">Sair</router-link></li>

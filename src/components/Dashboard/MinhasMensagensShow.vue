@@ -6,8 +6,9 @@
 
     <div class="media">
       <div class="media-left">
-        <router-link :to="{ name: 'anuncio', params: { slug: contact.ad.slug } }" :title="contact.ad.title">
-          <img :src="contact.ad.photo.url" :alt="contact.ad.title" class="media-object">
+        <router-link :to="{ name: 'anuncio', params: { id: contact.ad.id, slug: contact.ad.slug } }" :title="contact.ad.title">
+          <img v-if="contact.ad.photo" :src="urlPhoto(contact.ad.photo)" :alt="contact.ad.title" class="media-object">
+          <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="contact.ad.title" class="media-object">
         </router-link>
       </div>
       <div class="media-body">
@@ -18,10 +19,10 @@
             <button type="button" @click="onDelete" class="btn btn-danger btn-xs">Excluir</button>
           </div>
         </h4>
-        <p><b>Mensagem de:</b><br>{{ contact.name }} [{{ contact.email }}]</p>
-        <p><b>Enviada em:</b><br>{{ $date.toNice(contact.created_at) }}</p>
-        <p><b>Telefone p/ contato:</b><br>{{ $mask.phone(contact.phone) }}</p>
-        <p><b>Mensagem:</b><br>{{ contact.message }}</p>
+        <p v-if="contact.name || contact.email"><b>Mensagem de:</b><br>{{ contact.name }} <span v-if="contact.email">[{{ contact.email }}]</span></p>
+        <p v-if="contact.created_at"><b>Enviada em:</b><br>{{ $date.toNice(contact.created_at) }}</p>
+        <p v-if="contact.phone"><b>Telefone p/ contato:</b><br>{{ $mask.phone(contact.phone) }}</p>
+        <p v-if="contact.message"><b>Mensagem:</b><br>{{ contact.message }}</p>
       </div>
     </div>
   </div>
@@ -36,6 +37,9 @@ export default {
     }
   },
   methods: {
+    urlPhoto (photo) {
+      return this.$store.getters.urlPhoto(photo.id)
+    },
     onBack () {
       this.$router.push({ name: 'dashboard.minhas-mensagens' })
     },

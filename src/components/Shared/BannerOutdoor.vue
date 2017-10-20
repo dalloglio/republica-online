@@ -1,7 +1,7 @@
 <template>
   <div v-if="media.photo" class="banner-outdoor">
     <a :href="media.link" :title="media.title" target="_blank">
-      <img :src="media.photo.url" :alt="media.title" class="img-responsive">
+      <img :src="urlPhoto(media.photo.id)" :alt="media.title" class="img-responsive">
     </a>
   </div>
 </template>
@@ -21,6 +21,11 @@ export default {
   computed: {
     media () {
       return this.banner
+    }
+  },
+  methods: {
+    urlPhoto (id) {
+      return this.$store.getters.urlPhoto(id)
     }
   }
 }

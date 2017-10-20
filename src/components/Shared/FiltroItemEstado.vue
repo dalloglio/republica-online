@@ -1,11 +1,12 @@
 <template>
-  <div class="filtro-item">
+  <div v-if="estados.length" class="filtro-item filtro-item-regiao">
     <div :class="{ 'panel': true, 'panel-default': true, 'border': border, 'no-border': !border }">
 
       <div class="panel-heading">
         <h4 class="panel-title">
           <a :class="{ 'collapsed': collapsed }" data-toggle="collapse" :href="'#' + panelCollapseID">
-            {{ filter.title }}<span class="glyphicon"></span>
+            Estados
+            <span class="glyphicon"></span>
           </a>
         </h4>
       </div>
@@ -13,14 +14,16 @@
       <div :id="panelCollapseID" :class="{ 'panel-collapse' : true, 'collapse': true, 'in': !collapsed }">
         <div class="panel-body">
           <ul class="list-unstyled">
-            <li v-for="(val, key) in values" :key="key">
+            <li
+            v-for="estado in estados"
+            :key="estado.ID">
               <router-link
               :to="{
                 name: routeName(),
                 params: routeParams(),
-                query: routeQuery(key)
+                query: routeQuery(estado.Sigla)
               }"
-              :title="val">{{ val }}</router-link>
+              :title="estado.Nome">{{ estado.Nome }}</router-link>
             </li>
           </ul>
         </div>
@@ -32,11 +35,14 @@
 
 <script>
 export default {
-  name: 'filtro-item',
+  name: 'filtro-item-regiao',
   data () {
     return {
       collapsed: !this.open
     }
+  },
+  created () {
+    this.$store.dispatch('getAdsFilterStates')
   },
   methods: {
     routeName () {
@@ -50,13 +56,13 @@ export default {
       Object.keys(this.$route.query).map((key) => {
         query[key] = this.$route.query[key]
       })
-      query[this.filter.slug] = val
+      query.uf = val
       return query
     }
   },
   computed: {
-    values () {
-      return this.filter.values || []
+    estados () {
+      return this.$store.state.ad.filters.estados || []
     },
     headID () {
       return 'heading-' + this.id
@@ -66,10 +72,6 @@ export default {
     }
   },
   props: {
-    filter: {
-      type: Object,
-      required: true
-    },
     open: {
       type: Boolean,
       default: false

@@ -9,7 +9,8 @@ export default {
       address: {},
       photo: {}
     },
-    favorites: []
+    favorites: [],
+    adFavorite: {}
   },
 
   getters: {
@@ -30,6 +31,10 @@ export default {
 
     setUserFavorites (state, data) {
       state.favorites = data
+    },
+
+    setUserAdFavorite (state, data) {
+      state.adFavorite = data
     }
   },
 
@@ -100,9 +105,23 @@ export default {
       })
     },
 
+    getUserFavorite ({ commit }, id) {
+      Vue.http.get(process.env.API_VERSION + '/user/favorites/ads/' + id).then((response) => {
+        commit('setUserAdFavorite', response.body)
+      })
+    },
     getUserFavorites ({ commit }) {
       Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
         commit('setUserFavorites', response.body)
+      })
+    },
+    createUserFavorite ({ commit }, id) {
+      return new Promise((resolve, reject) => {
+        Vue.http.post(process.env.API_VERSION + '/user/favorites/ads/' + id).then((response) => {
+          resolve(response)
+        }, (error) => {
+          reject(error)
+        })
       })
     },
     deleteUserFavorite ({ commit }, id) {

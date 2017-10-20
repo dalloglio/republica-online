@@ -7,10 +7,33 @@ export default {
     ads: [],
     ad: {},
     latest: [],
+    filters: {
+      prices: {},
+      categories: [],
+      estados: [],
+      cidades: []
+    },
+    messages: {
+      unread: []
+    },
     contact: {
       ad: {
         photo: {}
       }
+    }
+  },
+
+  getters: {
+    unreadMessages: (state) => (origin) => {
+      let unread = []
+      state.messages.unread.forEach((ad) => {
+        ad.contacts.forEach((contact) => {
+          if (contact.origin === 'origin') {
+            unread++
+          }
+        })
+      })
+      return unread
     }
   },
 
@@ -29,6 +52,26 @@ export default {
 
     setLatest (state, data) {
       state.latest = data
+    },
+
+    setAdsFilterPrices (state, data) {
+      state.filters.prices = data
+    },
+
+    setAdsFilterCategories (state, data) {
+      state.filters.categories = data
+    },
+
+    setAdsFilterStates (state, data) {
+      state.filters.estados = data
+    },
+
+    setAdsFilterCities (state, data) {
+      state.filters.cidades = data
+    },
+
+    setAdsContactsUserUnread (state, data) {
+      state.messages.unread = data
     }
   },
 
@@ -43,7 +86,12 @@ export default {
         commit('setAd', response.body)
       })
     },
-    getAdsContactsUser ({ commit }) {
+    getAdsContactsUserUnread ({ commit }, params) {
+      Vue.http.get(process.env.API_VERSION + '/user/ads/contacts/unread').then((response) => {
+        commit('setAdsContactsUserUnread', response.body)
+      })
+    },
+    getAdsContactsUser ({ commit }, params) {
       Vue.http.get(process.env.API_VERSION + '/user/ads/contacts').then((response) => {
         commit('setAds', response.body)
       })
@@ -75,6 +123,26 @@ export default {
         params
       }).then((response) => {
         commit('setLatest', response.body)
+      })
+    },
+    getAdsFilterPrices ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/prices').then((response) => {
+        commit('setAdsFilterPrices', response.body)
+      })
+    },
+    getAdsFilterCategories ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/categories').then((response) => {
+        commit('setAdsFilterCategories', response.body)
+      })
+    },
+    getAdsFilterStates ({ commit }, params) {
+      Vue.http.get(ENDPOINT + '/states').then((response) => {
+        commit('setAdsFilterStates', response.body)
+      })
+    },
+    getAdsFilterCities ({ commit }, id) {
+      Vue.http.get(ENDPOINT + '/states/' + id + '/cities').then((response) => {
+        commit('setAdsFilterCities', response.body)
       })
     },
     createAd ({ commit }, data) {

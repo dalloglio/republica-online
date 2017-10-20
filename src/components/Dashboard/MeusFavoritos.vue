@@ -12,11 +12,12 @@
               <span class="favorite glyphicon glyphicon-star"></span>
             </td>
             <td>
-              <img :src="favorite.ad.photo.url" :alt="favorite.ad.title">
+              <img v-if="favorite.ad.photo" :src="urlPhoto(favorite.ad.photo)" :alt="favorite.ad.title">
+              <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="favorite.ad.title">
             </td>
             <td width="180">
               <b>Anúncio:</b><br>
-              <router-link :to="{ name: 'anuncio', params: { slug: favorite.ad.slug } }" :title="favorite.ad.title" target="_blank">
+              <router-link :to="{ name: 'anuncio', params: { id: favorite.ad.id, slug: favorite.ad.slug } }" :title="favorite.ad.title" target="_blank">
                 {{ favorite.ad.title }}
               </router-link>
             </td>
@@ -56,6 +57,9 @@ export default {
     }
   },
   methods: {
+    urlPhoto (photo) {
+      return this.$store.getters.urlPhoto(photo.id)
+    },
     onDelete (favorite) {
       if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
         this.$store.dispatch('deleteUserFavorite', favorite.id).then((response) => {
