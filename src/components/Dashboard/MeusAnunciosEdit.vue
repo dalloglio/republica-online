@@ -252,6 +252,8 @@
           <h3>Filtros:</h3>
         </div>
 
+        {{ filters }}
+
         <div v-for="(filter, filter_index) in filters" class="form-group col-xs-3" :key="filter.id">
           <label :for="'ad_details_' + filter.id" class="sr-only">{{ filter.title }}</label>
           <select
@@ -445,7 +447,6 @@ export default {
       return this.$store.state.category.categories || []
     },
     filters () {
-      console.log(this.category)
       return this.category.filters ? this.category.filters : []
     },
     photos () {
