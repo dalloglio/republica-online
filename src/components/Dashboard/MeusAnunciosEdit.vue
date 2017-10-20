@@ -436,7 +436,7 @@ export default {
       return ad
     },
     category () {
-      return this.categories.find(category => category.id === this.ad.category_id) || {}
+      return this.categories.find(category => Number(category.id) === Number(this.ad.category_id)) || {}
     },
     categories () {
       return this.$store.state.category.categories || []
