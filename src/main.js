@@ -20,7 +20,9 @@ import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
 import UtilsGoogleMaps from './utils/google-maps'
+import UtilsMessage from './utils/message'
 import money from 'v-money'
+import Toasted from 'vue-toasted'
 
 Vue.use(VueResource)
 Vue.use(VeeValidate, { locale: 'pt_br' })
@@ -32,6 +34,11 @@ Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
 Vue.use(UtilsGoogleMaps, { key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs' })
 Vue.use(money, { precision: 2 })
+Vue.use(Toasted, {
+  position: 'top-right',
+  duration: 5000
+})
+Vue.use(UtilsMessage)
 
 Vue.http.options.root = process.env.API_URL
 
