@@ -183,6 +183,7 @@ export default {
         }
       }, (error) => {
         this.loadingLogin = false
+        this.$message.error('O e-mail ou a senha estão incorretos.')
         console.log(error.message)
       })
     },
@@ -198,7 +199,15 @@ export default {
         }
       }, (error) => {
         this.loadingRegister = false
-        console.log(error.message)
+        console.log(error)
+        if (error.status === 422) {
+          let errors = error.body
+          Object.values(errors).map((err) => {
+            err.forEach((msg) => {
+              this.$message.error(msg)
+            })
+          })
+        }
       })
     },
     onLogin () {
@@ -223,6 +232,7 @@ export default {
       if (status === false) {
         return
       }
+      user.facebook = true
       this.$store.dispatch('loginFacebook', user).then((response) => {
         if (response.ok) {
           this._login({
