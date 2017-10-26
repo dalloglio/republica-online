@@ -23,7 +23,7 @@ import UtilsGoogleMaps from './utils/google-maps'
 import UtilsMessage from './utils/message'
 import money from 'v-money'
 import Toasted from 'vue-toasted'
-// import VueAnalytics from 'vue-analytics'
+import VueAnalytics from 'vue-analytics'
 
 Vue.use(VueResource)
 Vue.use(VeeValidate, { locale: 'pt_br' })
@@ -40,10 +40,10 @@ Vue.use(Toasted, {
   duration: 5000
 })
 Vue.use(UtilsMessage)
-// Vue.use(VueAnalytics, {
-//   id: 'UA-XXX-X',
-//   router
-// })
+Vue.use(VueAnalytics, {
+  id: 'UA-81847611-1'
+  router
+})
 
 Vue.http.options.root = process.env.API_URL
 
