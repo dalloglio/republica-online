@@ -41,7 +41,7 @@ Vue.use(Toasted, {
 })
 Vue.use(UtilsMessage)
 Vue.use(VueAnalytics, {
-  id: 'UA-81847611-1'
+  id: 'UA-81847611-1',
   router
 })
 
