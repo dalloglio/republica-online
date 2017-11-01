@@ -14,15 +14,9 @@
         {{ ad.title }}
         <small>{{ address.city }} - {{ address.state_initials }}</small>
       </h3>
-      <p class="detail">
-        <i :class="`icon ${details[0].filter_icon}`"></i> {{ details[0] ? details[0].value : '-' }}
-      </p>
-      <p class="detail">
-        <i :class="`icon ${details[1].filter_icon}`"></i> {{ details[1] ? details[1].value : '-' }}
-      </p>
-      <p class="detail">
-        <i :class="`icon ${details[2].filter_icon}`"></i> {{ details[2] ? details[2].value : '-' }}
-      </p>
+
+      <detail-icon v-for="detail in details" :key="detail.id" :model="detail" class="detail"></detail-icon>
+
       <p class="text-right">
         <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" class="btn btn-link" title="veja mais detalhes">
           veja mais detalhes <span class="glyphicon glyphicon-menu-right"></span>
@@ -34,10 +28,12 @@
 
 <script>
 import Currency from '@/components/Shared/Currency'
+import DetailIcon from '@/components/Shared/DetailIcon'
 export default {
   name: 'anuncio',
   components: {
-    Currency
+    Currency,
+    DetailIcon
   },
   props: {
     model: {
@@ -55,10 +51,7 @@ export default {
       return this.ad.address || {}
     },
     details () {
-      let details = this.ad.details.filter((detail) => {
-        return true
-      })
-      return details
+      return this.ad.details.slice(0, 3)
     },
     photo () {
       return this.ad.photo || {}
@@ -131,12 +124,6 @@ export default {
   font-size: 14px;
   line-height: 20px;
   color: #091e42;
-}
-.thumbnail .caption .detail {
-  margin-bottom: 0;
-}
-.icon {
-    vertical-align: bottom;
 }
 .btn-link {
   margin-top: 15px;
