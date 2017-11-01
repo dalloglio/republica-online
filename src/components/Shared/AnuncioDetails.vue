@@ -10,9 +10,7 @@
       </div>
       <div class="panel-body">
         <p class="detail"><i class="icon icon-map-marker"></i>{{ `${address.city} - ${address.state_initials}` }}</p>
-        <p v-for="(detail, i) in details" class="detail" :key="i">
-          <i :class="`icon ${detail.filter_icon}`"></i> {{ detail ? detail.value : '-' }}
-        </p>
+        <detail-icon v-for="detail in details" :key="detail.id" :model="detail" class="detail"></detail-icon>
         <favorite-button :ad="ad" class="btn btn-lg btn-block btn-warning"></favorite-button>
       </div>
     </div>
@@ -21,11 +19,13 @@
 
 <script>
   import Currency from '@/components/Shared/Currency'
+  import DetailIcon from '@/components/Shared/DetailIcon'
   import FavoriteButton from '@/components/Shared/FavoriteButton'
   export default {
     name: 'anuncio-details',
     components: {
       Currency,
+      DetailIcon,
       FavoriteButton
     },
     props: {
