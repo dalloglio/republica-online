@@ -7,7 +7,7 @@
       <div class="line"></div>
       <table class="table table-hover">
         <tbody>
-          <tr v-for="favorite in favorites">
+          <tr v-for="favorite in favorites" v-if="favorite.ad">
             <td width="1%">
               <span class="favorite glyphicon glyphicon-star"></span>
             </td>
