@@ -90,10 +90,10 @@
           id="ad_description"
           name="description"
           class="form-control input-lg"
-          maxlength="255"
+          maxlength="500"
           placeholder="Descrição"
           data-vv-as="descrição"
-          data-vv-rules="required|max:255"
+          data-vv-rules="required|max:500"
           v-validate
           required
           rows="6"></textarea>
