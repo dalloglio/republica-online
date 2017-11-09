@@ -4,7 +4,7 @@
     <p>Preencha, preferencialmente, todos os campos e o mais detalhado possível, anúncios bem estruturados normalmente tem 70% a mais de visualizações!!!</p>
     <div class="line"></div>
 
-    <form autocomplete="off" class="row" @submit.prevent="onSubmit">
+    <form autocomplete="off" class="row" @submit.prevent="onSubmit" novalidate>
       <fieldset :disabled="loading" class="page">
         <div class="col-xs-4 text-right">
           <label class="ad_category_id" for="ad_category_id">Escolha a categoria do seu anúncio:</label>
@@ -18,7 +18,6 @@
           data-vv-as="categoria"
           data-vv-rules="required"
           v-validate
-          required
           autofocus>
             <option value="">Selecione</option>
             <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
@@ -38,7 +37,6 @@
           data-vv-as="status"
           data-vv-rules="required"
           v-validate
-          required
           autofocus>
             <option value="">Selecione</option>
             <option v-for="item in status" :value="item.status">{{ item.title }}</option>
@@ -61,8 +59,7 @@
           placeholder="Título"
           data-vv-as="título"
           data-vv-rules="required"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('title')" :title="errors.first('title')" class="question"></app-tooltip>
         </div>
 
@@ -78,8 +75,7 @@
           placeholder="Valor"
           data-vv-as="valor"
           data-vv-rules="required"
-          v-validate
-          required></money>
+          v-validate></money>
           <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
         </div>
 
@@ -95,7 +91,6 @@
           data-vv-as="descrição"
           data-vv-rules="required|max:500"
           v-validate
-          required
           rows="6"></textarea>
           <app-tooltip v-if="errors.has('description')" :title="errors.first('description')" class="question"></app-tooltip>
         </div>
@@ -135,8 +130,7 @@
           placeholder="Estado"
           data-vv-as="estado"
           data-vv-rules="required|max:2"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('state_initials')" :title="errors.first('state_initials')" class="question"></app-tooltip>
         </div>
 
@@ -152,8 +146,7 @@
           placeholder="Cidade"
           data-vv-as="cidade"
           data-vv-rules="required|max:50"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('city')" :title="errors.first('city')" class="question"></app-tooltip>
         </div>
 
@@ -169,8 +162,7 @@
           placeholder="Bairro"
           data-vv-as="bairro"
           data-vv-rules="required|max:50"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('neighborhood')" :title="errors.first('neighborhood')" class="question"></app-tooltip>
         </div>
 
@@ -186,8 +178,7 @@
           placeholder="Rua"
           data-vv-as="rua"
           data-vv-rules="required|max:100"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('street')" :title="errors.first('street')" class="question"></app-tooltip>
         </div>
 
@@ -204,7 +195,6 @@
           data-vv-as="número"
           data-vv-rules="required|max:50"
           v-validate
-          required
           ref="number"
           @blur="searchAddress()">
           <app-tooltip v-if="errors.has('number')" :title="errors.first('number')" class="question"></app-tooltip>
@@ -304,8 +294,7 @@
           placeholder="Nome"
           data-vv-as="nome"
           data-vv-rules="required|max:100"
-          v-validate
-          required>
+          v-validate>
           <app-tooltip v-if="errors.has('contact_name')" :title="errors.first('contact_name')" class="question"></app-tooltip>
         </div>
 
@@ -476,7 +465,7 @@ export default {
           this.loading = false
           this.save()
         } else {
-          console.log('Preencha corretamente o formulário.')
+          this.$message.info('Preencha corretamente o formulário.')
           this.loading = false
         }
       })
@@ -491,12 +480,16 @@ export default {
           this.saveFiles(response)
         } else {
           this.loading = false
-          alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
+          this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
         }
       }, (error) => {
         this.loading = false
-        alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
-        console.log(error)
+        if (error.status === 422) {
+          this.showErrors(error.data)
+        } else {
+          this.$message.error(error.statusText)
+          console.log(error)
+        }
       })
     },
     saveFiles (response) {
@@ -527,20 +520,27 @@ export default {
             }
           }, (error) => {
             console.log(error)
-            alert('O arquivo ' + file.name + ' não foi enviado.')
+            this.$message.info('O arquivo ' + file.name + ' não foi enviado.')
           })
         })
       } else {
         self.$router.push({ name: 'dashboard.meus-anuncios' })
       }
     },
+    showErrors (errors) {
+      Object.values(errors).map((error) => {
+        error.map((erro) => {
+          this.$message.error(erro)
+        })
+      })
+    },
     onUploadRemove (file) {
       if (file.id) {
         this.$store.dispatch('deletePhoto', file.id).then((response) => {
-          alert('A foto foi excluída com sucesso.')
+          this.$message.success('A foto foi excluída com sucesso.')
         }, (error) => {
           console.log(error)
-          alert('Não foi possível excluir a foto.')
+          this.$message.error('Não foi possível excluir a foto.')
         })
       }
     },
