@@ -29,7 +29,7 @@ export default {
     },
     dataTimeout: {
       type: Number,
-      default: 100
+      default: 300
     }
   },
   data () {
@@ -95,7 +95,7 @@ export default {
           strokeWeight: 2,
           fillColor: '#0052cc',
           fillOpacity: 0.3,
-          radius: 300000,
+          radius: 3000,
           map: self.map,
           center: self.center
         })

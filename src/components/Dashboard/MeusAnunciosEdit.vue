@@ -565,7 +565,7 @@ export default {
       }
     },
     searchAddress () {
-      let zoom = 5
+      let zoom = 12
       let self = this
       let mapaRef = self.$refs.mapaRef
       if (!mapaRef) {
@@ -577,7 +577,7 @@ export default {
         zoom = 4
         mapaRef.setAddress('Brasil')
       } else if (self.ad.address.show_on_map === 'approximate') {
-        zoom = 5
+        zoom = 12
         mapaRef.setAddress(self.formattedAddress)
         mapaRef.addCircle()
       } else if (self.ad.address.show_on_map === 'exact') {

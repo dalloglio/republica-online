@@ -79,7 +79,7 @@
 
     methods: {
       searchAddress () {
-        let zoom = 5
+        let zoom = 12
         let self = this
         let mapaRef = self.$refs.mapaRef
         if (!mapaRef) {
@@ -91,7 +91,7 @@
           zoom = 4
           mapaRef.setAddress('Brasil')
         } else if (self.address.show_on_map === 'approximate') {
-          zoom = 5
+          zoom = 12
           mapaRef.setAddress(self.formattedAddress)
           mapaRef.addCircle()
         } else if (self.address.show_on_map === 'exact') {
@@ -109,13 +109,7 @@
 
     computed: {
       ad () {
-        let ad = this.$store.state.ad.ad || {}
-        if (ad.id) {
-          setTimeout(() => {
-            this.searchAddress()
-          }, 2000)
-        }
-        return ad
+        return this.$store.state.ad.ad || {}
       },
       address () {
         return this.ad.address || {}
@@ -156,7 +150,14 @@
     },
 
     created () {
-      this.$store.dispatch('getAd', this.$route.params.id)
+      this.$store.dispatch('getAd', this.$route.params.id).then(() => {
+        let interval = setInterval(() => {
+          if (this.$refs.mapaRef && this.address.id) {
+            clearInterval(interval)
+            this.searchAddress()
+          }
+        }, 500)
+      })
       this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
       this.$store.dispatch('getBannersHalfPage', { limit: 2 })
     },
