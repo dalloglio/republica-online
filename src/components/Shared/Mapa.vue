@@ -1,151 +1,132 @@
 <template>
-  <div class="mapa" id="map"></div>
+  <div class="mapa" id="map">
+    <gmap-map
+    ref="gmapRef"
+    :center="center"
+    :zoom="zoom"
+    style="width: 100%; height: 250px">
+      <gmap-marker v-if="marker.show" :position="center"></gmap-marker>
+      <gmap-circle
+      v-if="circle.show"
+      :center="center"
+      :draggable="circle.draggable"
+      :editable="circle.editable"
+      :options="circle.options"></gmap-circle>
+    </gmap-map>
+  </div>
 </template>
 
 <script>
-/* global google */
-export default {
-  name: 'mapa',
-  props: {
-    dataTitle: {
-      type: String,
-      default: 'Brasil'
-    },
-    dataAddress: {
-      type: String,
-      default: 'Brasil'
-    },
-    dataLatitude: {
-      type: Number,
-      default: 0
-    },
-    dataLongitude: {
-      type: Number,
-      default: 0
-    },
-    dataZoom: {
-      type: Number,
-      default: 5
-    },
-    dataTimeout: {
-      type: Number,
-      default: 300
-    }
-  },
-  data () {
-    return {
-      map: null,
-      marker: null,
-      geocoder: null,
-      circle: null,
-      title: this.dataTitle,
-      address: this.dataAddress,
-      latitude: this.dataLatitude,
-      longitude: this.dataLongitude,
-      zoom: this.dataZoom,
-      timeout: this.dataTimeout
-    }
-  },
-  computed: {
-    center () {
+  /* global google */
+  export default {
+    name: 'mapa',
+    data () {
       return {
-        lat: this.latitude,
-        lng: this.longitude
-      }
-    }
-  },
-  methods: {
-    initMap () {
-      let el = document.getElementById('map')
-      if (!el) {
-        return
-      }
-      this.map = new google.maps.Map(el, {
-        center: this.center,
-        zoom: this.zoom
-      })
-      this.geocodeAddress()
-    },
-    addMarker () {
-      let self = this
-      self.removeMarker()
-      setTimeout(() => {
-        self.marker = new google.maps.Marker({
-          position: self.center,
-          map: self.map,
-          title: self.title
-        })
-      }, self.timeout)
-    },
-    removeMarker () {
-      if (this.marker) {
-        this.marker.setMap(null)
+        address: 'Brasil',
+        center: { lat: 0, lng: 0 },
+        circle: {
+          draggable: false,
+          editable: false,
+          show: false,
+          options: {
+            strokeColor: '#0052cc',
+            strokeOpacity: 0.7,
+            strokeWeight: 2,
+            fillColor: '#0052cc',
+            fillOpacity: 0.3,
+            radius: 500000
+          }
+        },
+        geocoderObject: null,
+        geocoderStatus: null,
+        geocoderResults: null,
+        marker: {
+          show: false
+        },
+        title: 'Brasil',
+        zoom: 4
       }
     },
-    centerMap () {
-      this.map.setCenter(this.center)
-    },
-    addCircle () {
-      let self = this
-      self.removeCircle()
-      setTimeout(() => {
-        self.circle = new google.maps.Circle({
-          strokeColor: '#0052cc',
-          strokeOpacity: 0.7,
-          strokeWeight: 2,
-          fillColor: '#0052cc',
-          fillOpacity: 0.3,
-          radius: 3000,
-          map: self.map,
-          center: self.center
-        })
-      }, self.timeout)
-    },
-    removeCircle () {
-      if (this.circle) {
-        this.circle.setMap(null)
-      }
-    },
-    setAddress (address) {
-      this.address = address
-      this.title = address
-    },
-    setZoom (zoom) {
-      this.map.setZoom(zoom)
-    },
-    geocodeAddress () {
-      let self = this
-      if (!self.geocoder) {
-        self.geocoder = new google.maps.Geocoder()
-      }
-      self.geocoder.geocode({ 'address': self.address }, function (results, status) {
-        if (status === 'OK') {
-          let result = results[0]
-          self.title = result.formatted_address
-          self.latitude = result.geometry.location.lat()
-          self.longitude = result.geometry.location.lng()
-          self.centerMap()
-        } else {
-          console.log('Geocode was not successful for the following reason: ' + status)
+    methods: {
+      searchAddress () {
+        let self = this
+        if (!self.geocoderObject) {
+          self.geocoderObject = new google.maps.Geocoder()
         }
+        return new Promise((resolve, reject) => {
+          if (!self.address) {
+            reject('Endereço está vázio')
+          } else {
+            self.geocoderObject.geocode({ 'address': self.address }, function (results, status) {
+              self.geocoderStatus = status
+              self.geocoderResults = results
+              if (status === 'OK') {
+                let result = results[0]
+                self.title = result.formatted_address
+                self.address = result.formatted_address
+                self.updateCenter(result.geometry.location)
+                resolve(status)
+              } else {
+                console.log('Endereço não foi encontrado: ' + status)
+                reject(status)
+              }
+            })
+          }
+        })
+      },
+      setAddress (address) {
+        this.address = address
+      },
+      setZoom (zoom) {
+        this.zoom = zoom
+      },
+      addCircle () {
+        this.circle.show = true
+        let results = self.geocoderResults
+        if (results) {
+          let result = results.shift()
+          console.log(result)
+          if (result.types.indexOf('country') !== -1) {
+            this.setZoom(4)
+            this.circle.options.radius = 500000
+          } else {
+            this.setZoom(12)
+            this.circle.options.radius = 5000
+          }
+        }
+      },
+      removeCircle () {
+        this.circle.show = false
+      },
+      addMarker () {
+        this.marker.show = true
+        this.setZoom(12)
+      },
+      removeMarker () {
+        this.marker.show = false
+      },
+      updateCenter (center) {
+        this.center = {
+          lat: center.lat(),
+          lng: center.lng()
+        }
+      }
+    },
+    mounted () {
+      let ref = this.$refs.gmapRef
+      ref.$mapCreated.then(() => {
+        this.searchAddress()
       })
     }
-  },
-  mounted () {
-    window.addEventListener('google-maps-ready', this.initMap())
-  },
-  beforeDestroy () {
-    window.removeEventListener('google-maps-ready', this.initMap())
   }
-}
 </script>
 
 <style scoped>
-#map {
-  width: 100%;
-  height: 250px;
-  background-color: #f5f5f5;
-  border-radius: 6px;
-  overflow: hidden;
-}
+  #map {
+    width: 100%;
+    height: 250px;
+    background-color: #f5f5f5;
+    border-radius: 6px;
+    overflow: hidden;
+  }
 </style>

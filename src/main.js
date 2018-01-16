@@ -19,11 +19,11 @@ import UtilsCep from './utils/cep'
 import UtilsDate from './utils/date'
 import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
-import UtilsGoogleMaps from './utils/google-maps'
 import UtilsMessage from './utils/message'
 import money from 'v-money'
 import Toasted from 'vue-toasted'
 import VueAnalytics from 'vue-analytics'
+import * as VueGoogleMaps from 'vue2-google-maps'
 
 Vue.use(VueResource)
 Vue.use(VeeValidate, { locale: 'pt_br' })
@@ -33,7 +33,6 @@ Vue.use(UtilsCep)
 Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
-Vue.use(UtilsGoogleMaps, { key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs' })
 Vue.use(money, { precision: 2 })
 Vue.use(Toasted, {
   position: 'top-right',
@@ -43,6 +42,15 @@ Vue.use(UtilsMessage)
 Vue.use(VueAnalytics, {
   id: 'UA-81847611-1',
   router
+})
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: 'AIzaSyBXTivuAEMn8JRNyiJGmYHD6KM9UtDuJBs'
+    // libraries: 'places', // This is required if you use the Autocomplete plugin
+    // OR: libraries: 'places,drawing'
+    // OR: libraries: 'places,drawing,visualization'
+    // (as you require)
+  }
 })
 
 Vue.http.options.root = process.env.API_URL
