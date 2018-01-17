@@ -67,7 +67,6 @@
                 self.updateCenter(result.geometry.location)
                 resolve(status)
               } else {
-                console.log('Endereço não foi encontrado: ' + status)
                 reject(status)
               }
             })

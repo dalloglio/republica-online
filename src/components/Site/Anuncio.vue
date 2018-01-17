@@ -79,28 +79,22 @@
 
     methods: {
       searchAddress () {
-        let zoom = 12
         let self = this
-        let mapaRef = self.$refs.mapaRef
-        if (!mapaRef) {
-          return
-        }
-        mapaRef.removeMarker()
-        mapaRef.removeCircle()
-        if (self.address.show_on_map === 'default') {
-          zoom = 4
-          mapaRef.setAddress('Brasil')
-        } else if (self.address.show_on_map === 'approximate') {
-          zoom = 12
-          mapaRef.setAddress(self.formattedAddress)
-          mapaRef.addCircle()
-        } else if (self.address.show_on_map === 'exact') {
-          zoom = 16
-          mapaRef.setAddress(self.formattedAddress)
-          mapaRef.addMarker()
-        }
-        mapaRef.geocodeAddress()
-        mapaRef.setZoom(zoom)
+        let ref = self.$refs.mapaRef
+
+        ref.removeMarker()
+        ref.removeCircle()
+        ref.setAddress(self.formattedAddress)
+        ref.searchAddress().then((status) => {
+          if (self.ad.address.show_on_map === 'default') {
+            ref.setAddress('Brasil')
+            ref.setZoom(4)
+          } else if (self.ad.address.show_on_map === 'approximate') {
+            ref.addCircle()
+          } else if (self.ad.address.show_on_map === 'exact') {
+            ref.addMarker()
+          }
+        }, (error) => console.log(error))
       },
       showModal () {
         this.$refs.modalRef.show()
