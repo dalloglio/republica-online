@@ -116,7 +116,8 @@
                 placeholder="Estado"
                 data-vv-as="estado"
                 data-vv-rules="required|max:2"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                   <app-tooltip v-if="errors.has('state_initials')" :title="errors.first('state_initials')" class="question"></app-tooltip>
               </div>
 
@@ -132,7 +133,8 @@
                 placeholder="Cidade"
                 data-vv-as="cidade"
                 data-vv-rules="required|max:50"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('city')" :title="errors.first('city')" class="question"></app-tooltip>
               </div>
 
@@ -148,7 +150,8 @@
                 placeholder="Bairro"
                 data-vv-as="bairro"
                 data-vv-rules="required|max:50"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('neighborhood')" :title="errors.first('neighborhood')" class="question"></app-tooltip>
               </div>
 
@@ -164,7 +167,8 @@
                 placeholder="Rua"
                 data-vv-as="rua"
                 data-vv-rules="required|max:100"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('street')" :title="errors.first('street')" class="question"></app-tooltip>
               </div>
 
@@ -198,7 +202,8 @@
                 placeholder="Complemento"
                 data-vv-as="complemento"
                 data-vv-rules="max:100"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('sub_address')" :title="errors.first('sub_address')" class="question"></app-tooltip>
               </div>
 
@@ -515,6 +520,7 @@
         ref.searchAddress().then((status) => {
           if (self.ad.address.show_on_map === 'default') {
             ref.setAddress('Brasil')
+            ref.setZoom(4)
           } else if (self.ad.address.show_on_map === 'approximate') {
             ref.addCircle()
           } else if (self.ad.address.show_on_map === 'exact') {

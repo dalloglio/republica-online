@@ -55,7 +55,7 @@
         }
         return new Promise((resolve, reject) => {
           if (!self.address) {
-            reject('Endereço está vázio')
+            reject('O endereço está vázio')
           } else {
             self.geocoderObject.geocode({ 'address': self.address }, function (results, status) {
               self.geocoderStatus = status
@@ -82,15 +82,17 @@
       },
       addCircle () {
         this.circle.show = true
-        let results = self.geocoderResults
-        if (results) {
+        let results = this.geocoderResults
+        if (!results) {
+          this.setZoom(4)
+          this.circle.options.radius = 500000
+        } else {
           let result = results.shift()
-          console.log(result)
           if (result.types.indexOf('country') !== -1) {
             this.setZoom(4)
             this.circle.options.radius = 500000
           } else {
-            this.setZoom(12)
+            this.setZoom(11)
             this.circle.options.radius = 5000
           }
         }
@@ -100,7 +102,7 @@
       },
       addMarker () {
         this.marker.show = true
-        this.setZoom(12)
+        this.setZoom(15)
       },
       removeMarker () {
         this.marker.show = false
