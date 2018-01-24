@@ -394,10 +394,33 @@
           suffix: '',
           precision: 2,
           masked: false
-        }
+        },
+        url: this.$http.options.url
+      }
+    },
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
       }
     },
     computed: {
+      page () {
+        return {
+          title: 'Anuncie sua vaga',
+          description: 'Vamos anunciar para quem realmente quer comprar! Anuncie em nosso portal! Conheça todos os planos e fale diretamente com o seu mercado consumidor!',
+          keywords: 'republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: `${this.url}/static/republica-online.png`,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
+        }
+      },
       category () {
         if (!this.ad.category_id) {
           return {}
@@ -476,7 +499,7 @@
               if (response.ok) {
                 total++
                 if (total === files.length) {
-                  self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
+                  self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
                 }
               }
             }, (error) => {
@@ -530,6 +553,7 @@
       }
     },
     created () {
+      this.seo.init(this.page)
       this.$store.dispatch('getCategories')
     }
   }

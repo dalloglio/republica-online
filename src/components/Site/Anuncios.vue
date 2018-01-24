@@ -82,7 +82,19 @@
         orderOptions: [
           { value: 'latest', label: 'mais recentes' },
           { value: 'oldest', label: 'mais antigos' }
-        ]
+        ],
+        url: this.$http.options.url
+      }
+    },
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
       }
     },
     computed: {
@@ -114,6 +126,17 @@
           ]
         }
         return banners
+      },
+      pageSeo () {
+        return {
+          title: 'Anúncios',
+          description: 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
+          keywords: 'anúncios,republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: `${this.url}/static/republica-online.png`,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
+        }
       }
     },
     methods: {
@@ -175,6 +198,7 @@
     created () {
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
+      this.seo.init(this.pageSeo)
       this.start()
     },
     beforeDestroy () {

@@ -77,6 +77,19 @@
       Thumbnail
     },
 
+    data () {
+      return {
+        url: this.$http.options.url
+      }
+    },
+
+    watch: {
+      page (to, from) {
+        this.seo.setPage(this.page)
+        this.$emit('updateHead')
+      }
+    },
+
     methods: {
       searchAddress () {
         let self = this
@@ -103,7 +116,8 @@
 
     computed: {
       ad () {
-        return this.$store.state.ad.ad || {}
+        let ad = this.$store.state.ad.ad || {}
+        return ad
       },
       address () {
         return this.ad.address || {}
@@ -140,10 +154,38 @@
         if (this.address.city) { address[i++] = `${this.address.city}` }
         address[i++] = 'Brasil'
         return address.join(', ')
+      },
+      page () {
+        let image = `${this.url}/static/republica-online.png`
+        if (this.photo.id) {
+          image = this.$store.getters.urlPhoto(this.photo.id)
+        }
+        return {
+          title: this.ad.title || 'Anúncio',
+          description: this.ad.description || 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
+          keywords: 'republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: image,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
+        }
+      }
+    },
+
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
       }
     },
 
     created () {
+      this.seo.init(this.page)
       this.$store.dispatch('getAd', this.$route.params.id).then(() => {
         let interval = setInterval(() => {
           if (this.$refs.mapaRef && this.address.id) {

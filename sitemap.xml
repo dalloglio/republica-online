@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset
+  xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
+  http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
+  <url>
+    <loc>http://www.republica.online/</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/publica-anuncio</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/anuncios</loc>
+    <priority>1.00</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/sobre</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/faq</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/contato</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/contato</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/termos-de-uso</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/politicas-de-privacidade</loc>
+    <priority>0.80</priority>
+  </url>
+  <url>
+    <loc>http://www.republica.online/login</loc>
+    <priority>0.80</priority>
+  </url>
+</urlset>

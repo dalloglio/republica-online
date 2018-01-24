@@ -85,156 +85,156 @@
 </template>
 
 <script>
-import Carousel from '@/components/Shared/Carousel'
-import Newsletter from '@/components/Shared/Newsletter'
-import Search from '@/components/Shared/Search'
-import Thumbnail from '@/components/Shared/Thumbnail'
-export default {
-  name: 'home',
-  components: {
-    Carousel,
-    Newsletter,
-    Search,
-    Thumbnail
-  },
-  computed: {
-    latestAds () {
-      return this.$store.state.ad.latest || []
+  import Carousel from '@/components/Shared/Carousel'
+  import Newsletter from '@/components/Shared/Newsletter'
+  import Search from '@/components/Shared/Search'
+  import Thumbnail from '@/components/Shared/Thumbnail'
+  export default {
+    name: 'home',
+    components: {
+      Carousel,
+      Newsletter,
+      Search,
+      Thumbnail
     },
-    partners () {
-      return this.$store.state.partner.partners || []
+    computed: {
+      latestAds () {
+        return this.$store.state.ad.latest || []
+      },
+      partners () {
+        return this.$store.state.partner.partners || []
+      }
+    },
+    created () {
+      this.$store.dispatch('getLatestAds')
+      this.$store.dispatch('getPartners', {
+        limit: 6,
+        random: true
+      })
+    },
+    beforeDestroy () {
+      this.$store.commit('setLatest', [])
     }
-  },
-  created () {
-    this.$store.dispatch('getLatestAds')
-    this.$store.dispatch('getPartners', {
-      limit: 6,
-      random: true
-    })
-  },
-  beforeDestroy () {
-    this.$store.commit('setLatest', [])
   }
-}
 </script>
 
 <style scoped>
-#intro {
-  overflow: hidden;
-  height: 511px;
-  background-color: #fff;
-  background-image: url('../../assets/img/icon-livros.png');
-  background-position: bottom center;
-  background-repeat: no-repeat;
-}
-#intro .info {
-  margin-top: 120px;
-  margin-bottom: 120px;
-}
-#intro .info h1 {
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 72px
-}
-#intro .info p {
-  font-size: 18px;
-  line-height: 2.45;
-  margin-bottom: 0;
-}
-#intro .info p small {
-  color: blue;
-}
+  #intro {
+    overflow: hidden;
+    height: 511px;
+    background-color: #fff;
+    background-image: url('../../assets/img/icon-livros.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
+  }
+  #intro .info {
+    margin-top: 120px;
+    margin-bottom: 120px;
+  }
+  #intro .info h1 {
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 72px
+  }
+  #intro .info p {
+    font-size: 18px;
+    line-height: 2.45;
+    margin-bottom: 0;
+  }
+  #intro .info p small {
+    color: blue;
+  }
 
-#overview {
-  position: relative;
-  padding: 20px 0 40px;
-  background-color: #f4f7f9;
-  background-image: url('../../assets/img/icon-mochila.png'), url('../../assets/img/barra-20.png');
-  background-position: bottom center;
-  background-repeat: no-repeat, no-repeat;
-  z-index: 2;
-}
-#overview h4 {
-  margin-bottom: 20px;
-  font-weight: 800;
-  font-size: 18px;
-}
-#overview p {
-  margin: 20px 0;
-  font-size: 14px;
-}
-#overview .icon {
-    vertical-align: bottom;
-    margin-right: 10px;
-}
-#overview .latest h4, #overview .latest p {
-  margin: 0 0 10px;
-}
+  #overview {
+    position: relative;
+    padding: 20px 0 40px;
+    background-color: #f4f7f9;
+    background-image: url('../../assets/img/icon-mochila.png'), url('../../assets/img/barra-20.png');
+    background-position: bottom center;
+    background-repeat: no-repeat, no-repeat;
+    z-index: 2;
+  }
+  #overview h4 {
+    margin-bottom: 20px;
+    font-weight: 800;
+    font-size: 18px;
+  }
+  #overview p {
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  #overview .icon {
+      vertical-align: bottom;
+      margin-right: 10px;
+  }
+  #overview .latest h4, #overview .latest p {
+    margin: 0 0 10px;
+  }
 
-#latest {
-  padding: 60px 0;
-}
-#latest h2 {
-  font-weight: 800;
-  font-size: 30px;
-  margin: 20px auto;
-}
-#latest .line {
-  width: 200px;
-  height: 5px;
-  display: block;
-  margin: 20px auto;
-  background-color: #0052cc;
-}
+  #latest {
+    padding: 60px 0;
+  }
+  #latest h2 {
+    font-weight: 800;
+    font-size: 30px;
+    margin: 20px auto;
+  }
+  #latest .line {
+    width: 200px;
+    height: 5px;
+    display: block;
+    margin: 20px auto;
+    background-color: #0052cc;
+  }
 
-#cta {
-  height: 500px;
-  background-color: #fff;
-  background-image: url('../../assets/img/bg-cta-call.png');
-  background-position: bottom center;
-  background-repeat: no-repeat;
-  overflow: hidden;
-}
-#cta .call {
-  margin-top: 100px;
-  margin-bottom: 100px;
-}
-#cta .call h1 {
-  font-weight: 800;
-  font-size: 48px;
-  line-height: 72px;
-}
-#cta .call p {
-  font-size: 18px;
-  line-height: 2.45;
-  margin-bottom: 0;
-}
-#cta .call p small {
-  color: #0052cc;
-}
-#cta .action {
-  margin-top: 380px;
-  left: -85px;
-}
-#cta .action a {
-  padding-left: 80px;
-  padding-right: 80px;
-}
+  #cta {
+    height: 500px;
+    background-color: #fff;
+    background-image: url('../../assets/img/bg-cta-call.png');
+    background-position: bottom center;
+    background-repeat: no-repeat;
+    overflow: hidden;
+  }
+  #cta .call {
+    margin-top: 100px;
+    margin-bottom: 100px;
+  }
+  #cta .call h1 {
+    font-weight: 800;
+    font-size: 48px;
+    line-height: 72px;
+  }
+  #cta .call p {
+    font-size: 18px;
+    line-height: 2.45;
+    margin-bottom: 0;
+  }
+  #cta .call p small {
+    color: #0052cc;
+  }
+  #cta .action {
+    margin-top: 380px;
+    left: -85px;
+  }
+  #cta .action a {
+    padding-left: 80px;
+    padding-right: 80px;
+  }
 
-#partners {
-  padding: 60px 0;
-}
-#partners h2 {
-  margin: 20px auto;
-  font-weight: 800;
-  font-size: 30px;
-  margin: 20px auto;
-}
-#partners .line {
-  width: 200px;
-  height: 5px;
-  display: block;
-  margin: 20px auto;
-  background-color: #0052cc;
-}
+  #partners {
+    padding: 60px 0;
+  }
+  #partners h2 {
+    margin: 20px auto;
+    font-weight: 800;
+    font-size: 30px;
+    margin: 20px auto;
+  }
+  #partners .line {
+    width: 200px;
+    height: 5px;
+    display: block;
+    margin: 20px auto;
+    background-color: #0052cc;
+  }
 </style>

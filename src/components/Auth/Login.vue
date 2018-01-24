@@ -168,7 +168,8 @@ export default {
         email: '',
         password: '',
         password_confirmation: ''
-      }
+      },
+      url: this.$http.options.url
     }
   },
   methods: {
@@ -246,7 +247,32 @@ export default {
       })
     }
   },
+  head: {
+    title () {
+      return this.seo.title()
+    },
+    meta () {
+      return this.seo.meta()
+    },
+    link () {
+      return this.seo.link()
+    }
+  },
+  computed: {
+    page () {
+      return {
+        title: 'Login',
+        description: 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
+        keywords: 'republica online,aluguel estudante,alugar apartamento',
+        url: this.url + this.$route.fullPath,
+        image: `${this.url}/static/republica-online.png`,
+        robots: 'index,follow',
+        googlebot: 'index,follow'
+      }
+    }
+  },
   created () {
+    this.seo.init(this.page)
     if (this.$store.getters.isAuthenticated) {
       this.$router.push({ name: 'dashboard.home' })
     }
@@ -255,49 +281,49 @@ export default {
 </script>
 
 <style scoped>
-.login {
-  height: 679px;
-}
-form {
-  margin: 100px auto;
-}
-h3 {
-  font-size: 30px;
-  font-weight: 800;
-  color: #fff;
-  margin: 30px auto;
-}
-.or {
-  display: block;
-  font-size: 18px;
-  font-weight: 600;
-  color: #fff;
-  margin: 25px auto;
-}
-.checkbox label,
-.checkbox a {
-  color: #fff;
-}
-.btn {
-  font-weight: 600;
-}
-.divider {
-  position: relative;
-  width: 1px;
-  height: 430px;
-  margin: 105px auto 0;
-  background-color: #eee;
-  box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
-  display: block;
-}
-.form-group {
-  margin-bottom: 15px;
-}
-.help-block {
-  text-transform: lowercase;
-  display: inline-block;
-  margin: 2px 0;
-  color: #fff;
-  font-weight: 600;
-}
+  .login {
+    height: 679px;
+  }
+  form {
+    margin: 100px auto;
+  }
+  h3 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    margin: 30px auto;
+  }
+  .or {
+    display: block;
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin: 25px auto;
+  }
+  .checkbox label,
+  .checkbox a {
+    color: #fff;
+  }
+  .btn {
+    font-weight: 600;
+  }
+  .divider {
+    position: relative;
+    width: 1px;
+    height: 430px;
+    margin: 105px auto 0;
+    background-color: #eee;
+    box-shadow: 0px 1px 2px 0px rgba(0,0,0,.3);
+    display: block;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .help-block {
+    text-transform: lowercase;
+    display: inline-block;
+    margin: 2px 0;
+    color: #fff;
+    font-weight: 600;
+  }
 </style>
