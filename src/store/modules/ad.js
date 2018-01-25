@@ -77,71 +77,71 @@ export default {
 
   actions: {
     getAdsUser ({ commit }) {
-      Vue.http.get(process.env.API_VERSION + '/user/ads').then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/ads').then((response) => {
         commit('setAds', response.body)
       })
     },
     getAdUser ({ commit }, id) {
-      Vue.http.get(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
         commit('setAd', response.body)
       })
     },
     getAdsContactsUserUnread ({ commit }, params) {
-      Vue.http.get(process.env.API_VERSION + '/user/ads/contacts/unread').then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/ads/contacts/unread').then((response) => {
         commit('setAdsContactsUserUnread', response.body)
       })
     },
     getAdsContactsUser ({ commit }, params) {
-      Vue.http.get(process.env.API_VERSION + '/user/ads/contacts').then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/ads/contacts').then((response) => {
         commit('setAds', response.body)
       })
     },
     getAdContactUser ({ commit }, params) {
-      Vue.http.get(process.env.API_VERSION + '/user/ads/' + params.ad_id + '/contacts/' + params.id).then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/ads/' + params.ad_id + '/contacts/' + params.id).then((response) => {
         commit('setAdContact', response.body)
       })
     },
     getAds ({ commit }, params) {
-      Vue.http.get(ENDPOINT, {
+      return Vue.http.get(ENDPOINT, {
         params
       }).then((response) => {
         commit('setAds', response.body)
       })
     },
     getAdBySlug ({ commit }, slug) {
-      Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
         commit('setAd', response.body)
       })
     },
     getAd ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setAd', response.body)
       })
     },
     getLatestAds ({ commit }, params) {
-      Vue.http.get(ENDPOINT + '/latest', {
+      return Vue.http.get(ENDPOINT + '/latest', {
         params
       }).then((response) => {
         commit('setLatest', response.body)
       })
     },
     getAdsFilterPrices ({ commit }, params) {
-      Vue.http.get(ENDPOINT + '/prices').then((response) => {
+      return Vue.http.get(ENDPOINT + '/prices').then((response) => {
         commit('setAdsFilterPrices', response.body)
       })
     },
     getAdsFilterCategories ({ commit }, params) {
-      Vue.http.get(ENDPOINT + '/categories').then((response) => {
+      return Vue.http.get(ENDPOINT + '/categories').then((response) => {
         commit('setAdsFilterCategories', response.body)
       })
     },
     getAdsFilterStates ({ commit }, params) {
-      Vue.http.get(ENDPOINT + '/states').then((response) => {
+      return Vue.http.get(ENDPOINT + '/states').then((response) => {
         commit('setAdsFilterStates', response.body)
       })
     },
     getAdsFilterCities ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/states/' + id + '/cities').then((response) => {
+      return Vue.http.get(ENDPOINT + '/states/' + id + '/cities').then((response) => {
         commit('setAdsFilterCities', response.body)
       })
     },
