@@ -118,6 +118,12 @@
   }
 </script>
 
+<style>
+  #latest .thumbnail {
+    height: 410px;
+  }
+</style>
+
 <style scoped>
   #intro {
     overflow: hidden;

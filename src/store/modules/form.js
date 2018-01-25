@@ -23,13 +23,13 @@ export default {
 
   actions: {
     getForm ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setForm', response.body)
       })
     },
 
     getFormContact ({ commit }, params) {
-      Vue.http.get(ENDPOINT + '/' + params.form_id + '/contacts/' + params.id).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + params.form_id + '/contacts/' + params.id).then((response) => {
         commit('setFormContact', response.body)
       })
     },

@@ -32,7 +32,7 @@ export default {
         params.limit = 3
       }
       params.size = '336x280'
-      Vue.http.get(ENDPOINT, { params: params }).then((response) => {
+      return Vue.http.get(ENDPOINT, { params: params }).then((response) => {
         commit('setBannersLargeRectangle', response.body)
       })
     },
@@ -45,7 +45,7 @@ export default {
       if (!params.limit) {
         params.limit = 3
       }
-      Vue.http.get(ENDPOINT, { params: params }).then((response) => {
+      return Vue.http.get(ENDPOINT, { params: params }).then((response) => {
         commit('setBannersHalfPage', response.body)
       })
     },
@@ -58,7 +58,7 @@ export default {
       if (!params.limit) {
         params.limit = 1
       }
-      Vue.http.get(ENDPOINT, { params: params }).then((response) => {
+      return Vue.http.get(ENDPOINT, { params: params }).then((response) => {
         commit('setBannersOutdoor', response.body)
       })
     }

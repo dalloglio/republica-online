@@ -22,7 +22,7 @@ export default {
 
   actions: {
     getCategories ({ commit }, params) {
-      Vue.http.get(ENDPOINT, {
+      return Vue.http.get(ENDPOINT, {
         params
       }).then((response) => {
         commit('setCategories', response.body)
@@ -30,13 +30,13 @@ export default {
     },
 
     getCategory ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         commit('setCategory', response.body)
       })
     },
 
     getCategoryBySlug ({ commit }, slug) {
-      Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + slug).then((response) => {
         commit('setCategory', response.body)
       })
     }

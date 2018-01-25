@@ -2,7 +2,7 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos {{ paginator.total || 0 }} vagas pra você!</h2>
+        <h2>Encontramos {{ paginator.total || 0 }} {{ paginator.total === 1 ? 'vaga' : 'vagas' }} pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
         <select
         v-model="order"
@@ -142,10 +142,9 @@
     methods: {
       start () {
         if (this.$route.params.category_id) {
-          this.$store.dispatch('getCategory', this.$route.params.category_id).then(() => {
-            setTimeout(() => {
-              this.paginate()
-            }, 500)
+          this.$store.dispatch('getCategory', this.$route.params.category_id).then((category) => {
+            console.log(category)
+            this.paginate()
           })
         } else {
           this.paginate()
@@ -184,8 +183,9 @@
 
         let filters = {}
         this.filters.forEach((filter) => {
-          if (this.$route.query[filter.slug]) {
-            filters[filter.slug] = this.$route.query[filter.slug]
+          let slug = filter.slug
+          if (this.$route.query[slug]) {
+            filters[slug] = this.$route.query[slug]
           }
         })
         if (Object.keys(filters).length) {
@@ -196,10 +196,10 @@
       }
     },
     created () {
+      this.start()
+      this.seo.init(this.pageSeo)
       this.$store.dispatch('getBannersHalfPage', {})
       this.$store.dispatch('getBannersOutdoor', {})
-      this.seo.init(this.pageSeo)
-      this.start()
     },
     beforeDestroy () {
       this.$store.commit('setAds', [])
@@ -207,28 +207,34 @@
   }
 </script>
 
-<style scoped>
-#anuncios {
-  padding: 60px 0;
-}
-#anuncios h2 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 20px auto;
-}
-#anuncios .line {
-  width: 200px;
-  height: 5px;
-  display: block;
-  margin: 20px auto 30px;
-  background-color: blue;
-}
+<style>
+  #anuncios .thumbnail {
+    height: 410px;
+  }
+</style>
 
-#order-as {
-  position: absolute;
-  width: 180px;
-  right: 15px;
-  top: 50px;
-  font-weight: 600;
-}
+<style scoped>
+  #anuncios {
+    padding: 60px 0;
+  }
+  #anuncios h2 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px auto;
+  }
+  #anuncios .line {
+    width: 200px;
+    height: 5px;
+    display: block;
+    margin: 20px auto 30px;
+    background-color: blue;
+  }
+
+  #order-as {
+    position: absolute;
+    width: 180px;
+    right: 15px;
+    top: 50px;
+    font-weight: 600;
+  }
 </style>
