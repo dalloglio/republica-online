@@ -1,25 +1,16 @@
 <template>
-  <div v-if="photos.length" class="galeria">
-    <div class="row" id="galeria">
-      <div class="col-xs-3 galeria-thumbs">
-        <slick ref="thumbs" :options="thumbs" class="thumbs">
-          <img v-for="photo in photos" :key="photo.id" :src="urlPhoto(photo)" :alt="photo.name" width="189" height="120">
-        </slick>
-      </div>
-      <div class="col-xs-9 galeria-images">
-        <slick ref="images" :options="images" class="images">
-          <img v-for="photo in photos" :key="photo.id" :src="urlPhoto(photo)" :alt="photo.name" width="629" height="420">
-        </slick>
-        <span@click="prev()" class="prev"></span>
-        <span@click="next()" class="next"></span>
-      </div>
+  <div v-if="photos.length" class="row" id="galeria">
+    <div class="galeria-thumbs col-xs-3">
+      <img v-for="item in items" :src="item.url" :alt="item.name" :key="item.id" class="img-responsive">
+    </div>
+
+    <div class="galeria-images col-xs-9">
+      <img v-for="item in items" :src="item.url" :alt="item.name" :key="item.id" class="img-responsive">
     </div>
   </div>
 </template>
 
 <script>
-  import Slick from 'vue-slick'
-  import 'slick-carousel/slick/slick.css'
   export default {
     name: 'galeria',
     props: {
@@ -28,45 +19,50 @@
         required: true
       }
     },
-    components: {
-      Slick
-    },
+    components: {},
     data () {
       return {
-        images: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows: false,
-          dots: false,
-          fade: true,
-          asNavFor: '.thumbs'
-        },
-        thumbs: {
-          slidesToShow: 4,
-          slidesToScroll: 1,
-          asNavFor: '.images',
-          vertical: true,
-          verticalSwiping: true,
-          arrows: false,
-          dots: false,
-          useTransform: false,
-          adaptiveHeight: true,
-          infinite: true,
-          focusOnSelect: true
-        }
+        items: [
+          { id: 1, url: 'http://localhost:8080/static/banners/1.jpg', name: 'Image 1' },
+          { id: 2, url: 'http://localhost:8080/static/banners/2.jpg', name: 'Image 2' },
+          { id: 3, url: 'http://localhost:8080/static/banners/3.jpg', name: 'Image 3' },
+          { id: 4, url: 'http://localhost:8080/static/banners/4.jpg', name: 'Image 4' },
+          { id: 5, url: 'http://localhost:8080/static/banners/5.jpg', name: 'Image 5' },
+          { id: 6, url: 'http://localhost:8080/static/banners/6.jpg', name: 'Image 6' }
+        ]
       }
     },
 
     methods: {
       urlPhoto (photo) {
         return this.$store.getters.urlPhoto(photo.id)
-      },
-      next () {
-        this.$refs.images.next()
-      },
-      prev () {
-        this.$refs.images.prev()
       }
+    },
+
+    mounted () {
+      window.jQuery(document).ready(function ($) {
+        require('@/assets/vendor/jquery.cycle2/jquery.cycle2.js')
+        require('@/assets/vendor/jquery.cycle2/jquery.cycle2.carousel.js')
+        require('@/assets/vendor/jquery.cycle2/jquery.cycle2.center.js')
+
+        let thumbs = $('#galeria').find('.galeria-thumbs')
+        let images = $('#galeria').find('.galeria-images')
+
+        thumbs.cycle({
+          'fx': 'carousel',
+          'carousel-vertical': true,
+          'carousel-visible': 4,
+          'timeout': 1000
+        })
+
+        images.cycle({
+          'center-horz': true,
+          'center-vert': true,
+          'timeout': 1000
+        })
+        images.on('cycle-prev', function (event, options) {})
+        images.on('cycle-next', function (event, options) {})
+      })
     }
   }
 </script>
@@ -86,12 +82,14 @@
   #galeria img {
     border-radius: 8px;
   }
+  #galeria .galeria-thumbs img,
   #galeria .thumbs img {
     width: 189px;
     height: 120px;
     outline: none;
     margin-bottom: 10px;
   }
+  #galeria .galeria-images img,
   #galeria .images img {
     width: 628px;
     height: 420px;
