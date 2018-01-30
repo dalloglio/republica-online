@@ -1,11 +1,37 @@
 <template>
   <div v-if="photos.length" class="row" id="galeria">
-    <div class="galeria-thumbs col-xs-3">
-      <img v-for="item in items" :src="item.url" :alt="item.name" :key="item.id" class="img-responsive">
+    <div class="thumbs col-xs-3">
+      <div class="cycle-slideshow"
+      data-cycle-slides="> div"
+      data-cycle-fx="carousel"
+      data-cycle-timeout="0"
+      data-cycle-carousel-visible="4"
+      data-cycle-carousel-vertical="true"
+      data-cycle-auto-height="false">
+        <div class="image" v-for="item in items" :key="item.id">
+          <img :src="item.url" :alt="item.name">
+        </div>
+      </div>
     </div>
 
-    <div class="galeria-images col-xs-9">
-      <img v-for="item in items" :src="item.url" :alt="item.name" :key="item.id" class="img-responsive">
+    <div class="images col-xs-9">
+      <div class="cycle-slideshow"
+      data-cycle-slides="> div"
+      data-cycle-fx="scrollHorz"
+      data-cycle-timeout="0"
+      data-cycle-center-horz="true"
+      data-cycle-center-vert="true"
+      data-cycle-prev=".prev"
+      data-cycle-next=".next">
+        <div class="image" v-for="item in items" :key="item.id">
+          <img :src="item.url" :alt="item.name">
+        </div>
+      </div>
+
+      <div class="controls">
+        <span class="prev"></span>
+        <span class="next"></span>
+      </div>
     </div>
   </div>
 </template>
@@ -45,23 +71,17 @@
         require('@/assets/vendor/jquery.cycle2/jquery.cycle2.carousel.js')
         require('@/assets/vendor/jquery.cycle2/jquery.cycle2.center.js')
 
-        let thumbs = $('#galeria').find('.galeria-thumbs')
-        let images = $('#galeria').find('.galeria-images')
+        // $('.thumbs .cycle-slide').click(function () {
+        //     let index = $('#cycle-2').data('cycle.API').getSlideIndex(this);
+        //     slideshow.cycle('goto', index);
+        // });
 
-        thumbs.cycle({
-          'fx': 'carousel',
-          'carousel-vertical': true,
-          'carousel-visible': 4,
-          'timeout': 1000
-        })
+        let thumbs = $('#galeria').find('.thumbs > .cycle-slideshow')
+        let images = $('#galeria').find('.images > .cycle-slideshow')
 
-        images.cycle({
-          'center-horz': true,
-          'center-vert': true,
-          'timeout': 1000
+        images.on('cycle-next cycle-prev', function (event, options) {
+          thumbs.cycle('goto', options.currSlide)
         })
-        images.on('cycle-prev', function (event, options) {})
-        images.on('cycle-next', function (event, options) {})
       })
     }
   }
@@ -73,27 +93,44 @@
     position: relative;
   }
   #galeria,
-  .galeria-thumbs,
-  .galeria-images {
+  .thumbs,
+  .images {
     position: relative;
     overflow: hidden;
     height: 420px;
   }
-  #galeria img {
+  #galeria .thumbs .cycle-slideshow .image,
+  #galeria .images .cycle-slideshow .image {
+    width: 100%;
+    position: relative;
+    overflow: hidden;
     border-radius: 8px;
   }
-  #galeria .galeria-thumbs img,
-  #galeria .thumbs img {
+  #galeria .thumbs .cycle-slideshow .image {
+    position: relative !important;
     width: 189px;
     height: 120px;
-    outline: none;
     margin-bottom: 10px;
   }
-  #galeria .galeria-images img,
-  #galeria .images img {
-    width: 628px;
+  #galeria .images .cycle-slideshow .image {
+    width: 100%;
     height: 420px;
-    outline: none;
+  }
+  #galeria .cycle-slideshow .image img {
+    position: absolute;
+    left: 50%;
+    width: auto;
+    -moz-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    transform: translateX(-50%);
+  }
+  #galeria .thumbs .cycle-slideshow .image img {
+    height: 120px;
+  }
+  #galeria .images .cycle-slideshow .image img {
+    height: 420px;
   }
   .prev,
   .next {
