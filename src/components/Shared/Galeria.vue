@@ -1,34 +1,36 @@
 <template>
-  <div v-if="photos.length" class="row" id="galeria">
-    <div class="thumbs col-xs-3">
+  <div v-if="items.length" class="row" id="galeria">
+    <div v-if="items.length > 1" class="thumbs col-xs-3">
       <div class="cycle-slideshow"
       data-cycle-slides="> div"
       data-cycle-fx="carousel"
       data-cycle-timeout="0"
-      data-cycle-carousel-visible="4"
+      :data-cycle-carousel-visible="items.length < 4 ? items.length : 4"
       data-cycle-carousel-vertical="true"
-      data-cycle-auto-height="false">
-        <div class="image" v-for="item in items" :key="item.id">
-          <img :src="item.url" :alt="item.name">
+      data-cycle-auto-height="false"
+      data-cycle-log="false">
+        <div class="image" v-for="(item, index) in items" :key="item.id" :data-index="index">
+          <img :src="urlPhoto(item)" :alt="item.title">
         </div>
       </div>
     </div>
 
-    <div class="images col-xs-9">
+    <div v-if="items.length > 0" :class="items.length === 1 ? 'images col-xs-12' : 'images col-xs-9'">
       <div class="cycle-slideshow"
       data-cycle-slides="> div"
-      data-cycle-fx="scrollHorz"
+      data-cycle-fx="fade"
       data-cycle-timeout="0"
       data-cycle-center-horz="true"
       data-cycle-center-vert="true"
       data-cycle-prev=".prev"
-      data-cycle-next=".next">
-        <div class="image" v-for="item in items" :key="item.id">
-          <img :src="item.url" :alt="item.name">
+      data-cycle-next=".next"
+      data-cycle-log="false">
+        <div class="image" v-for="(item, index) in items" :key="item.id" :data-index="index">
+          <img :src="urlPhoto(item)" :alt="item.title">
         </div>
       </div>
 
-      <div class="controls">
+      <div v-if="items.length > 1" class="controls">
         <span class="prev"></span>
         <span class="next"></span>
       </div>
@@ -45,42 +47,36 @@
         required: true
       }
     },
-    components: {},
-    data () {
-      return {
-        items: [
-          { id: 1, url: 'http://localhost:8080/static/banners/1.jpg', name: 'Image 1' },
-          { id: 2, url: 'http://localhost:8080/static/banners/2.jpg', name: 'Image 2' },
-          { id: 3, url: 'http://localhost:8080/static/banners/3.jpg', name: 'Image 3' },
-          { id: 4, url: 'http://localhost:8080/static/banners/4.jpg', name: 'Image 4' },
-          { id: 5, url: 'http://localhost:8080/static/banners/5.jpg', name: 'Image 5' },
-          { id: 6, url: 'http://localhost:8080/static/banners/6.jpg', name: 'Image 6' }
-        ]
+    computed: {
+      items () {
+        return this.photos || []
       }
     },
-
     methods: {
       urlPhoto (photo) {
         return this.$store.getters.urlPhoto(photo.id)
       }
     },
-
     mounted () {
+      let self = this
       window.jQuery(document).ready(function ($) {
         require('@/assets/vendor/jquery.cycle2/jquery.cycle2.js')
         require('@/assets/vendor/jquery.cycle2/jquery.cycle2.carousel.js')
         require('@/assets/vendor/jquery.cycle2/jquery.cycle2.center.js')
 
-        // $('.thumbs .cycle-slide').click(function () {
-        //     let index = $('#cycle-2').data('cycle.API').getSlideIndex(this);
-        //     slideshow.cycle('goto', index);
-        // });
-
         let thumbs = $('#galeria').find('.thumbs > .cycle-slideshow')
         let images = $('#galeria').find('.images > .cycle-slideshow')
 
         images.on('cycle-next cycle-prev', function (event, options) {
-          thumbs.cycle('goto', options.currSlide)
+          if (self.items.length > 3) {
+            thumbs.cycle('goto', options.currSlide)
+          }
+        })
+
+        thumbs.on('click', '.image', function () {
+          let index = $(this).data('index')
+          thumbs.cycle('goto', index)
+          images.cycle('goto', index)
         })
       })
     }
@@ -92,7 +88,6 @@
     z-index: 1;
     position: relative;
   }
-  #galeria,
   .thumbs,
   .images {
     position: relative;
@@ -132,6 +127,11 @@
   #galeria .images .cycle-slideshow .image img {
     height: 420px;
   }
+  #galeria .images.col-xs-12,
+  #galeria .images.col-xs-12 .cycle-slideshow .image,
+  #galeria .images.col-xs-12 .cycle-slideshow .image img {
+    height: 500px;
+  }
   .prev,
   .next {
     position: absolute;
@@ -140,7 +140,7 @@
     width: 60px;
     height: 60px;
     color: #fff;
-    display: block;
+    display: none;
     z-index: 1100;
     cursor: pointer;
     -webkit-transition: all .3s linear;
@@ -156,5 +156,13 @@
   .next {
     right: 20px;
     background: transparent url('../../assets/img/next.png') no-repeat 0 0;
+  }
+
+  #galeria .images:hover .prev,
+  #galeria .images:hover .next {
+    display: block;
+  }
+  #galeria .thumbs .cycle-slideshow .image img:hover {
+    cursor: pointer;
   }
 </style>
