@@ -49,7 +49,13 @@
     },
     computed: {
       items () {
-        return this.photos || []
+        let photos = this.photos || []
+        let index = photos.findIndex((photo) => photo.favorite === true)
+        if (index !== -1) {
+          let favorite = photos.splice(index, 1)
+          photos.unshift(favorite[0])
+        }
+        return photos
       }
     },
     methods: {
