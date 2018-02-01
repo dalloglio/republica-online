@@ -12,6 +12,7 @@ import filter from './modules/filter'
 import form from './modules/form'
 import partner from './modules/partner'
 import photo from './modules/photo'
+import spinner from './modules/spinner'
 import user from './modules/user'
 
 Vue.use(Vuex)
@@ -29,6 +30,7 @@ export const store = new Vuex.Store({
     form,
     partner,
     photo,
+    spinner,
     user
   }
 })

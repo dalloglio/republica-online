@@ -23,6 +23,7 @@ import UtilsUrl from './utils/url'
 import UtilsMask from './utils/mask'
 import UtilsMessage from './utils/message'
 import UtilsSeo from './utils/seo'
+import UtilsSpinner from './utils/spinner'
 import money from 'v-money'
 import Toasted from 'vue-toasted'
 import VueAnalytics from 'vue-analytics'
@@ -41,6 +42,7 @@ Vue.use(UtilsDate)
 Vue.use(UtilsUrl)
 Vue.use(UtilsMask)
 Vue.use(UtilsSeo)
+Vue.use(UtilsSpinner)
 Vue.use(money, { precision: 2 })
 Vue.use(Toasted, {
   position: 'top-right',
