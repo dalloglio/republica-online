@@ -1,19 +1,21 @@
 <template>
   <div class="dashboard-minhas-mensagens-show">
     <h2><span>Minhas Mensagens</span>, será que deu match?</h2>
-    <p>Você está visualizando a mensagem de {{ contact.name }}</p>
+    <p v-if="loading"><strong>Um momento, estamos procurando a mensagem...</strong></p>
+    <p v-else>Você está visualizando a mensagem de {{ contact.name }}</p>
+
     <div class="line"></div>
 
-    <div class="media">
+    <div v-if="ad.id" class="media">
       <div class="media-left">
-        <router-link :to="{ name: 'anuncio', params: { id: contact.ad.id, slug: contact.ad.slug } }" :title="contact.ad.title">
-          <img v-if="contact.ad.photo" :src="urlPhoto(contact.ad.photo)" :alt="contact.ad.title" class="media-object">
-          <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="contact.ad.title" class="media-object">
+        <router-link :to="{ name: 'anuncio', params: { id: ad.id, slug: ad.slug } }" :title="ad.title">
+          <img v-if="ad.photo" :src="urlPhoto(ad.photo)" :alt="ad.title" class="media-object">
+          <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="ad.title" class="media-object">
         </router-link>
       </div>
       <div class="media-body">
         <h4 class="media-heading">
-          {{ contact.ad.title }}
+          {{ ad.title }}
           <div class="actions pull-right">
             <button type="button" @click="onBack" class="btn btn-info btn-xs">Voltar</button>
             <button type="button" @click="onDelete" class="btn btn-danger btn-xs">Excluir</button>
@@ -29,42 +31,55 @@
 </template>
 
 <script>
-export default {
-  name: 'dashboard-minhas-mensagens-show',
-  computed: {
-    contact () {
-      return this.$store.state.ad.contact
-    }
-  },
-  methods: {
-    urlPhoto (photo) {
-      return this.$store.getters.urlPhoto(photo.id)
-    },
-    onBack () {
-      this.$router.push({ name: 'dashboard.minhas-mensagens' })
-    },
-    onDelete (contact) {
-      if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
-        this.$store.dispatch('deleteAdContact', {
-          ad_id: this.$route.params.ad_id,
-          id: this.$route.params.id
-        }).then((response) => {
-          if (response.ok) {
-            this.$router.push({ name: 'dashboard.minhas-mensagens' })
-          }
-        }, (error) => {
-          console.log(error)
-        })
+  export default {
+    name: 'dashboard-minhas-mensagens-show',
+    data () {
+      return {
+        loading: true
       }
+    },
+    computed: {
+      ad () {
+        return this.contact.ad || {}
+      },
+      contact () {
+        return this.$store.state.ad.contact
+      }
+    },
+    methods: {
+      urlPhoto (photo) {
+        return this.$store.getters.urlPhoto(photo.id)
+      },
+      onBack () {
+        this.$router.push({ name: 'dashboard.minhas-mensagens' })
+      },
+      onDelete (contact) {
+        if (confirm('Você tem certeza que deseja excluir esta mensagem?')) {
+          this.$store.dispatch('deleteAdContact', {
+            ad_id: this.$route.params.ad_id,
+            id: this.$route.params.id
+          }).then((response) => {
+            if (response.ok) {
+              this.$router.push({ name: 'dashboard.minhas-mensagens' })
+            }
+          }, (error) => {
+            console.log(error)
+          })
+        }
+      }
+    },
+    created () {
+      this.$store.dispatch('getAdContactUser', {
+        ad_id: this.$route.params.ad_id,
+        id: this.$route.params.id
+      }).then(() => {
+        this.loading = false
+      })
+    },
+    beforeDestroy () {
+      this.$store.commit('setAdContact', {})
     }
-  },
-  created () {
-    this.$store.dispatch('getAdContactUser', {
-      ad_id: this.$route.params.ad_id,
-      id: this.$route.params.id
-    })
   }
-}
 </script>
 
 <style scoped>

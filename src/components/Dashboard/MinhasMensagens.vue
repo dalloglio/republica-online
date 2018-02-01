@@ -37,7 +37,7 @@
     </div>
 
     <div v-if="loading">
-      <p><strong>Um momento...estamos procurando suas mensagens.</strong></p>
+      <p><strong>Um momento, estamos procurando suas mensagens...</strong></p>
     </div>
 
     <div v-if="!contacts.length && !loading">

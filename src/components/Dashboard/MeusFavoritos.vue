@@ -39,7 +39,7 @@
     </div>
 
     <div v-if="loading">
-      <p><strong>Um momento...estamos procurando seus anúncios favoritos.</strong></p>
+      <p><strong>Um momento, estamos procurando seus anúncios favoritos...</strong></p>
     </div>
 
     <div v-if="!favorites.length && !loading">

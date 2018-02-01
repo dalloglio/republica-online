@@ -36,7 +36,7 @@
     </div>
 
     <div v-if="loading">
-      <p><strong>Um momento...estamos procurando seus anúncios.</strong></p>
+      <p><strong>Um momento, estamos procurando seus anúncios...</strong></p>
     </div>
 
     <div v-if="!ads.length && !loading">
