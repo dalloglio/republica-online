@@ -9,7 +9,7 @@
 
             <div class="line"></div>
 
-            <form autocomplete="off" @submit.prevent="onSubmit">
+            <form autocomplete="off" @submit.prevent="onSubmit" novalidate>
               <fieldset class="row" :disabled="loading">
                 <div class="form-group col-xs-4">
                   <input
@@ -118,18 +118,7 @@
                   <span v-if="errors.has('message')" class="help-block">* {{ errors.first('message') }}</span>
                 </div>
 
-                <div class="col-xs-10">
-                  <div v-if="contact.ok === true" class="alert alert-success col-xs-12">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Obrigado!</strong> Sua mensagem foi enviada com sucesso.
-                  </div>
-                  <div v-if="contact.ok === false" class="alert alert-danger col-xs-12">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <strong>Ops!</strong> Não foi possível enviar a sua mensagem Preencha corretamente o formulário.
-                  </div>
-                </div>
-
-                <div class="col-xs-2">
+                <div class="col-xs-2 col-xs-offset-10">
                   <button type="submit" class="btn btn-lg btn-success btn-block text-uppercase">Enviar!</button>
                 </div>
               </fieldset>
@@ -152,7 +141,6 @@
       return {
         loading: false,
         contact: {
-          ok: '',
           name: '',
           email: '',
           phone: '',
@@ -165,17 +153,25 @@
       }
     },
     methods: {
+      initLoading () {
+        this.$store.dispatch('setSpinnerDescription', 'Estamos enviando a sua mensagem...')
+        this.spinner.open()
+        this.loading = true
+      },
+      stopLoading () {
+        this.spinner.close()
+        this.loading = false
+      },
       onSubmit () {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            this.loading = true
+            this.initLoading()
             let params = {
               form_id: 1,
               data: this.contact
             }
             this.$store.dispatch('createFormContact', params).then((response) => {
-              this.loading = false
-              this.contact.ok = response.ok
+              this.stopLoading()
               this.contact.name = ''
               this.contact.email = ''
               this.contact.phone = ''
@@ -183,21 +179,28 @@
               this.contact.city = ''
               this.contact.subject = ''
               this.contact.message = ''
-              let self = this
               setTimeout(() => {
                 this.errors.clear()
               }, 100)
-              setTimeout(() => {
-                self.contact.ok = ''
-              }, 10000)
+              this.$message.success('Obrigado, sua mensagem foi enviada com sucesso.')
             }, (error) => {
-              this.loading = false
-              this.contact.ok = error.ok
-              console.log(error)
+              this.stopLoading()
+              if (error.status === 422) {
+                this.showErrors(error.data)
+              } else {
+                this.$message.error(error.statusText)
+              }
             })
           } else {
-            console.log('Erro: Por favor, preencha corretamente o formulário.')
+            this.$message.error('Não foi possível enviar a sua mensagem. Preencha corretamente o formulário.')
           }
+        })
+      },
+      showErrors (errors) {
+        Object.values(errors).map((error) => {
+          error.map((erro) => {
+            this.$message.error(erro)
+          })
         })
       }
     },
