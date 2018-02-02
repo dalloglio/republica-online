@@ -25,9 +25,9 @@
             <mapa ref="mapaRef"></mapa>
 
             <h3>Talvez você goste destes aqui também *)</h3>
-            <div v-if="false" class="row">
+            <div class="row">
               <div v-for="i in 3" class="col-xs-4">
-                <thumbnail></thumbnail>
+                <thumbnail :model="{}"></thumbnail>
               </div>
             </div>
 
