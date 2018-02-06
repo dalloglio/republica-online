@@ -450,29 +450,47 @@
       }
     },
     methods: {
-      onSubmit () {
+      openLoading () {
         this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos cadastrando o seu anúncio...')
+        this.spinner.open()
+      },
+      closeLoading () {
+        this.loading = false
+        this.spinner.close()
+      },
+      openLoadingPhotos () {
+        this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos salvando as fotos do anúncio...')
+        this.spinner.open()
+      },
+      closeLoadingPhotos () {
+        this.loading = false
+        this.spinner.close()
+      },
+      onSubmit () {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            this.loading = false
             this.save()
           } else {
             this.$message.info('Preencha corretamente o formulário.')
-            this.loading = false
           }
         })
       },
       save () {
-        this.loading = true
+        this.openLoading()
         this.$store.dispatch('createAd', this.ad).then((response) => {
           if (response.ok) {
-            this.saveFiles(response)
+            this.closeLoading()
+            setTimeout(() => {
+              this.saveFiles(response)
+            }, 500)
           } else {
-            this.loading = false
+            this.closeLoading()
             this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
           }
         }, (error) => {
-          this.loading = false
+          this.closeLoading()
           if (error.status === 422) {
             this.showErrors(error.data)
           } else {
@@ -486,7 +504,8 @@
         let self = this
         let total = 0
         let files = self.$refs.uploadRef.files
-        if (files.length) {
+        if (files.length > 0) {
+          this.openLoadingPhotos()
           files.forEach((file, index) => {
             let formData = new FormData()
             formData.append('favorite', file.favorite ? 1 : 0)
@@ -499,15 +518,26 @@
               if (response.ok) {
                 total++
                 if (total === files.length) {
-                  self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
+                  this.closeLoadingPhotos()
+                  setTimeout(() => {
+                    self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
+                  }, 300)
                 }
               }
             }, (error) => {
               console.log(error)
               this.$message.info('O arquivo ' + file.name + ' não foi enviado.')
+              total++
+              if (total === files.length) {
+                this.closeLoadingPhotos()
+                setTimeout(() => {
+                  self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
+                }, 300)
+              }
             })
           })
         } else {
+          this.closeLoadingPhotos()
           self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
         }
       },

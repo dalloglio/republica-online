@@ -148,136 +148,165 @@
 </template>
 
 <script>
-import BtnFacebook from './BtnFacebook'
-export default {
-  name: 'login',
-  components: {
-    BtnFacebook
-  },
-  data () {
-    return {
-      loadingLogin: false,
-      loadingRegister: false,
-      login: {
-        username: '',
-        password: '',
-        remember_me: false
-      },
-      register: {
-        name: '',
-        email: '',
-        password: '',
-        password_confirmation: ''
-      },
-      url: this.$http.options.url
-    }
-  },
-  methods: {
-    _login (user) {
-      this.loadingLogin = true
-      this.$store.dispatch('login', user).then((response) => {
-        this.loadingLogin = false
-        if (!this.$route.query.redirect) {
-          this.$router.push({ name: response.redirect })
-        } else {
-          this.$router.push({ path: this.$route.query.redirect })
-        }
-      }, (error) => {
-        this.loadingLogin = false
-        this.$message.error('O e-mail ou a senha estão incorretos.')
-        console.log(error.message)
-      })
+  import BtnFacebook from './BtnFacebook'
+  export default {
+    name: 'login',
+    components: {
+      BtnFacebook
     },
-    _register (user) {
-      this.loadingRegister = true
-      this.$store.dispatch('registerUser', user).then((response) => {
-        this.loadingRegister = false
-        if (response.ok) {
-          this._login({
-            username: user.email,
-            password: user.password
-          })
-        }
-      }, (error) => {
-        this.loadingRegister = false
-        console.log(error)
-        if (error.status === 422) {
-          let errors = error.body
-          Object.values(errors).map((err) => {
-            err.forEach((msg) => {
-              this.$message.error(msg)
-            })
-          })
-        }
-      })
-    },
-    onLogin () {
-      this.$validator.validateAll('login').then((result) => {
-        if (result) {
-          this._login(this.login)
-        } else {
-          console.log('Erro: Por favor, preencha corretamente os campos para fazer login.')
-        }
-      })
-    },
-    onRegister () {
-      this.$validator.validateAll('register').then((result) => {
-        if (result) {
-          this._register(this.register)
-        } else {
-          console.log('Erro: Por favor, preencha corretamente os campos para se registrar.')
-        }
-      })
-    },
-    onLoginFacebook (status, user) {
-      if (status === false) {
-        return
-      }
-      user.facebook = true
-      this.$store.dispatch('loginFacebook', user).then((response) => {
-        if (response.ok) {
-          this._login({
-            username: user.email,
-            password: user.id
-          })
-        }
-      }, (error) => {
-        this.loadingRegister = false
-        console.log(error.message)
-      })
-    }
-  },
-  head: {
-    title () {
-      return this.seo.title()
-    },
-    meta () {
-      return this.seo.meta()
-    },
-    link () {
-      return this.seo.link()
-    }
-  },
-  computed: {
-    page () {
+    data () {
       return {
-        title: 'Login',
-        description: 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
-        keywords: 'republica online,aluguel estudante,alugar apartamento',
-        url: this.url + this.$route.fullPath,
-        image: `${this.url}/static/republica-online.png`,
-        robots: 'index,follow',
-        googlebot: 'index,follow'
+        loadingLogin: false,
+        loadingRegister: false,
+        login: {
+          username: '',
+          password: '',
+          remember_me: false
+        },
+        register: {
+          name: '',
+          email: '',
+          password: '',
+          password_confirmation: ''
+        },
+        url: this.$http.options.url
       }
-    }
-  },
-  created () {
-    this.seo.init(this.page)
-    if (this.$store.getters.isAuthenticated) {
-      this.$router.push({ name: 'dashboard.home' })
+    },
+    methods: {
+      initLoadingLogin () {
+        this.$store.dispatch('setSpinnerDescription', 'Estamos realizando o seu login...')
+        this.spinner.open()
+        this.loadingLogin = true
+      },
+      stopLoadingLogin () {
+        this.spinner.close()
+        this.loadingLogin = false
+      },
+      initLoadingRegister () {
+        this.$store.dispatch('setSpinnerDescription', 'Estamos realizando o seu cadastro...')
+        this.spinner.open()
+        this.loadingRegister = true
+      },
+      stopLoadingRegister () {
+        this.spinner.close()
+        this.loadingRegister = false
+      },
+      _login (user) {
+        this.initLoadingLogin()
+        this.$store.dispatch('login', user).then((response) => {
+          this.stopLoadingLogin()
+          setTimeout(() => {
+            if (!this.$route.query.redirect) {
+              this.$router.push({ name: response.redirect })
+            } else {
+              this.$router.push({ path: this.$route.query.redirect })
+            }
+          }, 300)
+        }, (error) => {
+          this.stopLoadingLogin()
+          this.$message.error('O e-mail ou a senha estão incorretos.')
+          console.log(error.message)
+        })
+      },
+      _register (user) {
+        this.initLoadingRegister()
+        this.$store.dispatch('registerUser', user).then((response) => {
+          if (response.ok) {
+            setTimeout(() => {
+              this._login({
+                username: user.email,
+                password: user.password
+              })
+            }, 300)
+          } else {
+            this.stopLoadingRegister()
+          }
+        }, (error) => {
+          this.stopLoadingRegister()
+          console.log(error)
+          if (error.status === 422) {
+            let errors = error.body
+            Object.values(errors).map((err) => {
+              err.forEach((msg) => {
+                this.$message.error(msg)
+              })
+            })
+          }
+        })
+      },
+      onLogin () {
+        this.$validator.validateAll('login').then((result) => {
+          if (result) {
+            this._login(this.login)
+          } else {
+            this.$message.info('Por favor, preencha corretamente os campos para fazer login.')
+          }
+        })
+      },
+      onRegister () {
+        this.$validator.validateAll('register').then((result) => {
+          if (result) {
+            this._register(this.register)
+          } else {
+            this.$message.info('Por favor, preencha corretamente os campos para se registrar.')
+          }
+        })
+      },
+      onLoginFacebook (status, user) {
+        if (status === false) {
+          return
+        }
+        user.facebook = true
+        this.$store.dispatch('loginFacebook', user).then((response) => {
+          if (response.ok) {
+            setTimeout(() => {
+              this._login({
+                username: user.email,
+                password: user.id
+              })
+            }, 300)
+          } else {
+            this.stopLoadingLogin()
+            this.stopLoadingRegister()
+          }
+        }, (error) => {
+          this.stopLoadingLogin()
+          this.stopLoadingRegister()
+          console.log(error.message)
+        })
+      }
+    },
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
+      }
+    },
+    computed: {
+      page () {
+        return {
+          title: 'Login',
+          description: 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
+          keywords: 'republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: `${this.url}/static/republica-online.png`,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
+        }
+      }
+    },
+    created () {
+      this.seo.init(this.page)
+      if (this.$store.getters.isAuthenticated) {
+        this.$router.push({ name: 'dashboard.home' })
+      }
     }
   }
-}
 </script>
 
 <style scoped>
