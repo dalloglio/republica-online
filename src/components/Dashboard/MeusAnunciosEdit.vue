@@ -463,32 +463,50 @@
       urlPhoto (photo) {
         return this.$store.getters.urlPhoto(photo.id)
       },
-      onSubmit () {
+      openLoading () {
         this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos salvando o seu anúncio...')
+        this.spinner.open()
+      },
+      closeLoading () {
+        this.loading = false
+        this.spinner.close()
+      },
+      openLoadingPhotos () {
+        this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos salvando as fotos do anúncio...')
+        this.spinner.open()
+      },
+      closeLoadingPhotos () {
+        this.loading = false
+        this.spinner.close()
+      },
+      onSubmit () {
         this.$validator.validateAll().then((result) => {
           if (result) {
-            this.loading = false
             this.save()
           } else {
             this.$message.info('Preencha corretamente o formulário.')
-            this.loading = false
           }
         })
       },
       save () {
-        this.loading = true
+        this.openLoading()
         this.$store.dispatch('updateAd', {
           id: this.$route.params.id,
           data: this.ad
         }).then((response) => {
           if (response.ok) {
-            this.saveFiles(response)
+            this.closeLoading()
+            setTimeout(() => {
+              this.saveFiles(response)
+            }, 500)
           } else {
-            this.loading = false
+            this.closeLoading()
             this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
           }
         }, (error) => {
-          this.loading = false
+          this.closeLoading()
           if (error.status === 422) {
             this.showErrors(error.data)
           } else {
@@ -507,7 +525,8 @@
           return file instanceof File || false
         })
 
-        if (filesToSave.length) {
+        if (filesToSave.length > 0) {
+          this.openLoadingPhotos()
           filesToSave.forEach((file, index) => {
             let formData = new FormData()
             formData.append('favorite', file.favorite ? 1 : 0)
@@ -520,15 +539,26 @@
               if (response.ok) {
                 total++
                 if (total === filesToSave.length) {
-                  self.$router.push({ name: 'dashboard.meus-anuncios' })
+                  this.closeLoadingPhotos()
+                  setTimeout(() => {
+                    self.$router.push({ name: 'dashboard.meus-anuncios' })
+                  }, 300)
                 }
               }
             }, (error) => {
               console.log(error)
               this.$message.info('O arquivo ' + file.name + ' não foi enviado.')
+              total++
+              if (total === filesToSave.length) {
+                this.closeLoadingPhotos()
+                setTimeout(() => {
+                  self.$router.push({ name: 'dashboard.meus-anuncios' })
+                }, 300)
+              }
             })
           })
         } else {
+          this.closeLoadingPhotos()
           self.$router.push({ name: 'dashboard.meus-anuncios' })
         }
       },
