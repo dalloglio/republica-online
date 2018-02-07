@@ -121,6 +121,7 @@
     position: absolute;
     left: 50%;
     width: auto;
+    border-radius: 8px;
     -moz-transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
     -o-transform: translateX(-50%);

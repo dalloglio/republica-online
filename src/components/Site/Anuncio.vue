@@ -24,10 +24,10 @@
             <h3>Localização:</h3>
             <mapa ref="mapaRef"></mapa>
 
-            <h3>Talvez você goste destes aqui também *)</h3>
-            <div class="row">
-              <div v-for="i in 3" class="col-xs-4">
-                <thumbnail :model="{}"></thumbnail>
+            <h3 v-if="relatedAds.length">Talvez você goste destes aqui também *)</h3>
+            <div v-if="relatedAds.length" class="row">
+              <div v-for="ad in relatedAds" class="col-xs-4">
+                <thumbnail :model="ad"></thumbnail>
               </div>
             </div>
 
@@ -91,6 +91,16 @@
     },
 
     methods: {
+      getRelatedAds () {
+        this.$store.dispatch('getAds', {
+          limit: 3,
+          paginate: 0,
+          order: 'random',
+          category: this.ad.category_id,
+          uf: this.address.state_initials,
+          cidade: this.address.city
+        })
+      },
       searchAddress () {
         let self = this
         let ref = self.$refs.mapaRef
@@ -115,6 +125,9 @@
     },
 
     computed: {
+      relatedAds () {
+        return this.$store.state.ad.ads || []
+      },
       ad () {
         let ad = this.$store.state.ad.ad || {}
         return ad
@@ -187,6 +200,7 @@
     created () {
       this.seo.init(this.page)
       this.$store.dispatch('getAd', this.$route.params.id).then(() => {
+        this.getRelatedAds()
         let interval = setInterval(() => {
           if (this.$refs.mapaRef && this.address.id) {
             clearInterval(interval)

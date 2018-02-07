@@ -143,7 +143,6 @@
       start () {
         if (this.$route.params.category_id) {
           this.$store.dispatch('getCategory', this.$route.params.category_id).then((category) => {
-            console.log(category)
             this.paginate()
           })
         } else {
