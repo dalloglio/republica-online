@@ -82,8 +82,11 @@ export default {
       })
     },
     getAdUser ({ commit }, id) {
-      return Vue.http.get(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
-        commit('setAd', response.body)
+      return new Promise((resolve, reject) => {
+        Vue.http.get(process.env.API_VERSION + '/user/ads/' + id).then((response) => {
+          commit('setAd', response.body)
+          resolve(response)
+        }, (error) => reject(error))
       })
     },
     getAdsContactsUserUnread ({ commit }, params) {

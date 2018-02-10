@@ -11,14 +11,14 @@
         </div>
         <div class="form-group col-xs-4">
           <select
+          @change="getCategory()"
           v-model.trim="ad.category_id"
           id="ad_category_id"
           name="categoria"
           class="form-control input-lg"
           data-vv-as="categoria"
           data-vv-rules="required"
-          v-validate
-          autofocus>
+          v-validate>
             <option value="">Selecione</option>
             <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
           </select>
@@ -36,8 +36,7 @@
           class="form-control input-lg"
           data-vv-as="status"
           data-vv-rules="required"
-          v-validate
-          autofocus>
+          v-validate>
             <option value="">Selecione</option>
             <option v-for="item in status" :value="item.status">{{ item.title }}</option>
           </select>
@@ -253,15 +252,10 @@
           v-model.trim="ad.details[filter_index]"
           :id="'ad_details_' + filter.id"
           :name="filter.slug"
-          class="form-control input-lg"
-          :data-vv-as="filter.title"
-          data-vv-rules="required"
-          v-validate
-          >
+          class="form-control input-lg">
             <option value="">{{ filter.description }}</option>
             <option v-for="input in filter.inputs" :key="input.id" :value="input.id">{{ input.value }}</option>
           </select>
-          <app-tooltip v-if="errors.has(filter.slug)" :title="errors.first(filter.slug)" class="question"></app-tooltip>
         </div>
 
         <div class="clearfix"></div>
@@ -399,6 +393,8 @@
             whatsapp: ''
           }
         },
+        category: {},
+        filters: [],
         status: [
           { key: 1, status: true, title: 'Publicado' },
           { key: 2, status: false, title: 'Pausado' }
@@ -415,28 +411,10 @@
     },
     computed: {
       ad () {
-        let ad = this.$store.state.ad.ad || this.model
-        if (ad.details) {
-          let details = ad.details.map((detail) => {
-            if (detail) {
-              return detail.input_id
-            }
-          })
-          ad.details = details
-        }
-        if (!ad.contact) {
-          ad.contact = {}
-        }
-        return ad
-      },
-      category () {
-        return this.categories.find(category => Number(category.id) === Number(this.ad.category_id)) || {}
+        return this.$store.state.ad.ad || this.model
       },
       categories () {
         return this.$store.state.category.categories || []
-      },
-      filters () {
-        return this.category.filters ? this.category.filters : []
       },
       photos () {
         let photos = this.ad.photos || []
@@ -616,11 +594,50 @@
             ref.addMarker()
           }
         }, (error) => console.log(error))
+      },
+      getCategory () {
+        this.category = {}
+        this.filters = []
+        this.ad.details = []
+
+        let id = this.ad.category_id
+        if (id) {
+          let category = this.categories.find((category) => Number(category.id) === Number(id))
+          if (category) {
+            this.category = category || {}
+            this.filters = this.category.filters || []
+            this.resetDetails(this.filters)
+          }
+        }
+      },
+      resetDetails (filters) {
+        filters.forEach((filter, index) => {
+          this.ad.details[index] = ''
+        })
       }
     },
     created () {
       this.$store.dispatch('getCategories').then(() => {
-        this.$store.dispatch('getAdUser', this.$route.params.id).then(() => {
+        this.$store.dispatch('getAdUser', this.$route.params.id).then((response) => {
+          let ad = response.body || {}
+          if (ad) {
+            if (ad.details) {
+              ad.details = ad.details.map((detail) => {
+                return detail.input_id
+              })
+            }
+
+            if (ad.category) {
+              this.category = ad.category || {}
+              this.filters = this.category.filters || []
+              this.filters.forEach((filter, index) => {
+                if (!ad.details[index]) {
+                  ad.details[index] = ''
+                }
+              })
+            }
+          }
+
           let interval = setInterval(() => {
             if (this.$refs.mapaRef) {
               clearInterval(interval)
@@ -635,7 +652,6 @@
     }
   }
 </script>
-
 
 <style scoped>
   .page h2 {

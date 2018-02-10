@@ -16,14 +16,14 @@
               </div>
               <div class="form-group col-xs-4">
                 <select
+                @change="getCategory()"
                 v-model.trim="ad.category_id"
                 id="ad_category_id"
                 name="categoria"
                 class="form-control input-lg"
                 data-vv-as="categoria"
                 data-vv-rules="required"
-                v-validate
-                autofocus>
+                v-validate>
                   <option value="">Selecione</option>
                   <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
                 </select>
@@ -239,14 +239,10 @@
                 v-model.trim="ad.details[filter_index]"
                 :id="'ad_details_' + filter.id"
                 :name="filter.slug"
-                class="form-control input-lg"
-                :data-vv-as="filter.title"
-                data-vv-rules="required"
-                v-validate>
+                class="form-control input-lg">
                   <option value="">{{ filter.description }}</option>
                   <option v-for="input in filter.inputs" :key="input.id" :value="input.id">{{ input.value }}</option>
                 </select>
-                <app-tooltip v-if="errors.has(filter.slug)" :title="errors.first(filter.slug)" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -387,6 +383,8 @@
             origin: 'page_create_ad'
           }
         },
+        category: {},
+        filters: [],
         money: {
           decimal: ',',
           thousands: '.',
@@ -421,17 +419,8 @@
           googlebot: 'index,follow'
         }
       },
-      category () {
-        if (!this.ad.category_id) {
-          return {}
-        }
-        return this.categories.find(category => category.id === this.ad.category_id)
-      },
       categories () {
         return this.$store.state.category.categories
-      },
-      filters () {
-        return this.category.filters || []
       },
       photos () {
         return this.ad.photos
@@ -580,6 +569,22 @@
             ref.addMarker()
           }
         }, (error) => console.log(error))
+      },
+      getCategory () {
+        let id = this.ad.category_id
+        if (id) {
+          let category = this.categories.find((category) => Number(category.id) === Number(id))
+          if (category) {
+            this.category = category || {}
+            this.filters = this.category.filters || []
+            this.resetDetails(this.filters)
+          }
+        }
+      },
+      resetDetails (filters) {
+        filters.forEach((filter, index) => {
+          this.ad.details[index] = ''
+        })
       }
     },
     created () {
