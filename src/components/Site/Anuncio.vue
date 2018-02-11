@@ -148,7 +148,9 @@
 
     computed: {
       relatedAds () {
-        return this.$store.state.ad.ads || []
+        let ads = this.$store.state.ad.ads || []
+        let relatedAds = ads.filter((ad) => Number(ad.id) !== Number(this.ad.id))
+        return relatedAds || []
       },
       ad () {
         let ad = this.$store.state.ad.ad || {}
