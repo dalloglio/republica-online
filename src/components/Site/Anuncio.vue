@@ -76,14 +76,16 @@
       Modal,
       Thumbnail
     },
-
     data () {
       return {
         url: this.$http.options.url
       }
     },
-
     watch: {
+      '$route' (to, from) {
+        this.resetVariables()
+        this.start()
+      },
       page (to, from) {
         this.seo.setPage(this.page)
         this.$emit('updateHead')
@@ -91,6 +93,20 @@
     },
 
     methods: {
+      start () {
+        this.seo.init(this.page)
+        this.$store.dispatch('getAd', this.$route.params.id).then(() => {
+          this.getRelatedAds()
+          let interval = setInterval(() => {
+            if (this.$refs.mapaRef && this.address.id) {
+              clearInterval(interval)
+              this.searchAddress()
+            }
+          }, 500)
+        })
+        this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
+        this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+      },
       getRelatedAds () {
         this.$store.dispatch('getAds', {
           limit: 3,
@@ -121,6 +137,12 @@
       },
       showModal () {
         this.$refs.modalRef.show()
+      },
+      resetVariables () {
+        this.$store.commit('setAd', {})
+        this.$store.commit('setAds', [])
+        this.$store.commit('setBannersLargeRectangle', [])
+        this.$store.commit('setBannersHalfPage', [])
       }
     },
 
@@ -151,10 +173,10 @@
         return this.ad.user || {}
       },
       bannersLargeRectangle () {
-        return this.$store.state.banner.bannersLargeRectangle
+        return this.$store.state.banner.bannersLargeRectangle || []
       },
       bannersHalfPage () {
-        return this.$store.state.banner.bannersHalfPage
+        return this.$store.state.banner.bannersHalfPage || []
       },
       formattedAddress () {
         let i = 0
@@ -198,22 +220,10 @@
     },
 
     created () {
-      this.seo.init(this.page)
-      this.$store.dispatch('getAd', this.$route.params.id).then(() => {
-        this.getRelatedAds()
-        let interval = setInterval(() => {
-          if (this.$refs.mapaRef && this.address.id) {
-            clearInterval(interval)
-            this.searchAddress()
-          }
-        }, 500)
-      })
-      this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
-      this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+      this.start()
     },
-
     beforeDestroy () {
-      this.$store.commit('setAd', {})
+      this.resetVariables()
     }
   }
 </script>
