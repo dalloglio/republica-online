@@ -2,7 +2,8 @@
   <div class="page anuncios">
     <section id="anuncios">
       <div class="container">
-        <h2>Encontramos {{ paginator.total || 0 }} {{ paginator.total === 1 ? 'vaga' : 'vagas' }} pra você!</h2>
+        <h2 v-if="loading">Procurando anúncios...</h2>
+        <h2 v-else>Encontramos {{ paginator.total || 0 }} {{ paginator.total === 1 ? 'vaga' : 'vagas' }} pra você!</h2>
         <p>Utilize os filtros abaixo para refinar ainda mais a sua pesquisa.</p>
         <select
         v-model="order"
@@ -77,6 +78,7 @@
     },
     data () {
       return {
+        loading: false,
         page: 1,
         order: 'latest',
         orderOptions: [
@@ -141,6 +143,7 @@
     },
     methods: {
       start () {
+        this.loading = true
         if (this.$route.params.category_id) {
           this.$store.dispatch('getCategory', this.$route.params.category_id).then((category) => {
             this.paginate()
@@ -191,7 +194,9 @@
           params.filters = JSON.stringify(filters)
         }
 
-        this.$store.dispatch('getAds', params)
+        this.$store.dispatch('getAds', params).then(() => {
+          this.loading = false
+        })
       }
     },
     created () {
