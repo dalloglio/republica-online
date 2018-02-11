@@ -63,7 +63,7 @@
     },
     computed: {
       favorites () {
-        return this.$store.state.user.favorites
+        return this.$store.state.user.favorites || []
       }
     },
     methods: {
