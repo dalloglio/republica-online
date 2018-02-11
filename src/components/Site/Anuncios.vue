@@ -207,6 +207,7 @@
     },
     beforeDestroy () {
       this.$store.commit('setAds', [])
+      this.$store.commit('setCategory', {})
     }
   }
 </script>
