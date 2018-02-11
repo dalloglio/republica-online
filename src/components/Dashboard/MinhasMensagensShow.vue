@@ -23,6 +23,8 @@
         </h4>
         <p v-if="contact.name || contact.email"><b>Mensagem de:</b><br>{{ contact.name }} <span v-if="contact.email">[{{ contact.email }}]</span></p>
         <p v-if="contact.created_at"><b>Enviada em:</b><br>{{ $date.toNice(contact.created_at) }}</p>
+        <p v-if="contact.viewed_at"><b>Visualizada em:</b><br>{{ $date.toNice(contact.viewed_at) }}</p>
+        <p v-if="contact.city"><b>Cidade:</b><br>{{ contact.city }}</p>
         <p v-if="contact.phone"><b>Telefone p/ contato:</b><br>{{ $mask.phone(contact.phone) }}</p>
         <p v-if="contact.message"><b>Mensagem:</b><br>{{ contact.message }}</p>
       </div>
@@ -83,14 +85,14 @@
 </script>
 
 <style scoped>
-.media .media-heading {
-  font-weight: 800;
-  border-bottom: 1px solid #091e42;
-  padding-bottom: 10px;
-}
-.media .media-object {
-  width: 150px;
-  height: 95px;
-  border-radius: 6px;
-}
+  .media .media-heading {
+    font-weight: 800;
+    border-bottom: 1px solid #091e42;
+    padding-bottom: 10px;
+  }
+  .media .media-object {
+    width: 150px;
+    height: 95px;
+    border-radius: 6px;
+  }
 </style>

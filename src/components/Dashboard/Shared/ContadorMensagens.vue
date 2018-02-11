@@ -3,7 +3,8 @@
     <div class="count">
       <span>{{ count }}</span>
     </div>
-    <p>Você possui <strong>{{ count }}</strong> novas mensagens!</p>
+    <p v-if="count === 1">Você possui <strong>{{ count }}</strong> nova mensagem!</p>
+    <p v-else>Você possui <strong>{{ count }}</strong> novas mensagens!</p>
   </div>
 </template>
 
@@ -13,6 +14,9 @@
     created () {
       this.$store.dispatch('getAdsContactsUserUnread')
     },
+    beforeDestroy () {
+      this.$store.commit('setAdsContactsUserUnread', [])
+    },
     computed: {
       ads () {
         return this.$store.state.ad.messages.unread || []
@@ -21,7 +25,7 @@
         let contacts = []
         this.ads.forEach((ad) => {
           ad.contacts.forEach((contact) => {
-            if (contact.origin === 'page_form_ad') {
+            if (contact.origin === 'page_form_ad' && !contact.viewed_at) {
               contacts.push(contact)
             }
           })

@@ -8,6 +8,10 @@
       <table class="table table-hover">
         <tbody>
           <tr v-for="(contact, contactIindex) in contacts">
+            <td width="1%">
+              <span v-if="!contact.viewed_at" class="label label-success">Nova</span>
+              <span v-else class="label label-default">Visualizada</span>
+            </td>
             <td>
               <img v-if="contact.ad.photo" :src="urlPhoto(contact.ad.photo)" :alt="contact.ad.title">
               <img v-else src="http://via.placeholder.com/150x95?text=+" :alt="contact.ad.title">
@@ -84,6 +88,13 @@
             })
           }
         })
+
+        contacts.sort((a, b) => {
+          let result = new Date(b.created_at) - new Date(a.created_at)
+          console.log(result)
+          return result
+        })
+
         return contacts
       }
     },
