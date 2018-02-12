@@ -24,10 +24,10 @@
             <h3>Localização:</h3>
             <mapa ref="mapaRef"></mapa>
 
-            <h3>Talvez você goste destes aqui também *)</h3>
-            <div v-if="false" class="row">
-              <div v-for="i in 3" class="col-xs-4">
-                <thumbnail></thumbnail>
+            <h3 v-if="relatedAds.length">Talvez você goste destes aqui também *)</h3>
+            <div v-if="relatedAds.length" class="row">
+              <div v-for="ad in relatedAds" class="col-xs-4">
+                <thumbnail :model="ad"></thumbnail>
               </div>
             </div>
 
@@ -76,45 +76,84 @@
       Modal,
       Thumbnail
     },
+    data () {
+      return {
+        url: this.$http.options.url
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.resetVariables()
+        this.start()
+      },
+      page (to, from) {
+        this.seo.setPage(this.page)
+        this.$emit('updateHead')
+      }
+    },
 
     methods: {
+      start () {
+        this.seo.init(this.page)
+        this.$store.dispatch('getAd', this.$route.params.id).then(() => {
+          this.getRelatedAds()
+          let interval = setInterval(() => {
+            if (this.$refs.mapaRef && this.address.id) {
+              clearInterval(interval)
+              this.searchAddress()
+            }
+          }, 500)
+        })
+        this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
+        this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+      },
+      getRelatedAds () {
+        this.$store.dispatch('getAds', {
+          limit: 3,
+          paginate: 0,
+          order: 'random',
+          category: this.ad.category_id,
+          uf: this.address.state_initials,
+          cidade: this.address.city
+        })
+      },
       searchAddress () {
-        let zoom = 5
         let self = this
-        let mapaRef = self.$refs.mapaRef
-        if (!mapaRef) {
-          return
-        }
-        mapaRef.removeMarker()
-        mapaRef.removeCircle()
-        if (self.address.show_on_map === 'default') {
-          zoom = 4
-          mapaRef.setAddress('Brasil')
-        } else if (self.address.show_on_map === 'approximate') {
-          zoom = 5
-          mapaRef.setAddress(self.formattedAddress)
-          mapaRef.addCircle()
-        } else if (self.address.show_on_map === 'exact') {
-          zoom = 16
-          mapaRef.setAddress(self.formattedAddress)
-          mapaRef.addMarker()
-        }
-        mapaRef.geocodeAddress()
-        mapaRef.setZoom(zoom)
+        let ref = self.$refs.mapaRef
+
+        ref.removeMarker()
+        ref.removeCircle()
+        ref.setAddress(self.formattedAddress)
+        ref.searchAddress().then((status) => {
+          if (self.ad.address.show_on_map === 'default') {
+            ref.setAddress('Brasil')
+            ref.setZoom(4)
+          } else if (self.ad.address.show_on_map === 'approximate') {
+            ref.addCircle()
+          } else if (self.ad.address.show_on_map === 'exact') {
+            ref.addMarker()
+          }
+        }, (error) => console.log(error))
       },
       showModal () {
         this.$refs.modalRef.show()
+      },
+      resetVariables () {
+        this.$store.commit('setAd', {})
+        this.$store.commit('setAds', [])
+        this.$store.commit('setBannersLargeRectangle', [])
+        this.$store.commit('setBannersHalfPage', [])
       }
     },
 
     computed: {
+      relatedAds () {
+        let ads = this.$store.state.ad.ads || []
+        let relatedAds = ads.filter((ad) => Number(ad.id) !== Number(this.ad.id))
+        return relatedAds || []
+      },
       ad () {
         let ad = this.$store.state.ad.ad || {}
-        if (ad.id) {
-          setTimeout(() => {
-            this.searchAddress()
-          }, 2000)
-        }
         return ad
       },
       address () {
@@ -136,10 +175,10 @@
         return this.ad.user || {}
       },
       bannersLargeRectangle () {
-        return this.$store.state.banner.bannersLargeRectangle
+        return this.$store.state.banner.bannersLargeRectangle || []
       },
       bannersHalfPage () {
-        return this.$store.state.banner.bannersHalfPage
+        return this.$store.state.banner.bannersHalfPage || []
       },
       formattedAddress () {
         let i = 0
@@ -152,17 +191,41 @@
         if (this.address.city) { address[i++] = `${this.address.city}` }
         address[i++] = 'Brasil'
         return address.join(', ')
+      },
+      page () {
+        let image = `${this.url}/static/republica-online.png`
+        if (this.photo.id) {
+          image = this.$store.getters.urlPhoto(this.photo.id)
+        }
+        return {
+          title: this.ad.title || 'Anúncio',
+          description: this.ad.description || 'O republica.online funciona a partir de uma ideia simples: que você possa encontrar ou divulgar uma república de um jeito fácil e rápido.',
+          keywords: 'republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: image,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
+        }
+      }
+    },
+
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
       }
     },
 
     created () {
-      this.$store.dispatch('getAd', this.$route.params.id)
-      this.$store.dispatch('getBannersLargeRectangle', { limit: 2 })
-      this.$store.dispatch('getBannersHalfPage', { limit: 2 })
+      this.start()
     },
-
     beforeDestroy () {
-      this.$store.commit('setAd', {})
+      this.resetVariables()
     }
   }
 </script>

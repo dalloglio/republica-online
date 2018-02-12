@@ -51,7 +51,8 @@ export default {
       return this.ad.address || {}
     },
     details () {
-      return this.ad.details.slice(0, 3)
+      let details = this.ad.details || []
+      return details.slice(0, 3)
     },
     photo () {
       return this.ad.photo || {}

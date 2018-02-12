@@ -9,7 +9,7 @@
         name="photos"
         accept="image/*"
         multiple
-        data-vv-as="imagens"
+        data-vv-as="fotos"
         data-vv-rules="image|size:5000"
         v-validate.reject
         @change="onUpload"

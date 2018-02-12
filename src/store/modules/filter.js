@@ -22,13 +22,13 @@ export default {
 
   actions: {
     getFilters ({ commit }) {
-      Vue.http.get(ENDPOINT).then((response) => {
+      return Vue.http.get(ENDPOINT).then((response) => {
         commit('setFilters', response.body)
       })
     },
 
     getFilter ({ commit }, id) {
-      Vue.http.get(ENDPOINT + '/' + id).then((response) => {
+      return Vue.http.get(ENDPOINT + '/' + id).then((response) => {
         let filter = response.body
         let values = []
         if (filter.values) {

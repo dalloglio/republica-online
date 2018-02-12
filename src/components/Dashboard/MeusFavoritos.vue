@@ -7,7 +7,7 @@
       <div class="line"></div>
       <table class="table table-hover">
         <tbody>
-          <tr v-for="favorite in favorites">
+          <tr v-for="favorite in favorites" v-if="favorite.ad">
             <td width="1%">
               <span class="favorite glyphicon glyphicon-star"></span>
             </td>
@@ -37,7 +37,12 @@
         </tbody>
       </table>
     </div>
-    <div v-else>
+
+    <div v-if="loading">
+      <p><strong>Um momento, estamos procurando seus anúncios favoritos...</strong></p>
+    </div>
+
+    <div v-if="!favorites.length && !loading">
       <p><strong>Você ainda não possui nenhum república favorita :(</strong></p>
       <p>
         <router-link :to="{ name: 'anuncios' }" class="btn btn-lg btn-warning" title="Ver anúncios">
@@ -49,80 +54,94 @@
 </template>
 
 <script>
-export default {
-  name: 'dashboard-meus-favoritos',
-  computed: {
-    favorites () {
-      return this.$store.state.user.favorites
-    }
-  },
-  methods: {
-    urlPhoto (photo) {
-      return this.$store.getters.urlPhoto(photo.id)
+  export default {
+    name: 'dashboard-meus-favoritos',
+    data () {
+      return {
+        loading: true
+      }
     },
-    onDelete (favorite) {
-      if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
-        this.$store.dispatch('deleteUserFavorite', favorite.id).then((response) => {
-          if (response.ok) {
-            this.$store.dispatch('getUserFavorites')
-          }
-        }, (error) => {
-          console.log(error)
+    computed: {
+      favorites () {
+        return this.$store.state.user.favorites || []
+      }
+    },
+    methods: {
+      urlPhoto (photo) {
+        return this.$store.getters.urlPhoto(photo.id)
+      },
+      onDelete (favorite) {
+        if (confirm('Você tem certeza que deseja excluir este anúncio dos favoritos?')) {
+          this.$store.dispatch('deleteUserFavorite', favorite.id).then((response) => {
+            if (response.ok) {
+              this.getFavorites()
+            }
+          }, (error) => {
+            console.log(error)
+          })
+        }
+      },
+
+      getFavorites () {
+        this.$store.dispatch('getUserFavorites').then(() => {
+          this.loading = false
         })
       }
+    },
+    created () {
+      this.getFavorites()
+    },
+    beforeDestroy () {
+      this.$store.commit('setUserFavorites', [])
     }
-  },
-  created () {
-    this.$store.dispatch('getUserFavorites')
   }
-}
 </script>
 
 <style scoped>
-table tr td:first-child {
-  border-top-left-radius: 10px;
-  border-bottom-left-radius: 10px;
-}
-table tr td:last-child {
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-}
-table tr td img {
-  display: block;
-  width: 150px;
-  height: 95px;
-  border-radius: 6px;
-}
-table tr td {
-  vertical-align: top;
-  padding: 15px;
-  border-color: #091e42;
-}
-table tr:first-child td {
-  border-top: 0 none;
-}
-table tr td button {
-  background-color: transparent;
-  border: 0 none;
-  box-shadow: none;
-  overflow: hidden;
-}
-table tr td i {
-  position: relative;
-  display: inline-block;
-  vertical-align: middle;
-  width: 30px;
-  height: 30px;
-  top: -2px;
-  background-color: transparent;
-  background-image: url('../../assets/img/icons-table.png');
-  background-repeat: no-repeat;
-}
-table tr td i.icon-delete {
-  background-position: 0 -30px;
-}
-table tr td .favorite {
-  color: #fdc400;
-  font-size: 20px;
-}
+  table tr td:first-child {
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+  }
+  table tr td:last-child {
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+  }
+  table tr td img {
+    display: block;
+    width: 150px;
+    height: 95px;
+    border-radius: 6px;
+  }
+  table tr td {
+    vertical-align: top;
+    padding: 15px;
+    border-color: #091e42;
+  }
+  table tr:first-child td {
+    border-top: 0 none;
+  }
+  table tr td button {
+    background-color: transparent;
+    border: 0 none;
+    box-shadow: none;
+    overflow: hidden;
+  }
+  table tr td i {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    width: 30px;
+    height: 30px;
+    top: -2px;
+    background-color: transparent;
+    background-image: url('../../assets/img/icons-table.png');
+    background-repeat: no-repeat;
+  }
+  table tr td i.icon-delete {
+    background-position: 0 -30px;
+  }
+  table tr td .favorite {
+    color: #fdc400;
+    font-size: 20px;
+  }
 </style>

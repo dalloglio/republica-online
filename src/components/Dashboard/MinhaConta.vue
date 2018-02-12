@@ -77,76 +77,97 @@
 </template>
 
 <script>
-import AwesomeMask from 'awesome-mask'
-import ModalChangePassword from '@/components/Dashboard/Shared/ModalChangePassword'
-export default {
-  name: 'dashboard-minha-conta',
-  directives: {
-    'mask': AwesomeMask
-  },
-  components: {
-    ModalChangePassword
-  },
-  data () {
-    return {
-      loading: false,
-      genders: [
-        { key: 'Male', value: 'Masculinho' },
-        { key: 'Female', value: 'Feminino' }
-      ]
-    }
-  },
-  methods: {
-    onSubmit () {
-      this.loading = true
-      this.$store.dispatch('updateUser', this.user).then((response) => {
-        this.loading = false
-        if (response.ok) {
-          this.$store.dispatch('getUser')
-          alert('Salvo com sucesso!')
-        }
-      }, (error) => {
-        this.loading = false
-        console.log(error)
-      })
+  import AwesomeMask from 'awesome-mask'
+  import ModalChangePassword from '@/components/Dashboard/Shared/ModalChangePassword'
+  export default {
+    name: 'dashboard-minha-conta',
+    directives: {
+      'mask': AwesomeMask
     },
-    showModal () {
-      this.$refs.modalRef.validationsErrors = []
-      this.$refs.modalRef.show()
+    components: {
+      ModalChangePassword
     },
-    pesquisarCep () {
-      if (this.user.address.zip_code !== '') {
+    data () {
+      return {
+        loading: false,
+        genders: [
+          { key: 'Male', value: 'Masculinho' },
+          { key: 'Female', value: 'Feminino' }
+        ]
+      }
+    },
+    methods: {
+      openLoading () {
         this.loading = true
-        this.cep.pesquisar(this.user.address.zip_code, this.user.address).then((response) => {
-          this.loading = false
-          this.$refs.addressNumberRef.focus()
+        this.$store.dispatch('setSpinnerDescription', 'Estamos salvando os seus dados...')
+        this.spinner.open()
+      },
+      closeLoading () {
+        this.loading = false
+        this.spinner.close()
+      },
+      onSubmit () {
+        this.openLoading()
+        this.$store.dispatch('updateUser', this.user).then((response) => {
+          this.closeLoading()
+          if (response.ok) {
+            this.$store.dispatch('getUser')
+            this.$message.success('Salvo com sucesso!')
+          }
         }, (error) => {
-          this.loading = false
-          console.log(error)
+          this.closeLoading()
+          if (error.status === 422) {
+            this.showErrors(error.data)
+          } else {
+            this.$message.error(error.statusText)
+            console.log(error)
+          }
         })
+      },
+      showErrors (errors) {
+        Object.values(errors).map((error) => {
+          error.map((erro) => {
+            this.$message.error(erro)
+          })
+        })
+      },
+      showModal () {
+        this.$refs.modalRef.validationsErrors = []
+        this.$refs.modalRef.show()
+      },
+      pesquisarCep () {
+        if (this.user.address.zip_code !== '') {
+          this.loading = true
+          this.cep.pesquisar(this.user.address.zip_code, this.user.address).then((response) => {
+            this.loading = false
+            this.$refs.addressNumberRef.focus()
+          }, (error) => {
+            this.loading = false
+            console.log(error)
+          })
+        }
       }
-    }
-  },
-  computed: {
-    user () {
-      let user = this.$store.state.user.user
-      if (!user.address) {
-        user.address = {}
+    },
+    computed: {
+      user () {
+        let user = this.$store.state.user.user
+        if (!user.address) {
+          user.address = {}
+        }
+        if (!user.photo) {
+          user.photo = {}
+        }
+        return user
       }
-      if (!user.photo) {
-        user.photo = {}
-      }
-      return user
     }
   }
-}
 </script>
 
 <style scoped>
-.btn-password {
-  font-weight: 600;
-  color: #57d9a3;
-  line-height: 24px;
-  padding: 10px;
-}
+  .btn-password {
+    font-weight: 600;
+    color: #57d9a3;
+    line-height: 24px;
+    padding: 10px;
+  }
 </style>

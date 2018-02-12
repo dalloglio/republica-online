@@ -40,7 +40,7 @@ export default {
 
   actions: {
     getUser ({ commit }, id) {
-      Vue.http.get(process.env.API_VERSION + '/user').then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user').then((response) => {
         commit('setUser', response.body)
       })
     },
@@ -106,12 +106,12 @@ export default {
     },
 
     getUserFavorite ({ commit }, id) {
-      Vue.http.get(process.env.API_VERSION + '/user/favorites/ads/' + id).then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/favorites/ads/' + id).then((response) => {
         commit('setUserAdFavorite', response.body)
       })
     },
     getUserFavorites ({ commit }) {
-      Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
+      return Vue.http.get(process.env.API_VERSION + '/user/favorites').then((response) => {
         commit('setUserFavorites', response.body)
       })
     },

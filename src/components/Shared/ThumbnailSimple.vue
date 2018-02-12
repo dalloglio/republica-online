@@ -1,5 +1,5 @@
 <template>
-  <div class="thumbnail-simple">
+  <div v-if="item.id" class="thumbnail-simple">
     <a :href="item.link" :title="item.title" class="thumbnail" target="_blank">
       <img :src="url" :alt="item.title">
     </a>
@@ -19,8 +19,12 @@ export default {
     }
   },
   computed: {
-    url (id) {
-      return this.$store.getters.urlPhoto(this.item.photo.id)
+    url () {
+      let photo = this.item.photo || {}
+      if (!photo.id) {
+        return ''
+      }
+      return this.$store.getters.urlPhoto(photo.id)
     }
   }
 }

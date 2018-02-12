@@ -9,22 +9,21 @@
 
           <div class="line"></div>
 
-          <form autocomplete="off" class="row" @submit.prevent="onSubmit">
+          <form autocomplete="off" class="row" @submit.prevent="onSubmit" novalidate>
             <fieldset :disabled="loading">
               <div class="col-xs-3 text-right">
                 <label class="ad_category_id" for="ad_category_id">Escolha a categoria do seu anúncio:</label>
               </div>
               <div class="form-group col-xs-4">
                 <select
+                @change="getCategory()"
                 v-model.trim="ad.category_id"
                 id="ad_category_id"
                 name="categoria"
                 class="form-control input-lg"
                 data-vv-as="categoria"
                 data-vv-rules="required"
-                v-validate
-                required
-                autofocus>
+                v-validate>
                   <option value="">Selecione</option>
                   <option v-for="(category, category_index) in categories" :value="category.id">{{ category.title }}</option>
                 </select>
@@ -46,8 +45,7 @@
                 placeholder="Título"
                 data-vv-as="título"
                 data-vv-rules="required"
-                v-validate
-                required>
+                v-validate>
                 <app-tooltip v-if="errors.has('title')" :title="errors.first('title')" class="question"></app-tooltip>
               </div>
 
@@ -63,8 +61,7 @@
                 placeholder="Valor"
                 data-vv-as="valor"
                 data-vv-rules="required"
-                v-validate
-                required></money>
+                v-validate></money>
                 <app-tooltip v-if="errors.has('price')" :title="errors.first('price')" class="question"></app-tooltip>
               </div>
 
@@ -75,12 +72,11 @@
                 id="ad_description"
                 name="description"
                 class="form-control input-lg"
-                maxlength="255"
+                maxlength="500"
                 placeholder="Descrição"
                 data-vv-as="descrição"
-                data-vv-rules="required|max:255"
+                data-vv-rules="required|max:500"
                 v-validate
-                required
                 rows="6"></textarea>
                 <app-tooltip v-if="errors.has('description')" :title="errors.first('description')" class="question"></app-tooltip>
               </div>
@@ -121,7 +117,7 @@
                 data-vv-as="estado"
                 data-vv-rules="required|max:2"
                 v-validate
-                required>
+                @blur="searchAddress()">
                   <app-tooltip v-if="errors.has('state_initials')" :title="errors.first('state_initials')" class="question"></app-tooltip>
               </div>
 
@@ -138,7 +134,7 @@
                 data-vv-as="cidade"
                 data-vv-rules="required|max:50"
                 v-validate
-                required>
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('city')" :title="errors.first('city')" class="question"></app-tooltip>
               </div>
 
@@ -155,7 +151,7 @@
                 data-vv-as="bairro"
                 data-vv-rules="required|max:50"
                 v-validate
-                required>
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('neighborhood')" :title="errors.first('neighborhood')" class="question"></app-tooltip>
               </div>
 
@@ -172,7 +168,7 @@
                 data-vv-as="rua"
                 data-vv-rules="required|max:100"
                 v-validate
-                required>
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('street')" :title="errors.first('street')" class="question"></app-tooltip>
               </div>
 
@@ -189,7 +185,6 @@
                 data-vv-as="número"
                 data-vv-rules="required|max:50"
                 v-validate
-                required
                 ref="number"
                 @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('number')" :title="errors.first('number')" class="question"></app-tooltip>
@@ -207,7 +202,8 @@
                 placeholder="Complemento"
                 data-vv-as="complemento"
                 data-vv-rules="max:100"
-                v-validate>
+                v-validate
+                @blur="searchAddress()">
                 <app-tooltip v-if="errors.has('sub_address')" :title="errors.first('sub_address')" class="question"></app-tooltip>
               </div>
 
@@ -243,15 +239,10 @@
                 v-model.trim="ad.details[filter_index]"
                 :id="'ad_details_' + filter.id"
                 :name="filter.slug"
-                class="form-control input-lg"
-                :data-vv-as="filter.title"
-                data-vv-rules="required"
-                v-validate
-                >
+                class="form-control input-lg">
                   <option value="">{{ filter.description }}</option>
                   <option v-for="input in filter.inputs" :key="input.id" :value="input.id">{{ input.value }}</option>
                 </select>
-                <app-tooltip v-if="errors.has(filter.slug)" :title="errors.first(filter.slug)" class="question"></app-tooltip>
               </div>
 
               <div class="clearfix"></div>
@@ -288,8 +279,7 @@
                 placeholder="Nome"
                 data-vv-as="nome"
                 data-vv-rules="required|max:100"
-                v-validate
-                required>
+                v-validate>
                 <app-tooltip v-if="errors.has('contact_name')" :title="errors.first('contact_name')" class="question"></app-tooltip>
               </div>
 
@@ -348,229 +338,301 @@
 </template>
 
 <script>
-import AwesomeMask from 'awesome-mask'
-import Mapa from '@/components/Shared/Mapa'
-import AppTooltip from '@/components/Shared/Tooltip.vue'
-import AppUpload from '@/components/Shared/Upload.vue'
-export default {
-  name: 'ad-create',
-  directives: {
-    'mask': AwesomeMask
-  },
-  components: {
-    Mapa,
-    AppTooltip,
-    AppUpload
-  },
-  data () {
-    return {
-      loading: false,
-      ad: {
-        status: true,
-        category_id: '',
-        title: '',
-        price: '',
-        description: '',
-        address: {
-          zip_code: '',
-          state_initial: '',
-          state: '',
-          city: '',
-          state_id: '',
-          city_id: '',
-          neighborhood: '',
-          street: '',
-          number: '',
-          sub_address: '',
-          show_on_map: 'default'
+  import AwesomeMask from 'awesome-mask'
+  import Mapa from '@/components/Shared/Mapa'
+  import AppTooltip from '@/components/Shared/Tooltip.vue'
+  import AppUpload from '@/components/Shared/Upload.vue'
+  export default {
+    name: 'ad-create',
+    directives: {
+      'mask': AwesomeMask
+    },
+    components: {
+      Mapa,
+      AppTooltip,
+      AppUpload
+    },
+    data () {
+      return {
+        loading: false,
+        ad: {
+          status: true,
+          category_id: '',
+          title: '',
+          price: '',
+          description: '',
+          address: {
+            zip_code: '',
+            state_initial: '',
+            state: '',
+            city: '',
+            state_id: '',
+            city_id: '',
+            neighborhood: '',
+            street: '',
+            number: '',
+            sub_address: '',
+            show_on_map: 'default'
+          },
+          details: [],
+          photos: [],
+          contact: {
+            name: '',
+            cellphone: '',
+            whatsapp: '',
+            origin: 'page_create_ad'
+          }
         },
-        details: [],
-        photos: [],
-        contact: {
-          name: '',
-          cellphone: '',
-          whatsapp: '',
-          origin: 'page_create_ad'
+        category: {},
+        filters: [],
+        money: {
+          decimal: ',',
+          thousands: '.',
+          prefix: '',
+          suffix: '',
+          precision: 2,
+          masked: false
+        },
+        url: this.$http.options.url
+      }
+    },
+    head: {
+      title () {
+        return this.seo.title()
+      },
+      meta () {
+        return this.seo.meta()
+      },
+      link () {
+        return this.seo.link()
+      }
+    },
+    computed: {
+      page () {
+        return {
+          title: 'Anuncie sua vaga',
+          description: 'Vamos anunciar para quem realmente quer comprar! Anuncie em nosso portal! Conheça todos os planos e fale diretamente com o seu mercado consumidor!',
+          keywords: 'republica online,aluguel estudante,alugar apartamento',
+          url: this.url + this.$route.fullPath,
+          image: `${this.url}/static/republica-online.png`,
+          robots: 'index,follow',
+          googlebot: 'index,follow'
         }
       },
-      money: {
-        decimal: ',',
-        thousands: '.',
-        prefix: '',
-        suffix: '',
-        precision: 2,
-        masked: false
+      categories () {
+        return this.$store.state.category.categories
+      },
+      photos () {
+        return this.ad.photos
+      },
+      formattedAddress () {
+        let i = 0
+        let address = []
+        if (this.ad.address.zip_code) { address[i++] = `Cep: ${this.ad.address.zip_code}` }
+        if (this.ad.address.street) { address[i++] = `${this.ad.address.street}` }
+        if (this.ad.address.number) { address[i++] = `${this.ad.address.number}` }
+        if (this.ad.address.neighborhood) { address[i++] = `${this.ad.address.neighborhood}` }
+        if (this.ad.address.state) { address[i++] = `${this.ad.address.state}` }
+        if (this.ad.address.city) { address[i++] = `${this.ad.address.city}` }
+        address[i++] = 'Brasil'
+        return address.join(', ')
       }
-    }
-  },
-  computed: {
-    category () {
-      if (!this.ad.category_id) {
-        return {}
-      }
-      return this.categories.find(category => category.id === this.ad.category_id)
     },
-    categories () {
-      return this.$store.state.category.categories
-    },
-    filters () {
-      return this.category.filters || []
-    },
-    photos () {
-      return this.ad.photos
-    },
-    formattedAddress () {
-      let i = 0
-      let address = []
-      if (this.ad.address.zip_code) { address[i++] = `Cep: ${this.ad.address.zip_code}` }
-      if (this.ad.address.street) { address[i++] = `${this.ad.address.street}` }
-      if (this.ad.address.number) { address[i++] = `${this.ad.address.number}` }
-      if (this.ad.address.neighborhood) { address[i++] = `${this.ad.address.neighborhood}` }
-      if (this.ad.address.state) { address[i++] = `${this.ad.address.state}` }
-      if (this.ad.address.city) { address[i++] = `${this.ad.address.city}` }
-      address[i++] = 'Brasil'
-      return address.join(', ')
-    }
-  },
-  methods: {
-    onSubmit () {
-      this.loading = true
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          this.loading = false
-          this.save()
-        } else {
-          console.log('Preencha corretamente o formulário.')
-          this.loading = false
-        }
-      })
-    },
-    save () {
-      this.loading = true
-      this.$store.dispatch('createAd', this.ad).then((response) => {
-        if (response.ok) {
-          this.saveFiles(response)
-        } else {
-          this.loading = false
-          alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
-        }
-      }, (error) => {
+    methods: {
+      openLoading () {
+        this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos cadastrando o seu anúncio...')
+        this.spinner.open()
+      },
+      closeLoading () {
         this.loading = false
-        alert('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
-        console.log(error)
-      })
-    },
-    saveFiles (response) {
-      let ad = response.body
-      let self = this
-      let total = 0
-      let files = self.$refs.uploadRef.files
-      if (files.length) {
-        files.forEach((file, index) => {
-          let formData = new FormData()
-          formData.append('favorite', file.favorite ? 1 : 0)
-          formData.append('photo', file, file.name)
-          let params = {
-            id: ad.id,
-            data: formData
+        this.spinner.close()
+      },
+      openLoadingPhotos () {
+        this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos salvando as fotos do anúncio...')
+        this.spinner.open()
+      },
+      closeLoadingPhotos () {
+        this.loading = false
+        this.spinner.close()
+      },
+      onSubmit () {
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.save()
+          } else {
+            this.$message.info('Preencha corretamente o formulário.')
           }
-          self.$store.dispatch('createAdPhoto', params).then((response) => {
-            if (response.ok) {
+        })
+      },
+      save () {
+        this.openLoading()
+        this.$store.dispatch('createAd', this.ad).then((response) => {
+          if (response.ok) {
+            this.closeLoading()
+            setTimeout(() => {
+              this.saveFiles(response)
+            }, 500)
+          } else {
+            this.closeLoading()
+            this.$message.error('Oops, não foi possível salvar! Por favor, preencha todos os campos e tente novamente.')
+          }
+        }, (error) => {
+          this.closeLoading()
+          if (error.status === 422) {
+            this.showErrors(error.data)
+          } else {
+            this.$message.error(error.statusText)
+            console.log(error)
+          }
+        })
+      },
+      saveFiles (response) {
+        let ad = response.body
+        let self = this
+        let total = 0
+        let files = self.$refs.uploadRef.files
+        if (files.length > 0) {
+          this.openLoadingPhotos()
+          files.forEach((file, index) => {
+            let formData = new FormData()
+            formData.append('favorite', file.favorite ? 1 : 0)
+            formData.append('photo', file, file.name)
+            let params = {
+              id: ad.id,
+              data: formData
+            }
+            self.$store.dispatch('createAdPhoto', params).then((response) => {
+              if (response.ok) {
+                total++
+                if (total === files.length) {
+                  this.closeLoadingPhotos()
+                  setTimeout(() => {
+                    self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
+                  }, 300)
+                }
+              }
+            }, (error) => {
+              console.log(error)
+              this.$message.info('O arquivo ' + file.name + ' não foi enviado.')
               total++
               if (total === files.length) {
-                self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
+                this.closeLoadingPhotos()
+                setTimeout(() => {
+                  self.$router.push({ name: 'compartilhar-anuncio', params: { id: ad.id, slug: ad.slug } })
+                }, 300)
               }
-            }
-          }, (error) => {
-            console.log(error)
-            alert('O arquivo ' + file.name + ' não foi enviado.')
+            })
+          })
+        } else {
+          this.closeLoadingPhotos()
+          self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
+        }
+      },
+      showErrors (errors) {
+        Object.values(errors).map((error) => {
+          error.map((erro) => {
+            this.$message.error(erro)
           })
         })
-      } else {
-        self.$router.push({ name: 'compartilhar-anuncio', params: { slug: ad.slug } })
-      }
-    },
-    onUploadRemove (file) {
-      console.log(file)
-    },
-    pesquisarCep () {
-      if (this.ad.address.zip_code !== '') {
-        this.loading = true
-        this.cep.pesquisar(this.ad.address.zip_code, this.ad.address).then((response) => {
-          this.loading = false
-          this.searchAddress()
-        }, (error) => {
-          this.loading = false
-          console.log(error)
+      },
+      onUploadRemove (file) {
+        console.log(file)
+      },
+      pesquisarCep () {
+        if (this.ad.address.zip_code !== '') {
+          this.loading = true
+          this.cep.pesquisar(this.ad.address.zip_code, this.ad.address).then((response) => {
+            this.loading = false
+            this.searchAddress()
+          }, (error) => {
+            this.loading = false
+            console.log(error)
+          })
+        }
+      },
+      searchAddress () {
+        let self = this
+        let ref = self.$refs.mapaRef
+
+        ref.removeMarker()
+        ref.removeCircle()
+        ref.setAddress(self.formattedAddress)
+        ref.searchAddress().then((status) => {
+          if (self.ad.address.show_on_map === 'default') {
+            ref.setAddress('Brasil')
+            ref.setZoom(4)
+          } else if (self.ad.address.show_on_map === 'approximate') {
+            ref.addCircle()
+          } else if (self.ad.address.show_on_map === 'exact') {
+            ref.addMarker()
+          }
+        }, (error) => console.log(error))
+      },
+      getCategory () {
+        let id = this.ad.category_id
+        if (id) {
+          let category = this.categories.find((category) => Number(category.id) === Number(id))
+          if (category) {
+            this.category = category || {}
+            this.filters = this.category.filters || []
+            this.resetDetails(this.filters)
+          }
+        }
+      },
+      resetDetails (filters) {
+        filters.forEach((filter, index) => {
+          this.ad.details[index] = ''
         })
       }
     },
-    searchAddress () {
-      let zoom = 5
-      let self = this
-      self.$refs.mapaRef.removeMarker()
-      self.$refs.mapaRef.removeCircle()
-      if (self.ad.address.show_on_map === 'default') {
-        zoom = 4
-        self.$refs.mapaRef.setAddress('Brasil')
-      } else if (self.ad.address.show_on_map === 'approximate') {
-        zoom = 5
-        self.$refs.mapaRef.setAddress(self.formattedAddress)
-        self.$refs.mapaRef.addCircle()
-      } else if (self.ad.address.show_on_map === 'exact') {
-        zoom = 16
-        self.$refs.mapaRef.setAddress(self.formattedAddress)
-        self.$refs.mapaRef.addMarker()
-      }
-      self.$refs.mapaRef.geocodeAddress()
-      self.$refs.mapaRef.setZoom(zoom)
+    created () {
+      this.seo.init(this.page)
+      this.$store.dispatch('getCategories')
     }
-  },
-  created () {
-    this.$store.dispatch('getCategories')
   }
-}
 </script>
 
 <style lang="css" scoped>
-.page {
-  padding: 60px 0;
-}
-.page .line {
-  margin-bottom: 60px;
-}
-.page h2 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 20px auto;
-}
-.page h3 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 20px auto;
-}
-.page h4 {
-  font-size: 30px;
-  font-weight: 800;
-  margin: 0px auto 20px;
-}
-.page .btn {
-  font-weight: 800;
-}
+  .page {
+    padding: 60px 0;
+  }
+  .page .line {
+    margin-bottom: 60px;
+  }
+  .page h2 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px auto;
+  }
+  .page h3 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 20px auto;
+  }
+  .page h4 {
+    font-size: 30px;
+    font-weight: 800;
+    margin: 0px auto 20px;
+  }
+  .page .btn {
+    font-weight: 800;
+  }
 
-label {
-  color: #0052cc;
-  font-weight: 600;
-}
-label.ad_category_id {
-  margin: 11px auto;
-}
+  label {
+    color: #0052cc;
+    font-weight: 600;
+  }
+  label.ad_category_id {
+    margin: 11px auto;
+  }
 
-.radio {
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-.radio label {
-  font-weight: normal;
-}
+  .radio {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .radio label {
+    font-weight: normal;
+  }
 </style>

@@ -1,3 +1,37 @@
+### Verify the module 'proxy_http' is enabled by typing:
+###  > a2query -m proxy_http
+### If the message "No module matches proxy_http" is displayed, then enable the module 'proxy_http' by typing:
+###  > sudo a2enmod proxy_http
+###  > sudo service apache2 restart
+
+### Activate the rewrite rule engine
+RewriteEngine On
+
+### If the request contains the _escaped_fragment_ query parameter, set a flag to proxify the request to SEO4Ajax
+RewriteCond %{ENV:PROXIFY} !true
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{QUERY_STRING} _escaped_fragment_= [NC]
+RewriteRule .* - [E=PROXIFY:true,E=REQUEST_PATH:%{REQUEST_URI}]
+
+### If the request is issued by another known bot, set a flag to proxify the request to SEO4Ajax
+### Note: the 5 following lines can be commented if you are using #! URLs
+RewriteCond %{ENV:PROXIFY} !true
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{HTTP_USER_AGENT} !(googlebot/|googlebot-mobile|yandexbot|pinterest.*ios|mail\.ru|seznambot|screaming) [NC]
+RewriteCond %{HTTP_USER_AGENT} (bot|spider|pinterest|crawler|archiver|flipboardproxy|mediapartners|facebookexternalhit|quora|whatsapp) [NC]
+RewriteRule .* - [E=PROXIFY:true,E=REQUEST_PATH:%{REQUEST_URI}]
+
+### Proxify the request to SEO4Ajax
+RewriteCond %{ENV:PROXIFY} true
+RewriteRule ^(.*)$ http://api.seo4ajax.com/01c6a34023ecdd9be43e0dc5ec7217d5%{ENV:REQUEST_PATH} [P,QSA,L]
+
+### Otherwise, if the requested file is not present on the server, serve the index file
+### Note: the 3 following lines can be commented if you are using #! URLs
+# RewriteCond %{REQUEST_FILENAME} !-f
+# RewriteCond %{REQUEST_FILENAME} !-d
+# RewriteRule .* index.html [L]
+
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /

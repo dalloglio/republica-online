@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade">
+  <div class="modal fade" id="modal-default">
     <div class="modal-dialog">
       <div class="modal-content">
 
@@ -68,23 +68,29 @@
     },
     methods: {
       show () {
-        window.jQuery('.modal').modal('show')
+        window.jQuery('#modal-default').modal('show')
       },
       hide () {
-        window.jQuery('.modal').modal('hide')
+        window.jQuery('#modal-default').modal('hide')
+      },
+      initSending () {
+        this.sending = true
+      },
+      stopSending () {
+        this.sending = false
       },
       onSubmit () {
-        this.sending = true
+        this.initSending()
         let params = {
           id: this.ad.id,
           data: this.contact
         }
         this.$store.dispatch('createAdContact', params).then((response) => {
-          this.sending = false
+          this.stopSending()
           this.send = true
         }, (error) => {
           console.log(error)
-          this.sending = false
+          this.stopSending()
           this.send = false
         })
       }

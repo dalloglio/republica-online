@@ -68,76 +68,85 @@
 </template>
 
 <script>
-export default {
-  name: 'password-reset',
-  data () {
-    return {
-      loading: false,
-      user: {
-        email: '',
-        password: '',
-        password_confirmation: '',
-        token: this.$route.query.token || ''
+  export default {
+    name: 'password-reset',
+    data () {
+      return {
+        loading: false,
+        user: {
+          email: '',
+          password: '',
+          password_confirmation: '',
+          token: this.$route.query.token || ''
+        }
+      }
+    },
+    methods: {
+      openLoading () {
+        this.loading = true
+        this.$store.dispatch('setSpinnerDescription', 'Estamos cadastrando a sua nova senha...')
+        this.spinner.open()
+      },
+      closeLoading () {
+        this.loading = false
+        this.spinner.close()
+      },
+      onSubmit () {
+        this.$validator.validateAll().then((result) => {
+          if (result) {
+            this.openLoading()
+            this.$store.dispatch('passwordReset', this.user).then((response) => {
+              this.closeLoading()
+              if (response.ok) {
+                let message = response.body.message
+                this.$message.success(message)
+                this.$router.push({ name: 'auth.login' })
+              }
+            }, (error) => {
+              this.closeLoading()
+              console.log(error)
+              this.$message.error(error.body.erro)
+            })
+          } else {
+            this.$message.info('Por favor, preencha corretamente os campos para enviar a nova senha.')
+          }
+        })
+      }
+    },
+    beforeRouteEnter (to, from, next) {
+      if (!to.query.token) {
+        next({ name: 'auth.password.email' })
+      } else {
+        next()
       }
     }
-  },
-  methods: {
-    onSubmit () {
-      this.$validator.validateAll().then((result) => {
-        if (result) {
-          this.loading = true
-          this.$store.dispatch('passwordReset', this.user).then((response) => {
-            this.loading = false
-            if (response.ok) {
-              let message = response.body.message
-              alert(message)
-              this.$router.push({ name: 'auth.login' })
-            }
-          }, (error) => {
-            this.loading = false
-            console.log(error)
-            alert(error.body.erro)
-          })
-        } else {
-          console.log('Erro: Por favor, preencha corretamente os campos para enviar a nova senha.')
-        }
-      })
-    }
-  },
-  beforeRouteEnter (to, from, next) {
-    if (!to.query.token) {
-      next({ name: 'auth.password.email' })
-    } else {
-      next()
-    }
   }
-}
 </script>
 
 <style scoped>
-.login {
-  height: 679px;
-}
-form {
-  margin: 100px auto;
-}
-h3 {
-  font-size: 30px;
-  font-weight: 800;
-  color: #fff;
-  margin: 30px auto;
-}
-.btn {
-  font-weight: 600;
-}
-.form-group {
-  margin-bottom: 15px;
-}
-.help-block {
-  text-transform: lowercase;
-  display: inline-block;
-  margin: 2px 0;
-  color: #fff;
-  font-weight: 600;
-}
+  .login {
+    height: 679px;
+  }
+  form {
+    margin: 100px auto;
+  }
+  h3 {
+    font-size: 30px;
+    font-weight: 800;
+    color: #fff;
+    margin: 30px auto;
+  }
+  .btn {
+    font-weight: 600;
+  }
+  .form-group {
+    margin-bottom: 15px;
+  }
+  .help-block {
+    text-transform: lowercase;
+    display: inline-block;
+    margin: 2px 0;
+    color: #fff;
+    font-weight: 600;
+  }
 </style>
