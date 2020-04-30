@@ -16,7 +16,7 @@
   "dependencies": {
     "awesome-mask": "^0.5.4",
     "bootstrap-sass": "^3.3.7",
-    "jquery": "^3.2.1",
+    "jquery": "^3.5.0",
     "jquery.cycle2": "^2.1.7",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
