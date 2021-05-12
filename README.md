@@ -1,6 +1,6 @@
-# admin
+# REPÚBLICA ONLINE - SITE
 
-> Admin
+Projeto de front-end para o site republica.online.
 
 ## Build Setup
 
